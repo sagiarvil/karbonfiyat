@@ -3,7 +3,6 @@ const cbamPrice = 75.28;
 const cbamPeriod = "2026 Q2";
 const cbamPublished = "6 Temmuz 2026";
 const cbamNext = "5 Ekim 2026";
-const carbonCreditsWidgetHtml = `<div id="carbon-prices"><script type="text/javascript" src="https://carboncredits.com/live-carbon-prices/index.js.php" async></script></div>`;
 ---
 
 <section class="market-terminal" id="canli-karbon-fiyatlari">
@@ -66,29 +65,33 @@ const carbonCreditsWidgetHtml = `<div id="carbon-prices"><script type="text/java
           <span class="market-type">EU ETS dahil küresel karbon piyasaları</span>
         </div>
 
-        <div class="live-widget-shell carboncredits-shell">
-          <div class="carboncredits-embed" set:html={carbonCreditsWidgetHtml}></div>
-          <noscript>
-            <p class="widget-fallback">Canlı karbon piyasası görünümü için JavaScript etkin olmalıdır.</p>
-          </noscript>
+        <div class="live-widget-shell purely-shell">
+          <iframe
+            src="https://www.purelyenergy.co.uk/widgets/prices?metrics=eu_ets&columns=1"
+            title="Live EU ETS carbon price by Purely Energy"
+            width="100%"
+            height="340"
+            loading="eager"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
         </div>
 
         <div class="data-note">
           <span class="data-dot" aria-hidden="true"></span>
           <p>
-            Canlı fiyat paneli <strong>CarbonCredits.com</strong> tarafından yayınlanır ve EU ETS dahil birden çok
-            compliance / carbon market referansını gösterir. KarbonFiyat bu dış piyasa verisini resmî CBAM fiyatından
-            ayrı tutar; finansal karar motorunda kullanılan veri kaynağı açıkça etiketlenir.
+            EU ETS fiyat paneli <strong>Purely Energy</strong> canlı piyasa akışından gelir ve yaklaşık beş dakikalık
+            yenileme döngüsüyle güncellenir. Bu piyasa göstergesi resmî CBAM sertifika fiyatından ayrı tutulur.
           </p>
         </div>
 
         <a
           class="source-link market-source"
-          href="https://carboncredits.com/carbon-prices-today/"
+          href="https://www.purelyenergy.co.uk/tools/market-data"
           target="_blank"
           rel="noopener"
+          data-purely-credit
         >
-          Canlı piyasa kaynağı ↗
+          Live UK energy prices by Purely Energy
         </a>
       </article>
 
@@ -528,16 +531,18 @@ const carbonCreditsWidgetHtml = `<div id="carbon-prices"><script type="text/java
     background: #0c0f10;
   }
 
-  .carboncredits-shell {
-    min-height: 280px;
-    padding: 12px;
+  .purely-shell {
+    min-height: 340px;
     background: #0c0f10;
+    border: 1px solid var(--border-soft);
   }
 
-  .carboncredits-embed,
-  .carboncredits-embed #carbon-prices {
+  .purely-shell iframe {
+    display: block;
     width: 100%;
-    min-height: 256px;
+    min-height: 340px;
+    border: 0;
+    background: #0c0f10;
   }
 
   .market-source {
