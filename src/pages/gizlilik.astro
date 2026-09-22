@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { seoPages } from "../data/seo";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  url: "https://karbonfiyat.com/gizlilik",
+  name: "KarbonFiyat Gizlilik ve Veri İşleme",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "KarbonFiyat",
+    url: "https://karbonfiyat.com"
+  }
+};
+---
+<Layout
+  title={seoPages.gizlilik.title}
+  description={seoPages.gizlilik.description}
+  canonical={seoPages.gizlilik.canonical}
+  schema={schema}
+>
+  <section class="container privacy-page">
+    <span class="eyebrow">GİZLİLİK VE VERİ İŞLEME</span>
+    <h1>Hangi verinin nerede işlendiğini açıkça belirtiriz.</h1>
+    <p class="lead">
+      Bu sayfa KarbonFiyat üzerindeki hesaplama araçları ve Ön Analiz başvuru formunun
+      mevcut teknik davranışını açıklar.
+    </p>
+
+    <div class="privacy-stack">
+      <article class="card privacy-card">
+        <h2>Hesaplama araçları</h2>
+        <p>
+          Sayfa içindeki gösterge ve senaryo hesaplamaları tarayıcı tarafında çalışır.
+          Kullanıcının girdiği hesaplama değerleri yalnızca bu hesaplamayı üretmek için kullanılır.
+        </p>
+      </article>
+
+      <article class="card privacy-card">
+        <h2>Ön Analiz başvuru formu</h2>
+        <p>
+          Form; şirket unvanı, yetkili adı, telefon, kurumsal e-posta, sektör ve kullanıcı
+          girerse yıllık AB tonajı bilgilerini toplar. Bu bilgiler talebi değerlendirmek ve geri dönüş
+          sağlamak amacıyla başvuru servisine gönderilir.
+        </p>
+      </article>
+
+      <article class="card privacy-card">
+        <h2>Bağlantı hatasında yedek teslim</h2>
+        <p>
+          Merkezi başvuru servisine ulaşılamazsa form, veri kaybını önlemek için kullanıcının cihazına
+          başvuru verilerinin JSON kopyasını indirir ve kurumsal e-posta taslağını açar. E-posta ancak
+          kullanıcı gönderirse iletilir.
+        </p>
+      </article>
+
+      <article class="card privacy-card">
+        <h2>İletişim</h2>
+        <p>Gizlilik ve veri işleme soruları için <a href="mailto:analiz@karbonfiyat.com">analiz@karbonfiyat.com</a>.</p>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .privacy-page { padding: 88px 0 36px; }
+  .privacy-page h1 {
+    max-width: 900px;
+    margin: 18px 0 16px;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.06;
+    color: var(--text-primary);
+  }
+  .privacy-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .privacy-card { padding: 28px; }
+  .privacy-card h2 { color: var(--text-primary); margin: 0 0 12px; font-size: 20px; }
+  .privacy-card p { color: var(--text-secondary); line-height: 1.7; margin: 0; }
+  .privacy-card a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 860px) {
+    .privacy-page { padding-top: 56px; }
+    .privacy-stack { grid-template-columns: 1fr; }
+  }
+</style>
