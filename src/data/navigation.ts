@@ -45,7 +45,7 @@ export const footerColumns = [
       { label: "Metodoloji", href: "/metodoloji" },
       { label: "Kaynaklar", href: "/metodoloji#kaynaklar" },
       { label: "Veri Politikası", href: "/metodoloji#veri-politikasi" },
-      { label: "Yasal Bilgilendirme", href: "/metodoloji#yasal" }
+      { label: "Yasal Bilgilendirme", href: "/gizlilik" }
     ]
   }
 ];
