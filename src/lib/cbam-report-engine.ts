@@ -13,7 +13,12 @@ export interface GtipDefinition {
   benchmarkEur: number;
 }
 
-export const OFFICIAL_GTIP_DATABASE: GtipDefinition[] = [
+/**
+ * Referans profiller yalnızca demo/modelleme başlangıç değerleridir.
+ * Resmî veya mevzuatça kabul edilmiş default value olarak kullanılmamalıdır.
+ * Ücretli analizde doğrulanmış tesis/ürün emisyon verisi ile değiştirilmelidir.
+ */
+export const REFERENCE_GTIP_PROFILES: GtipDefinition[] = [
   { gtipCode: "7208", name: "Demir & Çelik: Sıcak Haddelenmiş Yassı Mamul", sector: "steel", defaultScope1: 1.45, defaultScope2: 0.39, benchmarkEur: 75.28 },
   { gtipCode: "7214", name: "Demir & Çelik: İnşaat Demiri ve Çubuklar", sector: "steel", defaultScope1: 1.62, defaultScope2: 0.42, benchmarkEur: 75.28 },
   { gtipCode: "7601", name: "Alüminyum: İşlenmemiş Külçe / Alaşım", sector: "aluminum", defaultScope1: 2.10, defaultScope2: 2.10, benchmarkEur: 75.28 },
@@ -65,7 +70,7 @@ export interface ExecutiveReportData {
 }
 
 export function generateExecutiveReport(input: ReportInput): ExecutiveReportData {
-  const gtip = OFFICIAL_GTIP_DATABASE.find(g => g.gtipCode === input.gtipCode) || OFFICIAL_GTIP_DATABASE[0];
+  const gtip = REFERENCE_GTIP_PROFILES.find(g => g.gtipCode === input.gtipCode) || REFERENCE_GTIP_PROFILES[0];
   const s1 = input.customScope1 !== undefined ? Math.max(0, input.customScope1) : gtip.defaultScope1;
   const s2 = input.customScope2 !== undefined ? Math.max(0, input.customScope2) : gtip.defaultScope2;
   const totalSpecificEmission = s1 + s2;
