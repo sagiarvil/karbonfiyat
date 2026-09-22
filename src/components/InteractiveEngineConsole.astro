@@ -1,0 +1,1283 @@
+---
+import { OFFICIAL_GTIP_DATABASE } from "../lib/cbam-report-engine";
+import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
+---
+
+<section class="engines-console-section" id="motorlar">
+  <div class="container">
+    <!-- Başlık Bloğu -->
+    <div class="console-header">
+      <div class="console-badge">
+        <span class="pulse-indicator"></span>
+        <span>AKTİF ENDÜSTRİYEL KARAR MOTORLARI · DETERMINISTIC ENGINE V2.4</span>
+      </div>
+      <h2 class="console-title">Gerçek zamanlı çalışan 3 kurumsal finansal karar motoru.</h2>
+      <p class="console-sub">
+        Bu motorlar statik bir metin değil; AB Tüzüğü (EU 2023/956) formülleriyle çalışan, şirket verilerinizi anında finansal kâr erimesine, müşteri riskine ve bütçe deltasına çeviren aktif karar sistemleridir.
+      </p>
+    </div>
+
+    <!-- Motor Sekmeleri (Tabs) -->
+    <div class="engine-tabs-wrapper">
+      <div class="engine-tabs-nav" role="tablist">
+        <button type="button" class="tab-btn active" data-tab="engine-02" id="tab-02">
+          <span class="tab-num">MOTOR 02</span>
+          <span class="tab-name">Ön Analiz Rapor Motoru (4.900 TL)</span>
+          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="engine-03" id="tab-03">
+          <span class="tab-num">MOTOR 03</span>
+          <span class="tab-name">Müşteri Portföy &amp; Mahsup Karar Motoru (19.900 TL)</span>
+          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="engine-04" id="tab-04">
+          <span class="tab-num">MOTOR 04</span>
+          <span class="tab-name">Aylık Monitör &amp; Fiyat Delta Motoru</span>
+          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+        </button>
+      </div>
+
+      <!-- MOTOR 02 PANELİ: ÖN ANALİZ RAPOR MOTORU -->
+      <div class="engine-tab-pane active" id="pane-engine-02">
+        <div class="pane-grid-2">
+          <!-- Sol: Girdiler -->
+          <div class="pane-box form-side">
+            <h3 class="box-title">Tesis &amp; GTIP Emisyon Parametreleri</h3>
+            <p class="box-desc">Ürününüzün GTIP kodunu ve tesis emisyonlarını girin; motor anında net CBAM yükümlülüğü ve bilanço marj kaybı raporunu çıkarsın.</p>
+            
+            <div class="inputs-stack">
+              <div class="field-item">
+                <label for="m2-company">Firma Unvanı</label>
+                <input type="text" id="m2-company" value="Örnek Metal Sanayi A.Ş." />
+              </div>
+
+              <div class="field-item">
+                <label for="m2-gtip">GTIP Kodu ve Ürün Kategorisi</label>
+                <select id="m2-gtip">
+                  {OFFICIAL_GTIP_DATABASE.map(g => (
+                    <option value={g.gtipCode} data-s1={g.defaultScope1} data-s2={g.defaultScope2} data-bench={g.benchmarkEur}>
+                      {g.gtipCode} - {g.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div class="two-fields">
+                <div class="field-item">
+                  <label for="m2-volume">Yıllık AB Hacmi (ton)</label>
+                  <input type="number" id="m2-volume" value="10000" min="100" step="500" />
+                </div>
+                <div class="field-item">
+                  <label for="m2-sales-price">Satış Fiyatı (€/t)</label>
+                  <input type="number" id="m2-sales-price" value="850" min="50" step="10" />
+                </div>
+              </div>
+
+              <div class="two-fields">
+                <div class="field-item">
+                  <label for="m2-cost">Üretim Maliyeti (€/t)</label>
+                  <input type="number" id="m2-cost" value="606" min="50" step="10" />
+                </div>
+                <div class="field-item">
+                  <label for="m2-cbam-price">CBAM Baz Fiyat (€/tCO₂)</label>
+                  <input type="number" id="m2-cbam-price" value="75.28" step="0.01" />
+                </div>
+              </div>
+
+              <div class="two-fields">
+                <div class="field-item">
+                  <label for="m2-scope1">Scope 1 Doğrudan (tCO₂/t)</label>
+                  <input type="number" id="m2-scope1" value="1.45" step="0.01" />
+                </div>
+                <div class="field-item">
+                  <label for="m2-scope2">Scope 2 Dolaylı (tCO₂/t)</label>
+                  <input type="number" id="m2-scope2" value="0.39" step="0.01" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sağ: Rapor Çıktısı -->
+          <div class="pane-box report-side">
+            <div class="report-paper" id="printable-report">
+              <div class="report-meta-header">
+                <div>
+                  <span class="rep-tag">CFO YÖNETİCİ ÖN ANALİZ RAPORU</span>
+                  <h4 class="rep-title" id="rep-company-title">Örnek Metal Sanayi A.Ş.</h4>
+                  <small class="rep-date" id="rep-date">2026 Resmî CBAM Değerlendirmesi</small>
+                </div>
+                <div class="rep-id-box mono" id="rep-id">KF-RPT-2026-A1</div>
+              </div>
+
+              <!-- Ana KPI Kartları -->
+              <div class="rep-kpi-summary">
+                <div class="rep-kpi-main">
+                  <span class="rep-lbl">NET YILLIK KARBON MARUZİYETİ</span>
+                  <strong class="rep-num-big" id="m2-out-exposure">€1.385.152</strong>
+                  <span class="rep-sub" id="m2-out-per-ton">Ton başına ek maliyet: €138,52/t</span>
+                </div>
+              </div>
+
+              <!-- Detaylı Tablo -->
+              <table class="rep-mini-table">
+                <tbody>
+                  <tr>
+                    <td>Spesifik Emisyon (Scope 1+2)</td>
+                    <td class="mono right" id="m2-out-emission">1,84 tCO₂e / ton</td>
+                  </tr>
+                  <tr>
+                    <td>Mevcut Brüt Kâr Marjı</td>
+                    <td class="mono right" id="m2-out-cur-margin">%28,7</td>
+                  </tr>
+                  <tr>
+                    <td>Karbon Sonrası Düzeltilmiş Marj</td>
+                    <td class="mono right danger-text" id="m2-out-adj-margin">%12,4</td>
+                  </tr>
+                  <tr>
+                    <td>Net Marj Erimesi</td>
+                    <td class="mono right danger-text" id="m2-out-margin-loss">−16,3 Puan (%56,8 Kâr Kaybı)</td>
+                  </tr>
+                  <tr class="rep-action-tr">
+                    <td><strong>Koruyucu Asgari Satış Fiyatı</strong></td>
+                    <td class="mono right highlight-num" id="m2-out-req-price">€989,00 / ton (+%16,3)</td>
+                  </tr>
+                  <tr>
+                    <td>Zarara Geçiren Karbon Eşiği</td>
+                    <td class="mono right" id="m2-out-breakeven">€132,61 / tCO₂</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Aksiyon Butonları -->
+              <div class="rep-actions-bar">
+                <button type="button" class="btn btn-primary btn-print" onclick="window.print()">
+                  <span>🖨️ Yönetici Raporunu Yazdır / PDF İndir</span>
+                </button>
+                <a href="#basvuru" class="btn btn-secondary">
+                  <span>Bu Raporu Şirketiniz İçin Onaylatın (4.900 TL)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOTOR 03 PANELİ: MÜŞTERİ PORTFÖY & MAHSUP KARAR MOTORU -->
+      <div class="engine-tab-pane" id="pane-engine-03">
+        <div class="portfolio-console">
+          <!-- Üst Senaryo Barı: TR-ETS Mahsup Kaydırıcısı -->
+          <div class="scenario-slider-box">
+            <div class="slider-info">
+              <span class="s-eyebrow">TR-ETS MADDE 9 İKİLİ MAHSUP SİMÜLATÖRÜ</span>
+              <h3 class="slider-title">Türkiye'de Ödenen Karbon Bedelinin AB CBAM'ından Mahsup Oranı: <span id="m3-offset-val">%0</span></h3>
+              <p class="slider-desc">Türkiye ETS yürürlüğe girdiğinde yerel ödenen karbon vergisi AB gümrüğünde mahsup edilecek. Mahsup oranının müşteri sözleşmelerinize etkisini canlı görün:</p>
+            </div>
+            <div class="slider-control">
+              <input type="range" id="m3-offset-slider" min="0" max="100" step="25" value="0" />
+              <div class="slider-ticks mono">
+                <span>%0 (Mahsup Yok)</span>
+                <span>%25</span>
+                <span>%50 (Kısmi Mahsup)</span>
+                <span>%75</span>
+                <span>%100 (Tam Mahsup)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Müşteri Sözleşmeleri Karar Tablosu -->
+          <div class="contracts-table-card">
+            <div class="table-responsive">
+              <table class="contracts-table">
+                <thead>
+                  <tr>
+                    <th>MÜŞTERİ / SÖZLEŞME</th>
+                    <th>ÜLKE / TONAJ</th>
+                    <th>SÖZLEŞME FİYATI</th>
+                    <th>NET KARBON MALİYETİ</th>
+                    <th>ESKİ MARJ</th>
+                    <th>YENİ MARJ</th>
+                    <th>RİSK DURUMU</th>
+                    <th>CFO AKSİYON KARARI</th>
+                  </tr>
+                </thead>
+                <tbody id="m3-contracts-tbody">
+                  <!-- JS dinamik render edecek -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Portföy Karar Özeti -->
+            <div class="portfolio-summary-bar">
+              <div class="p-stat">
+                <span class="p-lbl">TOPLAM PORTFÖY CİROSU</span>
+                <strong class="p-val" id="m3-total-rev">€8.300.000</strong>
+              </div>
+              <div class="p-stat">
+                <span class="p-lbl">TOPLAM NET CBAM YÜKÜ</span>
+                <strong class="p-val danger" id="m3-total-carbon">€1.385.152</strong>
+              </div>
+              <div class="p-stat">
+                <span class="p-lbl">PORTFÖY ORTALAMA MARJ ERİMESİ</span>
+                <strong class="p-val danger" id="m3-total-margin-loss">−16,7 Puan</strong>
+              </div>
+              <div class="p-takeaway-box">
+                <strong id="m3-takeaway-text">Yönetim Kurulu Aksiyonu:</strong> 3 müşteriden 1'i kritik zarar bölgesindedir.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOTOR 04 PANELİ: AYLIK MONİTÖR & DELTA RİSK MOTORU -->
+      <div class="engine-tab-pane" id="pane-engine-04">
+        <div class="monitor-console">
+          <div class="monitor-grid">
+            <!-- Sol: Piyasa Simülasyonu -->
+            <div class="pane-box monitor-controls">
+              <span class="eyebrow">DİNAMİK KOTASYON SİMÜLATÖRÜ</span>
+              <h3 class="box-title">AB CBAM Haftalık Borsa Fiyatı Hareketi</h3>
+              <p class="box-desc">
+                Resmî baz gösterge €75,28/t'dur. AB borsa kotasyonları arttığında veya haftalık ihalelerde fiyat yükseldiğinde yıllık bütçenizdeki ve haftalık nakit akışınızdaki sapmayı canlı test edin.
+              </p>
+
+              <div class="interactive-slider-group">
+                <div class="slider-head">
+                  <label for="m4-price-slider">Yeni Borsa / Kotasyon Fiyatı:</label>
+                  <strong class="slider-live-num" id="m4-price-display">€95,00 / tCO₂</strong>
+                </div>
+                <input type="range" id="m4-price-slider" min="65" max="140" step="1" value="95" />
+                <div class="slider-limits mono">
+                  <span>€65/t (İndirim)</span>
+                  <span>€75,28 (Resmî Baz)</span>
+                  <span>€100/t</span>
+                  <span>€140/t (Kriz Eşiği)</span>
+                </div>
+              </div>
+
+              <div class="monitor-inputs-inline">
+                <div class="field-item">
+                  <label for="m4-vol">Yıllık Sevkiyat (ton)</label>
+                  <input type="number" id="m4-vol" value="10000" step="1000" />
+                </div>
+                <div class="field-item">
+                  <label for="m4-factor">Emisyon Katsayısı (tCO₂/t)</label>
+                  <input type="number" id="m4-factor" value="1.84" step="0.05" />
+                </div>
+                <div class="field-item">
+                  <label for="m4-revenue">Yıllık Ciro (€)</label>
+                  <input type="number" id="m4-revenue" value="8500000" step="100000" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Sağ: Delta Alarm & Nakit Akışı Sapması -->
+            <div class="pane-box monitor-results">
+              <div class="delta-hero-card" id="m4-alarm-card">
+                <div class="delta-header">
+                  <span class="delta-badge" id="m4-badge">DİKKAT: RİSK EŞİĞİ AŞILDI</span>
+                  <span class="delta-pct mono" id="m4-pct-change">+%26,2 Fiyat Artışı</span>
+                </div>
+                <div class="delta-main-stat">
+                  <span class="d-label">YILLIK EK BÜTÇE SAPMASI (DELTA RİSK)</span>
+                  <strong class="d-value" id="m4-annual-delta">+€362.848</strong>
+                </div>
+                <p class="delta-notice" id="m4-notice-text">
+                  Fiyatın €75,28'den €95,00'e çıkması, operasyonel kârınızdan yıllık €362.848 daha buharlaştıracaktır.
+                </p>
+              </div>
+
+              <div class="delta-sub-grid">
+                <div class="delta-sub-box">
+                  <span class="sub-lbl">Haftalık Nakit Akışı Erimesi</span>
+                  <strong class="sub-val" id="m4-weekly-delta">+€6.978 / hafta</strong>
+                  <small>52 haftalık sevkiyat takvimine göre</small>
+                </div>
+                <div class="delta-sub-box">
+                  <span class="sub-lbl">Aylık Nakit Rezerv İhtiyacı</span>
+                  <strong class="sub-val" id="m4-monthly-delta">+€30.237 / ay</strong>
+                  <small>Gümrük teminat mektubu riski</small>
+                </div>
+                <div class="delta-sub-box">
+                  <span class="sub-lbl">Ek Marj Kaybı</span>
+                  <strong class="sub-val danger-text" id="m4-margin-delta">−4,3 Puan</strong>
+                  <small>Toplam marjdan ek erime</small>
+                </div>
+                <div class="delta-sub-box highlight-box">
+                  <span class="sub-lbl">Açık Tekliflere Eklenecek Zam</span>
+                  <strong class="sub-val gold-text" id="m4-surcharge">+€36,28 / ton</strong>
+                  <small>Dinamik teklif koruma payı</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    // 1. SEKME GEÇİŞİ (TABS)
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabPanes = document.querySelectorAll(".engine-tab-pane");
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach(b => b.classList.remove("active"));
+        tabPanes.forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        const targetId = "pane-" + btn.getAttribute("data-tab");
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add("active");
+      });
+    });
+
+    const fmtEur = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const fmtEurDec = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtPct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    // 2. MOTOR 02: ÖN ANALİZ RAPOR MOTORU HESAPLAMASI
+    const m2Company = document.getElementById("m2-company");
+    const m2Gtip = document.getElementById("m2-gtip");
+    const m2Vol = document.getElementById("m2-volume");
+    const m2Sales = document.getElementById("m2-sales-price");
+    const m2Cost = document.getElementById("m2-cost");
+    const m2CbamPrice = document.getElementById("m2-cbam-price");
+    const m2S1 = document.getElementById("m2-scope1");
+    const m2S2 = document.getElementById("m2-scope2");
+
+    const repCompany = document.getElementById("rep-company-title");
+    const outExp = document.getElementById("m2-out-exposure");
+    const outPerTon = document.getElementById("m2-out-per-ton");
+    const outEmission = document.getElementById("m2-out-emission");
+    const outCurMargin = document.getElementById("m2-out-cur-margin");
+    const outAdjMargin = document.getElementById("m2-out-adj-margin");
+    const outMarginLoss = document.getElementById("m2-out-margin-loss");
+    const outReqPrice = document.getElementById("m2-out-req-price");
+    const outBreakeven = document.getElementById("m2-out-breakeven");
+
+    function calcMotor2() {
+      const comp = m2Company ? m2Company.value || "İhracatçı Firma" : "İhracatçı Firma";
+      if (repCompany) repCompany.textContent = comp;
+
+      const vol = Math.max(1, parseFloat(m2Vol?.value) || 10000);
+      const sales = Math.max(1, parseFloat(m2Sales?.value) || 850);
+      const cost = Math.max(0, parseFloat(m2Cost?.value) || 606);
+      const cbamP = Math.max(0, parseFloat(m2CbamPrice?.value) || 75.28);
+      const s1 = Math.max(0, parseFloat(m2S1?.value) || 1.45);
+      const s2 = Math.max(0, parseFloat(m2S2?.value) || 0.39);
+
+      const totalEmission = s1 + s2;
+      const perTonCarbon = totalEmission * cbamP;
+      const totalExposure = vol * perTonCarbon;
+
+      const rev = vol * sales;
+      const curProfit = rev - (vol * cost);
+      const curMargin = (curProfit / rev) * 100;
+
+      const newCost = cost + perTonCarbon;
+      const adjProfit = rev - (vol * newCost);
+      const adjMargin = (adjProfit / rev) * 100;
+      const marginLoss = curMargin - adjMargin;
+      const profitErosion = curProfit > 0 ? ((curProfit - adjProfit) / curProfit) * 100 : 100;
+
+      const reqPrice = sales + perTonCarbon;
+      const reqRevPct = (perTonCarbon / sales) * 100;
+      const breakeven = totalEmission > 0 ? (sales - cost) / totalEmission : 0;
+
+      if (outExp) outExp.textContent = fmtEur.format(totalExposure);
+      if (outPerTon) outPerTon.textContent = "Ton başına ek maliyet: " + fmtEurDec.format(perTonCarbon) + "/t";
+      if (outEmission) outEmission.textContent = fmtPct.format(totalEmission) + " tCO₂e / ton";
+      if (outCurMargin) outCurMargin.textContent = "%" + fmtPct.format(curMargin);
+      if (outAdjMargin) outAdjMargin.textContent = "%" + fmtPct.format(adjMargin);
+      if (outMarginLoss) outMarginLoss.textContent = "−" + fmtPct.format(marginLoss) + " Puan (%" + fmtPct.format(profitErosion) + " Kâr Kaybı)";
+      if (outReqPrice) outReqPrice.textContent = fmtEurDec.format(reqPrice) + "/t (+%" + fmtPct.format(reqRevPct) + ")";
+      if (outBreakeven) outBreakeven.textContent = fmtEurDec.format(breakeven) + " / tCO₂";
+    }
+
+    if (m2Gtip) {
+      m2Gtip.addEventListener("change", () => {
+        const opt = m2Gtip.options[m2Gtip.selectedIndex];
+        if (opt) {
+          if (m2S1) m2S1.value = opt.getAttribute("data-s1");
+          if (m2S2) m2S2.value = opt.getAttribute("data-s2");
+          calcMotor2();
+        }
+      });
+    }
+
+    [m2Company, m2Vol, m2Sales, m2Cost, m2CbamPrice, m2S1, m2S2].forEach(el => {
+      if (el) {
+        el.addEventListener("input", calcMotor2);
+        el.addEventListener("change", calcMotor2);
+      }
+    });
+
+    // 3. MOTOR 03: MÜŞTERİ PORTFÖY & MAHSUP KARAR MOTORU HESAPLAMASI
+    const sampleContracts = [
+      { id: "c1", client: "ABC Stahl GmbH", country: "Almanya", vol: 5000, price: 860, cost: 620, factor: 1.84 },
+      { id: "c2", client: "DEF Metalli SpA", country: "İtalya", vol: 3500, price: 830, cost: 610, factor: 1.84 },
+      { id: "c3", client: "XYZ Construct BV", country: "Hollanda", vol: 1500, price: 790, cost: 640, factor: 1.84 }
+    ];
+
+    const offsetSlider = document.getElementById("m3-offset-slider");
+    const offsetValDisplay = document.getElementById("m3-offset-val");
+    const contractsTbody = document.getElementById("m3-contracts-tbody");
+    const m3TotalRev = document.getElementById("m3-total-rev");
+    const m3TotalCarbon = document.getElementById("m3-total-carbon");
+    const m3TotalMarginLoss = document.getElementById("m3-total-margin-loss");
+    const m3Takeaway = document.getElementById("m3-takeaway-text");
+
+    function calcMotor3() {
+      const offsetPct = parseFloat(offsetSlider ? offsetSlider.value : "0") || 0;
+      if (offsetValDisplay) offsetValDisplay.textContent = "%" + offsetPct;
+      const validOffset = offsetPct / 100;
+      const cbamPrice = 75.28;
+
+      let totalVol = 0;
+      let totalRev = 0;
+      let totalBaseProfit = 0;
+      let totalNetCarbon = 0;
+      let criticalCount = 0;
+
+      let html = "";
+      sampleContracts.forEach(c => {
+        const rev = c.vol * c.price;
+        const baseProfit = rev - (c.vol * c.cost);
+        const grossCarbon = c.vol * c.factor * cbamPrice;
+        const netCarbon = grossCarbon * (1 - validOffset);
+
+        const marginBefore = (baseProfit / rev) * 100;
+        const profitAfter = baseProfit - netCarbon;
+        const marginAfter = (profitAfter / rev) * 100;
+        const reqRevPct = (netCarbon / rev) * 100;
+
+        let badgeClass = "badge-safe";
+        let statusText = "KORUNABİLİR";
+        let actionText = "Mevcut marj güvenli";
+
+        if (marginAfter < 5) {
+          badgeClass = "badge-danger";
+          statusText = "ZARAR / RİSKLİ";
+          actionText = `Acil revizyon (+%${reqRevPct.toFixed(1)} zam)`;
+          criticalCount++;
+        } else if (marginAfter < 14) {
+          badgeClass = "badge-warn";
+          statusText = "REVİZYON ŞART";
+          actionText = `Yenilemede +€${(netCarbon / c.vol).toFixed(0)}/t fiyat geçişi`;
+        }
+
+        totalVol += c.vol;
+        totalRev += rev;
+        totalBaseProfit += baseProfit;
+        totalNetCarbon += netCarbon;
+
+        html += `
+          <tr>
+            <td><strong>${c.client}</strong></td>
+            <td>${c.country} · ${c.vol.toLocaleString("tr-TR")} t</td>
+            <td class="mono">€${c.price}/t</td>
+            <td class="mono danger-text">€${Math.round(netCarbon).toLocaleString("tr-TR")}</td>
+            <td class="mono">%${marginBefore.toFixed(1)}</td>
+            <td class="mono ${marginAfter < 5 ? 'danger-bold' : ''}">%${marginAfter.toFixed(1)}</td>
+            <td><span class="contract-badge ${badgeClass}">${statusText}</span></td>
+            <td class="action-rec">${actionText}</td>
+          </tr>
+        `;
+      });
+
+      if (contractsTbody) contractsTbody.innerHTML = html;
+
+      const pMarginBefore = totalRev > 0 ? (totalBaseProfit / totalRev) * 100 : 0;
+      const pMarginAfter = totalRev > 0 ? ((totalBaseProfit - totalNetCarbon) / totalRev) * 100 : 0;
+      const pLossPoints = pMarginBefore - pMarginAfter;
+
+      if (m3TotalRev) m3TotalRev.textContent = fmtEur.format(totalRev);
+      if (m3TotalCarbon) m3TotalCarbon.textContent = fmtEur.format(totalNetCarbon);
+      if (m3TotalMarginLoss) m3TotalMarginLoss.textContent = "−" + fmtPct.format(pLossPoints) + " Puan";
+
+      if (m3Takeaway) {
+        if (criticalCount > 0) {
+          m3Takeaway.innerHTML = `⚠️ <strong>Yönetim Kurulu Aksiyonu:</strong> 3 sözleşmeden ${criticalCount} tanesi kritik zarar bölgesindedir. %${offsetPct} mahsup senaryosunda dahi bu müşteriler kârınızı eritmektedir.`;
+        } else {
+          m3Takeaway.innerHTML = `✓ <strong>Yönetim Kurulu Aksiyonu:</strong> Tüm sözleşmeler pozitif marjda kalmaktadır. Mahsup oranı (%${offsetPct}) net yükümlülüğünüzü €${Math.round(totalNetCarbon).toLocaleString("tr-TR")}'ye düşürmüştür.`;
+        }
+      }
+    }
+
+    if (offsetSlider) offsetSlider.addEventListener("input", calcMotor3);
+
+    // 4. MOTOR 04: AYLIK MONİTÖR & DELTA RİSK MOTORU HESAPLAMASI
+    const m4Slider = document.getElementById("m4-price-slider");
+    const m4PriceDisp = document.getElementById("m4-price-display");
+    const m4Vol = document.getElementById("m4-vol");
+    const m4Factor = document.getElementById("m4-factor");
+    const m4Revenue = document.getElementById("m4-revenue");
+
+    const m4AlarmCard = document.getElementById("m4-alarm-card");
+    const m4Badge = document.getElementById("m4-badge");
+    const m4PctChange = document.getElementById("m4-pct-change");
+    const m4AnnualDelta = document.getElementById("m4-annual-delta");
+    const m4Notice = document.getElementById("m4-notice-text");
+
+    const m4Weekly = document.getElementById("m4-weekly-delta");
+    const m4Monthly = document.getElementById("m4-monthly-delta");
+    const m4MarginDelta = document.getElementById("m4-margin-delta");
+    const m4Surcharge = document.getElementById("m4-surcharge");
+
+    function calcMotor4() {
+      const basePrice = 75.28;
+      const simPrice = parseFloat(m4Slider ? m4Slider.value : "95") || 95;
+      if (m4PriceDisp) m4PriceDisp.textContent = "€" + simPrice.toFixed(2) + " / tCO₂";
+
+      const vol = Math.max(1, parseFloat(m4Vol?.value) || 10000);
+      const factor = Math.max(0.1, parseFloat(m4Factor?.value) || 1.84);
+      const rev = Math.max(1, parseFloat(m4Revenue?.value) || 8500000);
+
+      const deltaPrice = simPrice - basePrice;
+      const deltaPricePct = (deltaPrice / basePrice) * 100;
+
+      const annualBaseCost = vol * factor * basePrice;
+      const annualSimCost = vol * factor * simPrice;
+      const annualDelta = annualSimCost - annualBaseCost;
+
+      const weeklyDelta = annualDelta / 52;
+      const monthlyDelta = annualDelta / 12;
+      const marginErosion = (annualDelta / rev) * 100;
+      const surcharge = factor * deltaPrice;
+
+      const sign = deltaPrice >= 0 ? "+" : "−";
+      const signPct = deltaPricePct >= 0 ? "+" : "";
+
+      if (m4AnnualDelta) m4AnnualDelta.textContent = (annualDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(annualDelta));
+      if (m4PctChange) m4PctChange.textContent = signPct + fmtPct.format(deltaPricePct) + "% Borsa Hareketi";
+      if (m4Weekly) m4Weekly.textContent = (weeklyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(weeklyDelta)) + " / hafta";
+      if (m4Monthly) m4Monthly.textContent = (monthlyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(monthlyDelta)) + " / ay";
+      if (m4MarginDelta) m4MarginDelta.textContent = (marginErosion >= 0 ? "−" : "+") + fmtPct.format(Math.abs(marginErosion)) + " Puan";
+      if (m4Surcharge) m4Surcharge.textContent = (surcharge >= 0 ? "+" : "−") + fmtEurDec.format(Math.abs(surcharge)) + "/t";
+
+      if (m4AlarmCard && m4Badge && m4Notice) {
+        if (annualDelta > 150000 || deltaPricePct > 20) {
+          m4AlarmCard.className = "delta-hero-card critical-alert";
+          m4Badge.textContent = "KRİTİK RİSK ALARMI: BÜTÇE EŞİĞİ AŞILDI";
+          m4Notice.textContent = `Fiyatın €${basePrice} seviyesinden €${simPrice.toFixed(2)}'ye yükselmesi, şirketin operasyonel brüt kârını yıllık ${fmtEur.format(annualDelta)} eritmektedir. Açık tekliflerinize derhal +${fmtEurDec.format(surcharge)}/t dinamik karbon zammı uygulayın!`;
+        } else if (annualDelta > 40000) {
+          m4AlarmCard.className = "delta-hero-card elevated-alert";
+          m4Badge.textContent = "DİKKAT: RİSK EŞİĞİ AŞILDI";
+          m4Notice.textContent = `Fiyat artışı maruziyet bütçenizi ${fmtEur.format(annualDelta)} artırdı. Haftalık nakit rezervinizi ${fmtEur.format(weeklyDelta)} yükseltmeniz önerilir.`;
+        } else {
+          m4AlarmCard.className = "delta-hero-card normal-alert";
+          m4Badge.textContent = "BÜTÇE TOLERANSI İÇİNDE";
+          m4Notice.textContent = `Kotasyon hareketi bütçe sapma limitleriniz dahilindedir. Ek aksiyon gerekmemektedir.`;
+        }
+      }
+    }
+
+    if (m4Slider) m4Slider.addEventListener("input", calcMotor4);
+    [m4Vol, m4Factor, m4Revenue].forEach(el => {
+      if (el) el.addEventListener("input", calcMotor4);
+    });
+
+    // İlk Çalıştırma
+    calcMotor2();
+    calcMotor3();
+    calcMotor4();
+  })();
+</script>
+
+<style>
+  .engines-console-section {
+    padding: 88px 0;
+    background: #080A0A;
+    border-top: 1px solid var(--border-medium);
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .console-header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 48px;
+  }
+
+  .console-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(80, 200, 120, 0.1);
+    border: 1px solid rgba(80, 200, 120, 0.25);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    color: #85E0A3;
+    margin-bottom: 18px;
+  }
+
+  .pulse-indicator {
+    width: 8px;
+    height: 8px;
+    background: #50C878;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(80, 200, 120, 0.8);
+    animation: pulse 2s infinite;
+  }
+
+  .console-title {
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.15;
+    font-weight: 750;
+    color: var(--text-primary);
+    margin: 0 0 16px;
+    letter-spacing: -0.03em;
+  }
+
+  .console-sub {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* Sekme Navigasyonu */
+  .engine-tabs-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tab-btn {
+    background: #0D1010;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 150ms ease;
+  }
+
+  .tab-btn:hover {
+    background: #121616;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(180deg, #171C1C 0%, #0E1212 100%);
+    border-color: rgba(201, 167, 97, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .tab-num {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .tab-btn.active .tab-num {
+    color: #E6C687;
+  }
+
+  .tab-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .tab-status-chip {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    font-weight: 750;
+    color: #85E0A3;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .tab-status-chip::before {
+    content: "●";
+    font-size: 8px;
+  }
+
+  /* Sekme Panelleri */
+  .engine-tab-pane {
+    display: none;
+  }
+
+  .engine-tab-pane.active {
+    display: block;
+    animation: fadeIn 200ms ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Panel Gridleri */
+  .pane-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 24px;
+  }
+
+  .pane-box {
+    background: #0C0F0F;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 30px;
+  }
+
+  .box-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+  }
+
+  .box-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 22px;
+  }
+
+  .inputs-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .field-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-item label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .field-item input,
+  .field-item select {
+    background: #040606;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+
+  .field-item input:focus,
+  .field-item select:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .two-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Rapor Kağıdı (Yazdırılabilir) */
+  .report-paper {
+    background: #070909;
+    border: 1px solid rgba(201, 167, 97, 0.3);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .report-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 14px;
+  }
+
+  .rep-tag {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+    font-weight: 750;
+  }
+
+  .rep-title {
+    font-size: 18px;
+    font-weight: 750;
+    color: var(--text-primary);
+    margin: 4px 0 2px;
+  }
+
+  .rep-date {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .rep-id-box {
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-soft);
+  }
+
+  .rep-kpi-summary {
+    background: linear-gradient(180deg, rgba(201, 167, 97, 0.08) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(201, 167, 97, 0.25);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .rep-lbl {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .rep-num-big {
+    font-size: clamp(32px, 3.8vw, 42px);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.03em;
+    display: block;
+    line-height: 1.1;
+  }
+
+  .rep-sub {
+    font-size: 12px;
+    color: #E6C687;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .rep-mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .rep-mini-table td {
+    padding: 10px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+  }
+
+  .rep-mini-table .right {
+    text-align: right;
+    font-weight: 650;
+    color: var(--text-primary);
+  }
+
+  .rep-action-tr {
+    background: rgba(201, 167, 97, 0.08);
+  }
+
+  .rep-action-tr td {
+    color: #E6C687;
+    font-weight: 700;
+  }
+
+  .danger-text {
+    color: #E08585 !important;
+  }
+
+  .highlight-num {
+    color: #E6C687 !important;
+    font-weight: 800 !important;
+  }
+
+  .rep-actions-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .btn-print {
+    background: #E6C687;
+    color: #060707;
+    font-weight: 750;
+  }
+
+  .btn-print:hover {
+    background: #F0D59E;
+  }
+
+  /* MOTOR 03 STILLERI */
+  .portfolio-console {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .scenario-slider-box {
+    background: #0C0F0F;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .s-eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+    font-weight: 750;
+  }
+
+  .slider-title {
+    font-size: 21px;
+    font-weight: 750;
+    color: var(--text-primary);
+    margin: 4px 0 6px;
+  }
+
+  .slider-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .slider-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .slider-control input[type="range"] {
+    width: 100%;
+    accent-color: #E6C687;
+    cursor: pointer;
+  }
+
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .contracts-table-card {
+    background: #0C0F0F;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .contracts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .contracts-table th {
+    background: #070909;
+    padding: 14px 18px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .contracts-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+  }
+
+  .danger-bold {
+    color: #E08585 !important;
+    font-weight: 800;
+  }
+
+  .contract-badge {
+    font-size: 10.5px;
+    font-weight: 750;
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-safe {
+    background: rgba(80, 200, 120, 0.12);
+    color: #85E0A3;
+    border: 1px solid rgba(80, 200, 120, 0.3);
+  }
+
+  .badge-warn {
+    background: rgba(201, 167, 97, 0.12);
+    color: #E6C687;
+    border: 1px solid rgba(201, 167, 97, 0.3);
+  }
+
+  .badge-danger {
+    background: rgba(199, 110, 110, 0.15);
+    color: #E08585;
+    border: 1px solid rgba(199, 110, 110, 0.35);
+  }
+
+  .action-rec {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .portfolio-summary-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #070909;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-soft);
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .p-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .p-lbl {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .p-val {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .p-val.danger {
+    color: #E08585;
+  }
+
+  .p-takeaway-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    max-width: 480px;
+  }
+
+  /* MOTOR 04 STILLERI */
+  .monitor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 24px;
+  }
+
+  .interactive-slider-group {
+    background: #060808;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .slider-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .slider-live-num {
+    font-size: 20px;
+    font-weight: 800;
+    color: #E6C687;
+  }
+
+  .interactive-slider-group input[type="range"] {
+    width: 100%;
+    accent-color: #E6C687;
+    cursor: pointer;
+  }
+
+  .slider-limits {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .monitor-inputs-inline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .delta-hero-card {
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border-soft);
+    transition: all 200ms ease;
+  }
+
+  .delta-hero-card.critical-alert {
+    background: linear-gradient(180deg, rgba(199, 110, 110, 0.15) 0%, rgba(199, 110, 110, 0.03) 100%);
+    border-color: rgba(199, 110, 110, 0.5);
+    box-shadow: 0 0 30px rgba(199, 110, 110, 0.15);
+  }
+
+  .delta-hero-card.elevated-alert {
+    background: linear-gradient(180deg, rgba(201, 167, 97, 0.12) 0%, rgba(201, 167, 97, 0.03) 100%);
+    border-color: rgba(201, 167, 97, 0.4);
+  }
+
+  .delta-hero-card.normal-alert {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--border-soft);
+  }
+
+  .delta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .delta-badge {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #E08585;
+  }
+
+  .delta-pct {
+    font-size: 12px;
+    font-weight: 750;
+    color: var(--text-primary);
+  }
+
+  .d-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .d-value {
+    font-size: clamp(34px, 4vw, 44px);
+    font-weight: 850;
+    color: #FFFFFF;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .delta-notice {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 12px 0 0;
+    line-height: 1.5;
+  }
+
+  .delta-sub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .delta-sub-box {
+    background: #080A0A;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .delta-sub-box.highlight-box {
+    border-color: rgba(201, 167, 97, 0.35);
+    background: rgba(201, 167, 97, 0.04);
+  }
+
+  .sub-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .sub-val {
+    font-size: 18px;
+    font-weight: 750;
+    color: var(--text-primary);
+  }
+
+  .gold-text {
+    color: #E6C687 !important;
+  }
+
+  .delta-sub-box small {
+    font-size: 10.5px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 960px) {
+    .engine-tabs-nav {
+      grid-template-columns: 1fr;
+    }
+    .pane-grid-2,
+    .monitor-grid {
+      grid-template-columns: 1fr;
+    }
+    .portfolio-summary-bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #printable-report, #printable-report * {
+      visibility: visible;
+    }
+    #printable-report {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background: white !important;
+      color: black !important;
+      border: 1px solid #ccc !important;
+    }
+    .rep-actions-bar {
+      display: none !important;
+    }
+  }
+</style>
