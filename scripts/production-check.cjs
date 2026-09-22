@@ -101,7 +101,6 @@ for (const relative of htmlFiles) {
     const labelRe = new RegExp("<label[^>]+for=[\\\"']" + escapedId + "[\\\"'][^>]*>", "i");
     if (!labelRe.test(html)) fail(relative + " contains input #" + idMatch[1] + " without an associated label");
   }
-  }
 }
 
 const indexHtml = fs.readFileSync(path.join(dist, "index.html"), "utf8");
