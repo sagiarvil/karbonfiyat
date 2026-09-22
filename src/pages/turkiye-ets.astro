@@ -1,72 +1,70 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Türkiye ETS | Karbon Fiyatı, Pilot Dönem ve Sanayi Etkisi",
-  description: "Türkiye Emisyon Ticaret Sistemi hazırlık süreci, pilot dönem, tahsisat modeli ve CBAM mahsup olanakları.",
-  url: "https://karbonfiyat.com/turkiye-ets"
-};
+import ScenarioPanel from "../components/ScenarioPanel.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import { seoPages } from "../data/seo";
 ---
 <Layout
-  title="Türkiye ETS | Karbon Fiyatı, Pilot Dönem ve Şirket Etkisi | KarbonFiyat"
-  description="Türkiye Emisyon Ticaret Sistemi için fiyat oluşumu, pilot dönem, tesis etkisi ve CBAM ile birlikte finansal maruziyetin nasıl hesaplanacağını görün."
-  canonical="/turkiye-ets"
-  schema={schema}
+  title={seoPages.turkiyeEts.title}
+  description={seoPages.turkiyeEts.description}
+  canonical={seoPages.turkiyeEts.canonical}
 >
   <section class="container subhero">
-    <span class="eyebrow">Türkiye Emisyon Ticaret Sistemi</span>
-    <h1 class="section-title">Türkiye ETS fiyatı oluşmadan spekülatif fiyat üretmeyiz.</h1>
+    <span class="eyebrow">TÜRKİYE ETS</span>
+    <h1 class="section-title">Türkiye ETS fiyatı oluşmadan şirket bütçenizi hazırlayın.</h1>
     <p class="lead">
-      Resmî piyasa fiyatı ile şirketlerin iç bütçe senaryolarını birbirinden ayırmak finansal dürüstlük gereğidir.
-      Sistem, TR ETS mevzuat parametrelerini yürürlük tarihleriyle versiyonlayacak şekilde inşa edilmiştir.
+      Resmî piyasa fiyatı oluşana kadar kullanıcı senaryoları ile karbon maliyetinizi, marj etkisini ve bütçe riskini modelleyin.
     </p>
   </section>
 
-  <section class="container matrix-section">
+  <section class="container status-section">
     <div class="matrix card">
       <div class="matrix-cell">
-        <span class="matrix-label">Mevcut Durum</span>
-        <strong class="matrix-value">Pilot Hazırlık</strong>
-        <small class="matrix-sub">İklim Kanunu taslağı ve tebliğ</small>
+        <span class="matrix-label">Durum</span>
+        <strong class="matrix-val">Pilot</strong>
       </div>
       <div class="matrix-cell">
-        <span class="matrix-label">Piyasa Fiyatı</span>
-        <strong class="matrix-value">Henüz Oluşmadı</strong>
-        <small class="matrix-sub">Borsa İstanbul / EPİAŞ altyapısı</small>
+        <span class="matrix-label">Resmî Fiyat</span>
+        <strong class="matrix-val">Henüz Oluşmadı</strong>
       </div>
       <div class="matrix-cell">
-        <span class="matrix-label">Kapsam Mimarisi</span>
-        <strong class="matrix-value">Cap &amp; Trade</strong>
-        <small class="matrix-sub">Tesis üst sınırı ve tahsisat</small>
+        <span class="matrix-label">Model</span>
+        <strong class="matrix-val">Cap + Tahsisat + Teslim</strong>
       </div>
       <div class="matrix-cell">
-        <span class="matrix-label">CBAM Etkisi</span>
-        <strong class="matrix-value">Potansiyel Mahsup</strong>
-        <small class="matrix-sub">Madde 9 uyarınca indirim</small>
+        <span class="matrix-label">Finansal Kullanım</span>
+        <strong class="matrix-val">Senaryo / Bütçe</strong>
       </div>
     </div>
   </section>
 
-  <section class="container info-grid">
-    <article class="card info-card">
-      <span class="chip">MEVZUAT ÇERÇEVESİ</span>
-      <h2>Tesis Düzeyinde Doğrulama</h2>
-      <p>
-        Türkiye\x27de Seragazı Emisyonlarının Takibi Hakkında Yönetmelik kapsamında MRV (İzleme, Raporlama, Doğrulama)
-        yapan tesisler için başlangıç katsayıları doğrudan izlenir.
-      </p>
-    </article>
-    <article class="card info-card">
-      <span class="chip">FİNANSAL YÖNETİM</span>
-      <h2>CBAM Mahsup Mekanizması</h2>
-      <p>
-        Türkiye ETS kapsamında fiilen ödenen karbon fiyatı, AB ithalatçısı tarafından CBAM beyanında indirim kalemi olarak
-        gösterilebilecektir. Bu ilişki kurallı marj modelinde simüle edilir.
-      </p>
-    </article>
+  <div class="container">
+    <ScenarioPanel />
+  </div>
+
+  <section class="container info-section">
+    <div class="info-grid">
+      <article class="card info-card">
+        <span class="eyebrow">Yasal Altyapı</span>
+        <h3>İklim Kanunu ve Tahsisat</h3>
+        <p>
+          Türkiye ETS\x27nin ilk uygulama fazında enerji yoğun sektörlere kademeli ücretsiz tahsisat verilmesi ve pilot denemelerin yapılması planlanmaktadır.
+        </p>
+      </article>
+      <article class="card info-card">
+        <span class="eyebrow">CBAM İlişkisi</span>
+        <h3>Madde 9 Mahsup Potansiyeli</h3>
+        <p>
+          Türkiye\x27de tesis düzeyinde ödenen karbon bedelleri, AB CBAM beyanlarında uygun mahsup indirimi olarak talep edilebilecektir.
+        </p>
+      </article>
+    </div>
   </section>
+
+  <ExpertCTA
+    headline="TR ETS hazırlığınızı uzmanlarla tamamlayın."
+    subtext="Tesisinizin seragazı izleme raporlarını, tahsisat senaryolarını ve bütçe simülasyonlarını şirketiniz için kesinleştirin."
+  />
 </Layout>
 
 <style>
@@ -75,21 +73,24 @@ const schema = {
   }
   .subhero h1 {
     margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
   }
-  .matrix-section {
-    margin-top: 16px;
+  .status-section {
+    margin-top: 12px;
   }
   .matrix {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    padding: 8px;
+    padding: 10px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
   }
   .matrix-cell {
     padding: 24px 20px;
     border-right: 1px solid var(--border-soft);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
   .matrix-cell:last-child {
     border-right: 0;
@@ -100,31 +101,26 @@ const schema = {
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  .matrix-value {
+  .matrix-val {
     font-size: 20px;
     color: var(--text-primary);
     letter-spacing: -0.02em;
   }
-  .matrix-sub {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
 
+  .info-section {
+    margin-top: 56px;
+  }
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-top: 36px;
   }
   .info-card {
-    padding: 32px;
+    padding: 36px;
   }
-  .info-card .chip {
-    margin-bottom: 16px;
-  }
-  .info-card h2 {
+  .info-card h3 {
     font-size: 22px;
-    margin-bottom: 12px;
+    margin: 14px 0 10px;
     color: var(--text-primary);
   }
   .info-card p {
@@ -135,7 +131,7 @@ const schema = {
   }
 
   @media (max-width: 860px) {
-    .subhero { padding-top: 64px; }
+    .subhero { padding-top: 56px; }
     .matrix { grid-template-columns: 1fr 1fr; }
     .matrix-cell:nth-child(2) { border-right: 0; }
     .matrix-cell:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }

@@ -1,0 +1,225 @@
+---
+---
+<section class="tr-ets-scenario card" id="senaryo">
+  <div class="scenario-copy">
+    <span class="eyebrow">Simülasyon Motoru</span>
+    <h3>TR ETS Senaryosu</h3>
+    <p class="scenario-desc">
+      Türkiye ETS kapsamında tesis düzeyinde beklenen emisyon, varsayımsal karbon fiyatı ve ücretsiz tahsisat oranına göre bütçe riskinizi modelleyin.
+    </p>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-inputs">
+      <label class="s-group">
+        <span class="s-label">Karbon fiyatı senaryosu</span>
+        <div class="s-wrap">
+          <input id="tr-price" type="number" min="0" step="10" value="850" />
+          <span class="s-unit">₺ / tCO₂e</span>
+        </div>
+      </label>
+
+      <label class="s-group">
+        <span class="s-label">Yıllık tesis emisyonu</span>
+        <div class="s-wrap">
+          <input id="tr-emission" type="number" min="0" step="1000" value="50000" />
+          <span class="s-unit">tCO₂e</span>
+        </div>
+      </label>
+
+      <label class="s-group">
+        <span class="s-label">Ücretsiz tahsisat oranı</span>
+        <div class="s-wrap">
+          <input id="tr-allowance" type="number" min="0" max="100" step="5" value="60" />
+          <span class="s-unit">%</span>
+        </div>
+      </label>
+
+      <label class="s-group">
+        <span class="s-label">Yıllık üretim miktarı</span>
+        <div class="s-wrap">
+          <input id="tr-volume" type="number" min="0" step="1000" value="70000" />
+          <span class="s-unit">ton</span>
+        </div>
+      </label>
+    </div>
+
+    <div class="scenario-outputs">
+      <div class="output-item hero-out">
+        <span class="out-label">Net yıllık karbon maliyeti</span>
+        <strong class="out-val" id="tr-net-cost">₺17.000.000</strong>
+        <small class="out-sub mono">Tahsisat düşüldükten sonra</small>
+      </div>
+      <div class="output-subgrid">
+        <div class="output-item">
+          <span class="out-label">Ürün tonu başına maliyet</span>
+          <strong class="out-val-sm" id="tr-per-ton">₺242,86</strong>
+        </div>
+        <div class="output-item">
+          <span class="out-label">Yükümlü emisyon payı</span>
+          <strong class="out-val-sm" id="tr-exposed-ton">20.000 tCO₂e</strong>
+        </div>
+      </div>
+      <a class="btn btn-primary full-w" href="https://degerlet.com" rel="noopener" target="_blank">
+        TR ETS senaryosu oluştur
+      </a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    const pEl = document.getElementById("tr-price");
+    const eEl = document.getElementById("tr-emission");
+    const aEl = document.getElementById("tr-allowance");
+    const vEl = document.getElementById("tr-volume");
+
+    const netEl = document.getElementById("tr-net-cost");
+    const perTonEl = document.getElementById("tr-per-ton");
+    const expTonEl = document.getElementById("tr-exposed-ton");
+
+    const fmtTL = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 });
+    const fmtTL2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtNum = new Intl.NumberFormat("tr-TR");
+
+    function calc() {
+      const price = Math.max(0, parseFloat(pEl?.value) || 0);
+      const emission = Math.max(0, parseFloat(eEl?.value) || 0);
+      const allowanceRate = Math.max(0, Math.min(100, parseFloat(aEl?.value) || 0)) / 100;
+      const volume = Math.max(1, parseFloat(vEl?.value) || 1);
+
+      const exposedEmission = emission * (1 - allowanceRate);
+      const netCost = exposedEmission * price;
+      const perTon = netCost / volume;
+
+      if (netEl) netEl.textContent = fmtTL.format(netCost);
+      if (perTonEl) perTonEl.textContent = fmtTL2.format(perTon);
+      if (expTonEl) expTonEl.textContent = fmtNum.format(Math.round(exposedEmission)) + " tCO₂e";
+    }
+
+    [pEl, eEl, aEl, vEl].forEach(function(i) {
+      if (i) {
+        i.addEventListener("input", calc);
+        i.addEventListener("change", calc);
+      }
+    });
+    calc();
+  })();
+</script>
+
+<style>
+  .tr-ets-scenario {
+    padding: 36px;
+    margin-top: 36px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+  }
+  .scenario-copy h3 {
+    font-size: 26px;
+    margin: 12px 0 8px;
+    color: var(--text-primary);
+  }
+  .scenario-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0 0 28px;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 36px;
+  }
+  .scenario-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .s-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .s-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 550;
+  }
+  .s-wrap {
+    display: flex;
+    align-items: center;
+    background: #060707;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .s-wrap input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    color: var(--text-primary);
+    padding: 11px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+  }
+  .s-unit {
+    padding: 0 12px;
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .scenario-outputs {
+    background: #0B0E0E;
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  .output-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-out {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .out-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .out-val {
+    font-size: 32px;
+    font-weight: 750;
+    color: var(--text-primary);
+    letter-spacing: -0.04em;
+  }
+  .out-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .output-subgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .out-val-sm {
+    font-size: 17px;
+    color: var(--text-secondary);
+    font-weight: 650;
+  }
+  .full-w {
+    width: 100%;
+  }
+
+  @media (max-width: 860px) {
+    .scenario-grid { grid-template-columns: 1fr; }
+    .scenario-inputs { grid-template-columns: 1fr; }
+  }
+</style>

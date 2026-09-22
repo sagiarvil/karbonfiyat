@@ -1,35 +1,27 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Calculator from "../components/Calculator.astro";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "Karbon Maliyet Hesaplama Aracı",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "All",
-  description: "İhracat miktarı, gömülü emisyon, karbon kotasyonu ve ürün maliyeti parametreleriyle brüt maruziyet ve fiyat revizyon ihtiyacını hesaplayın.",
-  url: "https://karbonfiyat.com/karbon-maliyet-hesaplama"
-};
+import CarbonCalculator from "../components/CarbonCalculator.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import { seoPages } from "../data/seo";
 ---
 <Layout
-  title="Karbon Maliyet Hesaplama | CBAM Finansal Etki"
-  description="İhracat miktarı, gömülü emisyon ve karbon fiyatını girerek şirketinizin brüt karbon maruziyetini ve ürün tonu başına karbon maliyetini hesaplayın."
-  canonical="/karbon-maliyet-hesaplama"
-  schema={schema}
+  title={seoPages.karbonMaliyetHesaplama.title}
+  description={seoPages.karbonMaliyetHesaplama.description}
+  canonical={seoPages.karbonMaliyetHesaplama.canonical}
 >
   <section class="container subhero">
-    <span class="eyebrow">Finansal Simülasyon</span>
-    <h1 class="section-title">Karbon maliyetinizi ve marj erimesini 30 saniyede görün.</h1>
+    <span class="eyebrow">DETERMİNİSTİK KARAR MOTORU</span>
+    <h1 class="section-title">Karbon Maliyet Hesaplama</h1>
     <p class="lead">
-      Bu kurallı hesaplama brüt finansal maruziyetinizi ve başabaş satış fiyatı ihtiyacınızı netleştirir.
-      İhracat verileriniz sunuculara iletilmez, tüm hesaplama doğrudan tarayıcınızda icra edilir.
+      İhracat, emisyon ve karbon fiyatı verileriyle şirketinizin karbon maliyetini, marj etkisini ve gerekli satış fiyatını hesaplayın.
     </p>
   </section>
 
-  <section class="container">
-    <Calculator />
-  </section>
+  <div class="container">
+    <CarbonCalculator />
+  </div>
+
+  <ExpertCTA />
 </Layout>
 
 <style>
@@ -38,8 +30,9 @@ const schema = {
   }
   .subhero h1 {
     margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
   }
   @media (max-width: 860px) {
-    .subhero { padding-top: 64px; }
+    .subhero { padding-top: 56px; }
   }
 </style>

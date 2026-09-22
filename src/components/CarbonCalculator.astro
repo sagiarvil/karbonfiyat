@@ -1,0 +1,265 @@
+---
+import FinancialResult from "./FinancialResult.astro";
+
+interface Props {
+  defaultVolume?: number;
+  defaultEmission?: number;
+  defaultPrice?: number;
+  defaultSales?: number;
+  defaultCost?: number;
+}
+const {
+  defaultVolume = 10000,
+  defaultEmission = 1.84,
+  defaultPrice = 75.28,
+  defaultSales = 850,
+  defaultCost = 606
+} = Astro.props;
+---
+<section class="calculator-wrap" id="hesapla">
+  <div class="calculator-card card">
+    <div class="calculator-left">
+      <span class="eyebrow">CARBON P&L</span>
+      <h2 class="calc-headline">Karbon maliyetinizi<br/>30 saniyede görün.</h2>
+      <p class="calc-sub">
+        İhracat miktarı, gömülü emisyon ve karbon fiyatını girin.
+        Sistem ilk finansal maruziyetinizi deterministik olarak hesaplar.
+      </p>
+
+      <form class="calc-form-fields" onsubmit="return false;">
+        <div class="fields-grid">
+          <label class="field-item">
+            <span class="f-label">AB ihracatı</span>
+            <div class="f-wrap">
+              <input id="in-volume" type="number" min="0" step="100" value={defaultVolume} />
+              <span class="f-unit">ton</span>
+            </div>
+          </label>
+
+          <label class="field-item">
+            <span class="f-label">Gömülü emisyon</span>
+            <div class="f-wrap">
+              <input id="in-emission" type="number" min="0" step="0.01" value={defaultEmission} />
+              <span class="f-unit">tCO₂e / ton</span>
+            </div>
+          </label>
+
+          <label class="field-item">
+            <span class="f-label">Karbon fiyatı</span>
+            <div class="f-wrap">
+              <input id="in-price" type="number" min="0" step="0.01" value={defaultPrice} />
+              <span class="f-unit">€ / tCO₂e</span>
+            </div>
+          </label>
+
+          <label class="field-item">
+            <span class="f-label">Satış fiyatı</span>
+            <div class="f-wrap">
+              <input id="in-sales" type="number" min="0" step="1" value={defaultSales} />
+              <span class="f-unit">€ / ton</span>
+            </div>
+          </label>
+
+          <label class="field-item full-row">
+            <span class="f-label">Ürün maliyeti</span>
+            <div class="f-wrap">
+              <input id="in-cost" type="number" min="0" step="1" value={defaultCost} />
+              <span class="f-unit">€ / ton</span>
+            </div>
+          </label>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-calc" id="btn-trigger-calc">
+          Finansal etkiyi hesapla
+        </button>
+
+        <p class="form-trust-note mono">
+          Tarayıcı içinde hesaplanır. Bu hızlı analizde veri sunucuya gönderilmez.
+        </p>
+      </form>
+    </div>
+
+    <div class="calculator-right">
+      <FinancialResult />
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    const vEl = document.getElementById("in-volume");
+    const eEl = document.getElementById("in-emission");
+    const pEl = document.getElementById("in-price");
+    const sEl = document.getElementById("in-sales");
+    const cEl = document.getElementById("in-cost");
+    const btn = document.getElementById("btn-trigger-calc");
+
+    const expEl = document.getElementById("kpi-exposure");
+    const perTonEl = document.getElementById("kpi-per-ton");
+    const curMarginEl = document.getElementById("kpi-current-margin");
+    const adjMarginEl = document.getElementById("kpi-adjusted-margin");
+    const deltaEl = document.getElementById("kpi-margin-delta");
+    const reqPriceEl = document.getElementById("kpi-required-price");
+    const reqRevEl = document.getElementById("kpi-required-revision");
+
+    const fmtEur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const fmtEur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtPct1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    function compute() {
+      const v = Math.max(0, parseFloat(vEl?.value) || 0);
+      const e = Math.max(0, parseFloat(eEl?.value) || 0);
+      const p = Math.max(0, parseFloat(pEl?.value) || 0);
+      const s = Math.max(0, parseFloat(sEl?.value) || 0);
+      const c = Math.max(0, parseFloat(cEl?.value) || 0);
+
+      const totalExposure = v * e * p;
+      const carbonPerTon = e * p;
+
+      const currentMargin = s > 0 ? ((s - c) / s) * 100 : 0;
+      const totalCostWithCarbon = c + carbonPerTon;
+      const adjustedMargin = s > 0 ? ((s - totalCostWithCarbon) / s) * 100 : 0;
+      const marginDelta = currentMargin - adjustedMargin;
+
+      const requiredPrice = s + carbonPerTon;
+      const requiredRevision = s > 0 ? (carbonPerTon / s) * 100 : 0;
+
+      if (expEl) expEl.textContent = fmtEur0.format(totalExposure);
+      if (perTonEl) perTonEl.textContent = fmtEur2.format(carbonPerTon);
+      if (curMarginEl) curMarginEl.textContent = "%" + fmtPct1.format(currentMargin);
+
+      if (adjMarginEl) {
+        adjMarginEl.textContent = "%" + fmtPct1.format(adjustedMargin);
+        if (adjustedMargin < 0) {
+          adjMarginEl.classList.add("danger-num");
+        } else {
+          adjMarginEl.classList.remove("danger-num");
+        }
+      }
+
+      if (deltaEl) deltaEl.textContent = "−" + fmtPct1.format(marginDelta) + " puan";
+      if (reqPriceEl) reqPriceEl.textContent = "€" + Math.round(requiredPrice) + "/t";
+      if (reqRevEl) {
+        const sign = requiredRevision >= 0 ? "+" : "";
+        reqRevEl.textContent = sign + "%" + fmtPct1.format(requiredRevision);
+      }
+    }
+
+    [vEl, eEl, pEl, sEl, cEl].forEach(function(input) {
+      if (input) {
+        input.addEventListener("input", compute);
+        input.addEventListener("change", compute);
+      }
+    });
+    if (btn) btn.addEventListener("click", compute);
+
+    compute();
+  })();
+</script>
+
+<style>
+  .calculator-wrap {
+    margin-top: 56px;
+  }
+  .calculator-card {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 44px;
+    padding: 44px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+  }
+  .calc-headline {
+    font-size: clamp(30px, 3.6vw, 42px);
+    line-height: 1.08;
+    margin: 16px 0 12px;
+    color: var(--text-primary);
+  }
+  .calc-sub {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 28px;
+    max-width: 520px;
+  }
+  .calc-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .field-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field-item.full-row {
+    grid-column: span 2;
+  }
+  .f-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 550;
+  }
+  .f-wrap {
+    display: flex;
+    align-items: center;
+    background: #060707;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .f-wrap:focus-within {
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+    outline: none;
+  }
+  .f-wrap input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    color: var(--text-primary);
+    padding: 12px 14px;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+  }
+  .f-unit {
+    padding: 0 14px;
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .btn-calc {
+    width: 100%;
+    margin-top: 4px;
+  }
+  .form-trust-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 940px) {
+    .calculator-card {
+      grid-template-columns: 1fr;
+      padding: 28px;
+      gap: 32px;
+    }
+  }
+  @media (max-width: 580px) {
+    .fields-grid {
+      grid-template-columns: 1fr;
+    }
+    .field-item.full-row {
+      grid-column: span 1;
+    }
+  }
+</style>

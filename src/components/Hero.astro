@@ -1,0 +1,65 @@
+---
+import TrustStrip from "./TrustStrip.astro";
+---
+<section class="hero grid-overlay">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <div class="tag">
+        <span class="tag-dot" aria-hidden="true"></span>
+        <span>CARBON FINANCIAL INTELLIGENCE</span>
+      </div>
+      <h1 class="display">
+        <span class="hero-line-1">Karbon kaç Euro değil.</span>
+        <span class="hero-line-2">Size kaç Euro?</span>
+      </h1>
+      <p class="lead">
+        CBAM, EU ETS ve Türkiye ETS etkisini ürün maliyetine,
+        müşteri kârlılığına, marja ve satış fiyatına çevirin.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Karbon maliyetimi hesapla</a>
+        <a class="btn btn-secondary" href="#neden">Nasıl çalışır?</a>
+      </div>
+      <TrustStrip />
+    </div>
+
+    <slot name="after-copy" />
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 80px 0 36px;
+    overflow: hidden;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-copy {
+    max-width: 1040px;
+  }
+  .hero h1 {
+    margin: 24px 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-line-1 {
+    color: var(--text-primary);
+    font-weight: 750;
+  }
+  .hero-line-2 {
+    color: var(--text-secondary);
+    font-weight: 500;
+    opacity: 0.82;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  @media (max-width: 860px) {
+    .hero { padding-top: 56px; }
+  }
+</style>

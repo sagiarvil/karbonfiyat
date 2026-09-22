@@ -1,0 +1,175 @@
+---
+---
+<div class="financial-result-container">
+  <div class="result-header">
+    <span class="eyebrow">Hesaplama Çıktısı</span>
+    <h3 class="result-title">Finansal Sonuç</h3>
+  </div>
+
+  <div class="kpi-hero-box">
+    <span class="kpi-label">Toplam Karbon Maruziyeti</span>
+    <strong class="kpi-hero-value" id="kpi-exposure">€1.385.152</strong>
+    <span class="kpi-sub mono">Yıllık tahmini brüt yükümlülük</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <span class="kpi-name">Ton Başına Karbon Maliyeti</span>
+      <strong class="kpi-num" id="kpi-per-ton">€138,52</strong>
+    </div>
+
+    <div class="kpi-item">
+      <span class="kpi-name">Mevcut Brüt Marj</span>
+      <strong class="kpi-num" id="kpi-current-margin">%28,7</strong>
+    </div>
+
+    <div class="kpi-item">
+      <span class="kpi-name">Karbon Sonrası Brüt Marj</span>
+      <strong class="kpi-num" id="kpi-adjusted-margin">%12,4</strong>
+    </div>
+
+    <div class="kpi-item">
+      <span class="kpi-name">Marj Kaybı</span>
+      <strong class="kpi-num warning-num" id="kpi-margin-delta">−16,3 puan</strong>
+    </div>
+
+    <div class="kpi-item">
+      <span class="kpi-name">Marjı Koruyan Min. Satış Fiyatı</span>
+      <strong class="kpi-num" id="kpi-required-price">€989/t</strong>
+    </div>
+
+    <div class="kpi-item">
+      <span class="kpi-name">Gerekli Fiyat Revizyonu</span>
+      <strong class="kpi-num" id="kpi-required-revision">+%16,3</strong>
+    </div>
+  </div>
+
+  <div class="action-box">
+    <div class="action-notice">
+      <strong>Bu hesap hızlı finansal ön analizdir.</strong>
+      <p>
+        Ücretsiz tahsisat, doğrulama, mahsup, ürün bazlı mevzuat ve müşteri kırılımı detaylı analizde ayrıca uygulanır.
+      </p>
+    </div>
+    <div class="action-buttons">
+      <a class="btn btn-primary" href="https://degerlet.com" rel="noopener" target="_blank">
+        Şirket analizi oluştur
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .financial-result-container {
+    background: #0B0E0E;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .result-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .result-title {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin: 4px 0 0;
+  }
+  .kpi-hero-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .kpi-hero-value {
+    font-size: clamp(30px, 4.2vw, 38px);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .kpi-item {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kpi-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .kpi-num {
+    font-size: 17px;
+    font-weight: 650;
+    color: var(--text-secondary);
+    letter-spacing: -0.02em;
+  }
+  .kpi-num.warning-num {
+    color: var(--state-warning);
+  }
+  .kpi-num.danger-num {
+    color: var(--state-danger);
+  }
+
+  .action-box {
+    border-top: 1px solid var(--border-soft);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .action-notice strong {
+    display: block;
+    font-size: 12px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .action-notice p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .action-buttons .btn {
+    width: 100%;
+  }
+
+  @media (max-width: 580px) {
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,12 +1,7 @@
 ---
+import { navLinks } from "../data/navigation";
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
-const navItems = [
-  { label: "Karbon Fiyatı", href: "/karbon-fiyati" },
-  { label: "CBAM", href: "/cbam-fiyati" },
-  { label: "Türkiye ETS", href: "/turkiye-ets" },
-  { label: "Hesapla", href: "/karbon-maliyet-hesaplama" },
-  { label: "Metodoloji", href: "/metodoloji" }
-];
+const navItems = navLinks;
 ---
 <header class="site-header">
   <div class="container header-inner">

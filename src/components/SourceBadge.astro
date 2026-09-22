@@ -1,0 +1,10 @@
+---
+interface Props {
+  badge: string;
+  status?: "official" | "market" | "pilot" | "scenario";
+}
+const { badge, status = "official" } = Astro.props;
+---
+<span class:list={["chip", status === "pilot" && "warning"]}>
+  {badge}
+</span>

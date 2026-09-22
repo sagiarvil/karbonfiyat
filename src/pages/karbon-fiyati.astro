@@ -1,107 +1,110 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PriceStrip from "../components/PriceStrip.astro";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Karbon Fiyatı 2026 | CBAM, EU ETS ve Türkiye ETS",
-  description: "CBAM resmî fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS durumunu kaynak ve dönem bilgisiyle tek ekranda izleyin.",
-  url: "https://karbonfiyat.com/karbon-fiyati"
-};
+import MarketPriceCard from "../components/MarketPriceCard.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import { marketPrices } from "../data/market-prices";
+import { seoPages } from "../data/seo";
 ---
 <Layout
-  title="Karbon Fiyatı 2026 | CBAM, EU ETS ve Türkiye ETS | KarbonFiyat"
-  description="Karbon fiyatını tek ekranda izleyin. CBAM resmî fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS durumunu kaynak ve dönem bilgisiyle görün."
-  canonical="/karbon-fiyati"
-  schema={schema}
+  title={seoPages.karbonFiyati.title}
+  description={seoPages.karbonFiyati.description}
+  canonical={seoPages.karbonFiyati.canonical}
 >
   <section class="container subhero">
-    <span class="eyebrow">Piyasa Ekranı</span>
-    <h1 class="section-title">Karbon fiyatı: tek sayı değil, üç farklı piyasa gerçeği.</h1>
+    <span class="eyebrow">PİYASA VE REGÜLASYON İZLEME</span>
+    <h1 class="section-title">Karbon fiyatı tek bir sayı değildir.</h1>
     <p class="lead">
-      CBAM sertifika bedeli, EU ETS serbest piyasa kotasyonu ve Türkiye ETS hazırlık dönemi aynı kavramlar değildir.
-      KarbonFiyat bu verileri kaynak, dönem ve hukuki statü etiketiyle ayrı katmanlarda tutar.
+      CBAM sertifika fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS fiyatı farklı mekanizmalardır.
+      Finansal modelleme yaparken spekülatif piyasa feed\x27leri ile yasal bağlayıcılığı olan resmî katsayılar birbirinden ayrılmalıdır.
     </p>
-    <PriceStrip />
   </section>
 
-  <section class="container content-grid">
-    <article class="card detail-card">
-      <span class="chip">RESMÎ VERİ</span>
-      <h2>Resmî CBAM Fiyatı</h2>
-      <p>
-        CBAM sertifika fiyatı, Avrupa Komisyonu tarafından çeyreklik açık artırmalar baz alınarak yayımlanan resmî fiyattır.
-        Finansal hesaplamada kesinleşmiş dönem etiketiyle işleme alınır.
-      </p>
-      <div class="card-meta mono">Kaynak: Avrupa Komisyonu Veri Tabanı</div>
-    </article>
-
-    <article class="card detail-card">
-      <span class="chip">PİYASA VERİSİ</span>
-      <h2>EU ETS Piyasa Kotasyonu</h2>
-      <p>
-        EU ETS fiyatı Avrupa Enerji Borsası\x27nda işlem gören serbest piyasa enstrümanıdır.
-        Lisanslı veri beslemesi ile spot ve vadeli kontratlar şirket bütçelemesinde referans alınır.
-      </p>
-      <div class="card-meta mono">Kaynak: Lisanslı Borsa Feed\x27i</div>
-    </article>
-
-    <article class="card detail-card">
-      <span class="chip">PİLOT DÖNEM</span>
-      <h2>Türkiye ETS</h2>
-      <p>
-        Türkiye ETS fiyatı piyasada fiilen işlemler başlamadan yapay olarak türetilmez.
-        Yasal altyapı olgunlaşana kadar analizlerde yalnız stres testi senaryoları kullanılır.
-      </p>
-      <div class="card-meta mono">Kaynak: İklim Değişikliği Başkanlığı Çerçevesi</div>
-    </article>
+  <section class="container prices-grid-section">
+    <div class="market-cards-grid">
+      {marketPrices.map(card => (
+        <MarketPriceCard card={card} />
+      ))}
+    </div>
   </section>
+
+  <section class="container comparison-section">
+    <div class="card compare-card">
+      <span class="eyebrow">Mekanizma Karşılaştırması</span>
+      <h2>Üç Rejimin Finansal Anlamı</h2>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <strong class="compare-name">CBAM</strong>
+          <span class="chip">RESMÎ DÖNEM FİYATI</span>
+          <p>AB ithalatçısı tarafından ödenen, çeyreklik resmî açık artırma ağırlıklı ortalamasıyla kesinleşen yasal sertifika bedelidir.</p>
+        </div>
+        <div class="compare-col">
+          <strong class="compare-name">EU ETS</strong>
+          <span class="chip">PİYASA FİYATI</span>
+          <p>Avrupa Enerji Borsası\x27nda arz-talep dengesine göre anlık değişen, spot ve vadeli enstrümanları içeren piyasa kotasyonudur.</p>
+        </div>
+        <div class="compare-col">
+          <strong class="compare-name">TÜRKİYE ETS</strong>
+          <span class="chip warning">ULUSAL PİYASA / HENÜZ OLUŞMADI</span>
+          <p>Türkiye İklim Değişikliği Başkanlığı gözetiminde pilot aşamasında olan; henüz borsa fiyatı oluşmamış ulusal mekanizmadır.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ExpertCTA />
 </Layout>
 
 <style>
   .subhero {
-    padding: 88px 0 36px;
+    padding: 88px 0 32px;
   }
   .subhero h1 {
     margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
   }
-  .content-grid {
+  .market-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    padding-top: 24px;
+    margin-top: 16px;
   }
-  .detail-card {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 240px;
+  .comparison-section {
+    margin-top: 56px;
   }
-  .detail-card .chip {
-    align-self: flex-start;
+  .compare-card {
+    padding: 44px;
   }
-  .detail-card h2 {
-    font-size: 22px;
-    margin: 20px 0 12px;
+  .compare-card h2 {
+    font-size: 28px;
+    margin: 14px 0 28px;
     color: var(--text-primary);
   }
-  .detail-card p {
-    color: var(--text-secondary);
-    line-height: 1.65;
-    font-size: 14px;
-    margin: 0 0 20px;
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
-  .card-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-soft);
-    padding-top: 12px;
+  .compare-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .compare-name {
+    font-size: 18px;
+    color: var(--text-primary);
+  }
+  .compare-col p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
   }
 
   @media (max-width: 860px) {
-    .subhero { padding-top: 64px; }
-    .content-grid { grid-template-columns: 1fr; }
+    .subhero { padding-top: 56px; }
+    .market-cards-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-card { padding: 28px; }
   }
 </style>

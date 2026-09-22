@@ -1,0 +1,138 @@
+---
+import type { MarketPrice } from "../data/market-prices";
+import SourceBadge from "./SourceBadge.astro";
+
+interface Props {
+  card: MarketPrice;
+}
+const { card } = Astro.props;
+---
+<article class="market-price-card card">
+  <div class="card-head">
+    <span class="card-name">{card.name}</span>
+    <SourceBadge badge={card.badge} status={card.status} />
+  </div>
+
+  <div class="card-main">
+    <strong class:list={["price-val", !card.isFormed && "pending-val"]}>
+      {card.price}
+    </strong>
+    <p class="price-desc">{card.description}</p>
+  </div>
+
+  <div class="card-meta-list">
+    <div class="meta-row">
+      <span class="meta-k">Dönem</span>
+      <span class="meta-v">{card.period}</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-k">Kaynak</span>
+      <span class="meta-v">{card.source}</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-k">Doğrulama</span>
+      <span class="meta-v mono">{card.verifiedAt}</span>
+    </div>
+  </div>
+
+  {card.ctaText && card.ctaHref && (
+    <div class="card-cta">
+      <a href={card.ctaHref} class="card-link">
+        <span>{card.ctaText}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  )}
+</article>
+
+<style>
+  .market-price-card {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 310px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    transition: border-color 180ms cubic-bezier(.2,.8,.2,1), transform 180ms cubic-bezier(.2,.8,.2,1);
+  }
+  @media (hover: hover) {
+    .market-price-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-name {
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+  .card-main {
+    margin: 20px 0 16px;
+  }
+  .price-val {
+    font-size: 34px;
+    letter-spacing: -0.04em;
+    font-weight: 750;
+    color: var(--text-primary);
+    line-height: 1.1;
+    display: block;
+  }
+  .pending-val {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+  .price-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 8px 0 0;
+    line-height: 1.5;
+  }
+  .card-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 16px;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  .meta-k {
+    color: var(--text-muted);
+  }
+  .meta-v {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .card-cta {
+    border-top: 1px solid var(--border-soft);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: color 150ms ease;
+  }
+  .card-link:hover {
+    color: #FFFFFF;
+  }
+</style>

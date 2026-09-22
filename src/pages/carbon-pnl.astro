@@ -1,0 +1,108 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CarbonCalculator from "../components/CarbonCalculator.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { seoPages } from "../data/seo";
+
+const kpiHighlights = [
+  { label: "Ürün Başına Karbon Maliyeti", desc: "Gömülü emisyon katsayısı ve kotasyon çarpımı ile doğrudan birim maliyete eklenir." },
+  { label: "Müşteri Başına Exposure", desc: "Sözleşme hacmi ve sevkiyat tonajı bazında toplam yıllık karbon riskini gösterir." },
+  { label: "Karbon Sonrası Marj", desc: "Mevcut satış fiyatında brüt kârlılığın karbon yükümlülüğü sonrası erime seviyesi." },
+  { label: "Minimum Satış Fiyatı", desc: "Karbon maliyetini tam olarak absorbe eden başabaş veya hedef marjlı satış fiyatı." },
+  { label: "Carbon Break-even Price", desc: "Satış fiyatı sabitken ürünün kârdan zarara geçtiği eşik karbon kotasyonu." }
+];
+---
+<Layout
+  title={seoPages.carbonPnl.title}
+  description={seoPages.carbonPnl.description}
+  canonical={seoPages.carbonPnl.canonical}
+>
+  <section class="container subhero">
+    <span class="eyebrow">CARBON FINANCIAL MODELING</span>
+    <h1 class="section-title">Karbon maliyetini gelir tablonuza bağlayın.</h1>
+    <p class="lead">
+      Karbon fiyatının ürün maliyeti, brüt marj, müşteri kârlılığı ve EBITDA üzerindeki etkisini görün.
+      Emisyon verisini şirket CFO\x27su ve satış yönetimi için operasyonel karar metriğine dönüştürün.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#hesapla">Carbon P&amp;L analizi başlat</a>
+      <a class="btn btn-secondary" href="https://degerlet.com" rel="noopener" target="_blank">Uzman Değerlendirme</a>
+    </div>
+  </section>
+
+  <section class="container pnl-kpi-section">
+    <SectionHeading
+      eyebrow="GELİR TABLOSU ETKİSİ"
+      title="5 Temel Carbon P&amp;L Göstergesi"
+      subtitle="Çevre raporunun bittiği yerde finansal karar metrikleri başlar."
+    />
+    <div class="kpi-cards-grid">
+      {kpiHighlights.map((kpi, idx) => (
+        <article class="card pnl-kpi-card">
+          <span class="pnl-idx mono">0{idx + 1}</span>
+          <h3>{kpi.label}</h3>
+          <p>{kpi.desc}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="container">
+    <CarbonCalculator />
+  </div>
+
+  <ExpertCTA
+    headline="Carbon P&amp;L modelinizi denetletin."
+    subtext="Ürün reçetesi, gömülü emisyon doğrulaması ve müşteri bazlı fiyat geçişkenliğini uzman desteğiyle kesinleştirin."
+  />
+</Layout>
+
+<style>
+  .subhero {
+    padding: 88px 0 32px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .kpi-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .pnl-kpi-card {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+  }
+  .pnl-idx {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+  .pnl-kpi-card h3 {
+    font-size: 20px;
+    margin: 18px 0 8px;
+    color: var(--text-primary);
+  }
+  .pnl-kpi-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .subhero { padding-top: 56px; }
+    .kpi-cards-grid { grid-template-columns: 1fr; }
+  }
+</style>

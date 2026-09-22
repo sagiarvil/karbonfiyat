@@ -1,0 +1,177 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { seoPages } from "../data/seo";
+
+const clientData = [
+  { client: "ABC GmbH", revenue: "€2.1M", carbonCost: "€128K", margin: "%6.2", action: "Fiyat revizyonu", badge: "warning" },
+  { client: "DEF GmbH", revenue: "€1.4M", carbonCost: "€31K", margin: "%15.8", action: "Korunabilir", badge: "success" },
+  { client: "XYZ GmbH", revenue: "€820K", carbonCost: "€79K", margin: "%3.1", action: "Kritik", badge: "danger" }
+];
+---
+<Layout
+  title={seoPages.musteriKarliligi.title}
+  description={seoPages.musteriKarliligi.description}
+  canonical={seoPages.musteriKarliligi.canonical}
+>
+  <section class="container subhero">
+    <span class="eyebrow">MÜŞTERİ KÂRLILIĞI</span>
+    <h1 class="section-title">Hangi müşteri karbon maliyetini taşıyamıyor?</h1>
+    <p class="lead">
+      Karbon maliyetini müşteri ve ürün seviyesine dağıtın.
+      Gerçek marjı ve gerekli fiyat revizyonunu görün.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://degerlet.com" rel="noopener" target="_blank">
+        Müşteri bazlı analiz oluştur
+      </a>
+      <a class="btn btn-secondary" href="/karbon-maliyet-hesaplama">Hızlı hesapla</a>
+    </div>
+  </section>
+
+  <section class="container table-section">
+    <SectionHeading
+      eyebrow="ÖRNEK PORTFÖY DAĞILIMI"
+      title="Müşteri Bazında Karbon P&amp;L Dağılımı"
+      subtitle="Aynı ürün, farklı müşteri sözleşmelerinde farklı marj erimesi yaratır."
+    />
+    <div class="card client-table-card">
+      <div class="table-responsive">
+        <table class="client-table">
+          <thead>
+            <tr>
+              <th>Müşteri</th>
+              <th>Ciro</th>
+              <th>Karbon Yükü</th>
+              <th>Karbon Sonrası Marj</th>
+              <th>Stratejik Aksiyon</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientData.map(row => (
+              <tr>
+                <td class="client-name"><strong>{row.client}</strong></td>
+                <td class="mono">{row.revenue}</td>
+                <td class="mono">{row.carbonCost}</td>
+                <td class:list={["mono", row.badge === "danger" && "text-danger", row.badge === "warning" && "text-warning"]}>{row.margin}</td>
+                <td>
+                  <span class:list={["chip", row.badge === "warning" && "warning", row.badge === "danger" && "danger-chip"]}>
+                    {row.action}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="container insights-section">
+    <div class="insights-grid">
+      <article class="card insight-card">
+        <span class="eyebrow">Fiyat Geçişkenliği</span>
+        <h3>Kontrat Bazlı Fiyatlama</h3>
+        <p>
+          Karbon maliyeti her müşteriye aynı oranda yansıtılamaz. İkame ürün gücü, nakliye avantajı ve müşteri sadakatine göre fiyatlama esnekliğini belirleyin.
+        </p>
+      </article>
+      <article class="card insight-card">
+        <span class="eyebrow">Risk Konsantrasyonu</span>
+        <h3>Düşük Marjlı Büyük Hacim Tuzağı</h3>
+        <p>
+          Yüksek ciro getiren ancak ton başına brüt marjı dar olan müşteriler, karbon fiyatı €80 üzerine çıktığında şirketi doğrudan faaliyet zararına sürükleyebilir.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <ExpertCTA
+    headline="Müşteri portföyünüzü karbon stres testine sokun."
+    subtext="Hangi müşterinizle ne zaman fiyat revizyonu masasına oturmanız gerektiğini uzman analiziyle raporlayın."
+  />
+</Layout>
+
+<style>
+  .subhero {
+    padding: 88px 0 32px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .client-table-card {
+    padding: 16px;
+    overflow: hidden;
+  }
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .client-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  .client-table th {
+    padding: 16px 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .client-table td {
+    padding: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--text-secondary);
+  }
+  .client-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .client-name strong {
+    color: var(--text-primary);
+  }
+  .text-danger { color: var(--state-danger) !important; }
+  .text-warning { color: var(--state-warning) !important; }
+  .danger-chip {
+    color: var(--state-danger);
+    border-color: rgba(199, 110, 110, 0.28);
+  }
+
+  .insights-section {
+    margin-top: 48px;
+  }
+  .insights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .insight-card {
+    padding: 36px;
+  }
+  .insight-card h3 {
+    font-size: 22px;
+    margin: 14px 0 10px;
+    color: var(--text-primary);
+  }
+  .insight-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .subhero { padding-top: 56px; }
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+</style>

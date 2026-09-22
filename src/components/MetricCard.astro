@@ -1,0 +1,49 @@
+---
+interface Props {
+  index: string;
+  enTitle: string;
+  trTitle: string;
+  description: string;
+}
+const { index, enTitle, trTitle, description } = Astro.props;
+---
+<article class="metric-feature-card card">
+  <div class="card-top">
+    <span class="index-num mono">{index} — {enTitle}</span>
+  </div>
+  <div class="card-body">
+    <h3 class="tr-title">{trTitle}</h3>
+    <p class="desc">{description}</p>
+  </div>
+</article>
+
+<style>
+  .metric-feature-card {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
+  }
+  .index-num {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .tr-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin: 18px 0 10px;
+  }
+  .desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

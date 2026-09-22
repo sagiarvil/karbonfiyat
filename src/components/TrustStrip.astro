@@ -1,0 +1,31 @@
+---
+---
+<div class="trust-strip" aria-label="Platform güvenceleri">
+  <span>Resmî kaynaklar</span>
+  <span class="dot">•</span>
+  <span>Deterministik hesap</span>
+  <span class="dot">•</span>
+  <span>Kaynak ve dönem ayrımı</span>
+</div>
+
+<style>
+  .trust-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    padding-top: 20px;
+  }
+  .dot {
+    opacity: 0.4;
+  }
+  @media (max-width: 640px) {
+    .trust-strip {
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+    }
+  }
+</style>

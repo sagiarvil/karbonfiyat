@@ -1,43 +1,119 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Calculator from "../components/Calculator.astro";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "CBAM Fiyatı ve Şirket Karbon Maliyeti Hesaplama",
-  description: "CBAM sertifika fiyatını ihracat tonajı ve gömülü emisyonla birleştirerek brüt karbon maliyetini ve ürün tonu etkisini hesaplayın.",
-  url: "https://karbonfiyat.com/cbam-fiyati"
-};
+import CarbonCalculator from "../components/CarbonCalculator.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import { seoPages } from "../data/seo";
 ---
 <Layout
-  title="CBAM Fiyatı ve Karbon Maliyeti Hesaplama | KarbonFiyat"
-  description="CBAM sertifika fiyatını şirketinizin ihracat tonajı ve gömülü emisyonuyla birleştirerek brüt karbon maruziyetini hesaplayın."
-  canonical="/cbam-fiyati"
-  schema={schema}
+  title={seoPages.cbamFiyati.title}
+  description={seoPages.cbamFiyati.description}
+  canonical={seoPages.cbamFiyati.canonical}
 >
   <section class="container subhero">
-    <span class="eyebrow">Sınırda Karbon Düzenleme Mekanizması</span>
-    <h1 class="section-title">CBAM fiyatını doğrudan şirket maliyetine çevirin.</h1>
+    <span class="eyebrow">CBAM CERTIFICATE PRICING</span>
+    <h1 class="section-title">CBAM fiyatını şirket maliyetine çevirin.</h1>
     <p class="lead">
-      Sadece €/tCO₂e birim kotasyonunu izlemek yeterli değildir.
-      Asıl finansal soru; bu fiyatın ürün tonu başına, ihracat sözleşmesi marjına ve yıllık nakit akışına getirdiği ek yükümlülüktür.
+      Resmî CBAM sertifika fiyatını, ürününüzün gömülü emisyonuyla birleştirerek brüt karbon maruziyetinizi hesaplayın.
     </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#hesapla">CBAM maliyetimi hesapla</a>
+      <a class="btn btn-secondary" href="https://degerlet.com" rel="noopener" target="_blank">Uzman Değerlendirme</a>
+    </div>
   </section>
 
-  <section class="container">
-    <Calculator />
+  <section class="container mismatch-section">
+    <div class="mismatch-card card">
+      <span class="eyebrow">Maliyet Katmanı Prensibi</span>
+      <h2>Resmî fiyat ≠ şirket maliyeti</h2>
+      <p class="lead">
+        Şirket maliyeti; ürün miktarı, gömülü emisyon, ücretsiz tahsisat düzeltmeleri, uygun mahsuplar ve doğrulanmış verilere bağlıdır.
+        Tek bir katsayıya bakarak bütçe yapmak ihracat sözleşmelerinde kâr kaybına yol açar.
+      </p>
+      <div class="mismatch-pillars">
+        <div class="p-item">
+          <strong>01. Ürün Hacmi</strong>
+          <span>Yıllık AB ihracat sevkiyat tonajı</span>
+        </div>
+        <div class="p-item">
+          <strong>02. Gömülü Emisyon</strong>
+          <span>Kapsam 1 ve Kapsam 2 spesifik emisyon yoğunluğu</span>
+        </div>
+        <div class="p-item">
+          <strong>03. Ücretsiz Tahsisat İndirimi</strong>
+          <span>AB üreticisine tanınan benchmark indirimi</span>
+        </div>
+        <div class="p-item">
+          <strong>04. Mahsup Bedeli</strong>
+          <span>Menşe ülkede fiilen ödenen karbon fiyatı</span>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <div class="container">
+    <CarbonCalculator defaultPrice={75.28} />
+  </div>
+
+  <ExpertCTA
+    headline="CBAM beyan ve maliyet riskinizi kesinleştirin."
+    subtext="Ürün bazlı emisyon beyanı, katsayı doğrulaması ve ihracat fiyatlama stratejinizi uzman denetimiyle oluşturun."
+  />
 </Layout>
 
 <style>
   .subhero {
-    padding: 88px 0 16px;
+    padding: 88px 0 32px;
   }
   .subhero h1 {
     margin: 18px 0 16px;
+    font-size: clamp(34px, 4.8vw, 56px);
   }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .mismatch-section {
+    margin-top: 16px;
+  }
+  .mismatch-card {
+    padding: 44px;
+  }
+  .mismatch-card h2 {
+    font-size: clamp(26px, 3.4vw, 36px);
+    margin: 14px 0 14px;
+    color: var(--text-primary);
+  }
+  .mismatch-pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .p-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .p-item strong {
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+  .p-item span {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
   @media (max-width: 860px) {
-    .subhero { padding-top: 64px; }
+    .subhero { padding-top: 56px; }
+    .mismatch-pillars { grid-template-columns: 1fr 1fr; }
+    .mismatch-card { padding: 28px; }
+  }
+  @media (max-width: 520px) {
+    .mismatch-pillars { grid-template-columns: 1fr; }
   }
 </style>
