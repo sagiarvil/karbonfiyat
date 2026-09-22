@@ -15,8 +15,14 @@ const navItems = navLinks;
     <nav class="desktop-nav" aria-label="Ana menü">
       {navItems.map((item) => {
         const isActive = currentPath === item.href;
+        const isExternal = item.href.startsWith("http");
         return (
-          <a href={item.href} class={isActive ? "active" : ""}>
+          <a
+            href={item.href}
+            class={isActive ? "active" : ""}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener" : undefined}
+          >
             {item.label}
           </a>
         );
@@ -37,8 +43,14 @@ const navItems = navLinks;
     <nav class="mobile-nav" aria-label="Mobil menü">
       {navItems.map((item) => {
         const isActive = currentPath === item.href;
+        const isExternal = item.href.startsWith("http");
         return (
-          <a href={item.href} class={isActive ? "active" : ""}>
+          <a
+            href={item.href}
+            class={isActive ? "active" : ""}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener" : undefined}
+          >
             {item.label}
           </a>
         );

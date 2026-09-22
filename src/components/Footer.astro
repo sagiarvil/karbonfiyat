@@ -18,9 +18,18 @@ const year = new Date().getFullYear();
       <div class="footer-col">
         <strong class="col-title">{col.title}</strong>
         <nav class="col-links" aria-label={col.title + " linkleri"}>
-          {col.links.map(link => (
-            <a href={link.href}>{link.label}</a>
-          ))}
+          {col.links.map(link => {
+            const isExt = link.href.startsWith("http");
+            return (
+              <a
+                href={link.href}
+                target={isExt ? "_blank" : undefined}
+                rel={isExt ? "noopener" : undefined}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
       </div>
     ))}

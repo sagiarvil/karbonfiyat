@@ -90,6 +90,27 @@ const steps = [
       ))}
     </div>
 
+    <!-- Kardeş Platform / Teknik Emisyon Hesaplama Entegrasyonu: skdmhesapla.com -->
+    <div class="ecosystem-banner">
+      <div class="eco-left">
+        <div class="eco-badge">
+          <span class="eco-dot"></span>
+          <span>AMİRAL GEMİSİ TEKNİK MOTOR</span>
+        </div>
+        <h3 class="eco-title">Tesis ve ürün bazlı gömülü emisyonunuzu hesapladınız mı?</h3>
+        <p class="eco-desc">
+          KarbonFiyat parasal maliyeti, bilançoyu ve brüt marj kaybını modeller. Ürünlerinizin ton başına gömülü emisyonunu (tCO₂e) ve resmî AB CBAM geçiş dönemi formüllerini doğrudan hesaplamak için kardeş platformumuz <strong>skdmhesapla.com</strong>'u kullanabilirsiniz.
+        </p>
+      </div>
+      <div class="eco-right">
+        <a href="https://skdmhesapla.com/" target="_blank" rel="noopener" class="btn btn-primary eco-btn">
+          <span>skdmhesapla.com</span>
+          <span class="ext-arrow" aria-hidden="true">↗</span>
+        </a>
+        <small class="eco-note">Tesis &amp; GTIP Bazlı Ücretsiz Emisyon Hesaplama</small>
+      </div>
+    </div>
+
     <!-- Güvence Notu -->
     <div class="ladder-guarantee">
       <div class="guarantee-icon" aria-hidden="true">🛡️</div>
@@ -255,6 +276,92 @@ const steps = [
     text-align: center;
     font-size: 13px;
     padding: 12px 14px;
+  }
+
+  /* Ekosistem / skdmhesapla.com Banner Stilleri */
+  .ecosystem-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    background: linear-gradient(180deg, #121717 0%, #0C0F0F 100%);
+    border: 1px solid rgba(201, 167, 97, 0.35);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-top: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .eco-left {
+    max-width: 720px;
+  }
+
+  .eco-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+    background: rgba(201, 167, 97, 0.12);
+    border: 1px solid rgba(201, 167, 97, 0.25);
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .eco-dot {
+    width: 6px;
+    height: 6px;
+    background: #C9A761;
+    border-radius: 50%;
+  }
+
+  .eco-title {
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .eco-desc {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .eco-desc strong {
+    color: #F4F5F4;
+  }
+
+  .eco-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .eco-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .ext-arrow {
+    font-size: 14px;
+  }
+
+  .eco-note {
+    font-size: 11px;
+    color: var(--text-muted);
   }
 
   .ladder-guarantee {
