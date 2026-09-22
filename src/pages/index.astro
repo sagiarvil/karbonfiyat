@@ -1,105 +1,459 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PriceStrip from '../components/PriceStrip.astro';
-import Calculator from '../components/Calculator.astro';
-import DecisionPanel from '../components/DecisionPanel.astro';
+import Layout from "../layouts/Layout.astro";
+import PriceStrip from "../components/PriceStrip.astro";
+import Calculator from "../components/Calculator.astro";
+import DecisionPanel from "../components/DecisionPanel.astro";
 
 const schema = [
   {
-    '@context':'https://schema.org',
-    '@type':'Organization',
-    name:'KarbonFiyat',
-    url:'https://karbonfiyat.com',
-    description:'Karbon fiyatını şirket maliyeti, marj ve fiyatlama kararına çeviren finansal karar platformu.'
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "KarbonFiyat",
+    url: "https://karbonfiyat.com",
+    description: "Karbon fiyatını şirket maliyeti, marj ve fiyatlama kararına çeviren finansal karar platformu."
   },
   {
-    '@context':'https://schema.org',
-    '@type':'WebSite',
-    name:'KarbonFiyat',
-    url:'https://karbonfiyat.com'
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "KarbonFiyat",
+    url: "https://karbonfiyat.com"
   }
 ];
 ---
-<Layout title="KarbonFiyat | Karbon Fiyatını Şirket Maliyetine Çevirin" description="CBAM, EU ETS ve Türkiye ETS fiyatlarını ürün maliyeti, marj ve şirket kârlılığına çevirin. Karbon maliyetinizi hesaplayın." schema={schema}>
+<Layout
+  title="KarbonFiyat | Karbon Fiyatını Şirket Maliyetine Çevirin"
+  description="CBAM, EU ETS ve Türkiye ETS etkisini ürün maliyeti, müşteri kârlılığı ve satış fiyatı kararına çevirin. Karbon maliyetinizi hesaplayın."
+  schema={schema}
+>
   <section class="hero grid-overlay">
     <div class="container hero-inner">
       <div class="hero-copy">
-        <div class="tag"><span class="tag-dot"></span> Carbon Financial Intelligence</div>
-        <h1 class="display">Karbon kaç Euro değil.<br/><span>Size kaç Euro?</span></h1>
-        <p class="lead">CBAM, EU ETS ve Türkiye ETS verilerini şirketinizin ürün maliyetine, müşteri kârlılığına ve fiyatlama kararına bağlayan finansal karar katmanı.</p>
+        <div class="tag">
+          <span class="tag-dot" aria-hidden="true"></span>
+          <span>CARBON FINANCIAL INTELLIGENCE</span>
+        </div>
+        <h1 class="display">
+          <span class="hero-line-1">Karbon kaç Euro değil.</span>
+          <span class="hero-line-2">Size kaç Euro?</span>
+        </h1>
+        <p class="lead">
+          CBAM, EU ETS ve Türkiye ETS etkisini ürün maliyeti,
+          müşteri kârlılığı ve satış fiyatı kararına çevirin.
+        </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Karbon maliyetini hesapla</a>
-          <a class="btn btn-ghost" href="#neden">Nasıl çalışır</a>
+          <a class="btn btn-secondary" href="#neden">Nasıl çalışır</a>
         </div>
       </div>
+
       <PriceStrip />
     </div>
   </section>
 
-  <section class="container proofbar" aria-label="Platform özellikleri">
-    <div><strong>Resmî / piyasa / senaryo</strong><span>verisi ayrı tutulur</span></div>
-    <div><strong>Audit-ready</strong><span>kaynak ve dönem görünür</span></div>
-    <div><strong>Deterministik motor</strong><span>AI hesap yapmaz</span></div>
-    <div><strong>Finans odaklı</strong><span>marj ve fiyat kararı</span></div>
+  <section class="container proofbar-section" aria-label="Platform prensipleri">
+    <div class="proofbar">
+      <div class="proof-item">
+        <strong>Resmî / piyasa / senaryo</strong>
+        <span>Veri katmanları ayrı tutulur</span>
+      </div>
+      <div class="proof-item">
+        <strong>Audit trail</strong>
+        <span>Kaynak ve dönem yürürlükte</span>
+      </div>
+      <div class="proof-item">
+        <strong>Deterministik motor</strong>
+        <span>Kurallı finansal matematik</span>
+      </div>
+      <div class="proof-item">
+        <strong>Karar odaklı</strong>
+        <span>Marj ve fiyat revizyonu</span>
+      </div>
+    </div>
   </section>
 
-  <div class="container"><DecisionPanel /></div>
+  <div class="container">
+    <DecisionPanel />
+  </div>
 
-  <section class="container" id="neden">
+  <section class="container feature-section" id="neden">
     <div class="section-head">
-      <span class="eyebrow">Neden farklı</span>
+      <span class="eyebrow">Neden Farklı</span>
       <h2 class="section-title">Uyum raporunun bittiği yerde finansal karar başlar.</h2>
     </div>
     <div class="feature-grid">
-      <article class="card feature"><span>01</span><h3>Carbon P&amp;L</h3><p>Karbon maliyetini ürün bazında brüt marj, fiyat ve kârlılık etkisine çevirir.</p></article>
-      <article class="card feature"><span>02</span><h3>Customer Profitability</h3><p>Hangi müşterinin karbon sonrası marjı aşağı çektiğini görün.</p></article>
-      <article class="card feature"><span>03</span><h3>Break-even Carbon Price</h3><p>Bir ürünün hangi karbon fiyatından sonra zarar etmeye başladığını hesaplayın.</p></article>
-      <article class="card feature"><span>04</span><h3>Scenario Engine</h3><p>€60 / €90 / €120 senaryolarında yıllık maliyet ve fiyat revizyon ihtiyacını test edin.</p></article>
-      <article class="card feature"><span>05</span><h3>TR ETS → CBAM</h3><p>Türkiye’de ödenen uygun karbon bedelinin potansiyel mahsup etkisini ayrı katmanda modelleyin.</p></article>
-      <article class="card feature"><span>06</span><h3>Management Pack</h3><p>Çıktıyı çevre raporu değil, CFO ve satış yönetimi için karar notuna dönüştürün.</p></article>
+      <article class="card feature">
+        <span class="feature-num mono">01</span>
+        <h3>Carbon P&amp;L</h3>
+        <p>Karbon maliyetini ürün bazında brüt marj, birim maliyet ve kârlılık etkisine çevirir.</p>
+      </article>
+      <article class="card feature">
+        <span class="feature-num mono">02</span>
+        <h3>Customer Profitability</h3>
+        <p>Hangi ihracat müşterisinin karbon sonrası net kârlılığı negatife çektiğini netleştirir.</p>
+      </article>
+      <article class="card feature">
+        <span class="feature-num mono">03</span>
+        <h3>Break-even Carbon Price</h3>
+        <p>Bir ürünün hangi karbon kotasyonundan sonra zarar eşiğine girdiğini tespit eder.</p>
+      </article>
+      <article class="card feature">
+        <span class="feature-num mono">04</span>
+        <h3>Scenario Engine</h3>
+        <p>€60 / €90 / €120 senaryolarında yıllık maliyet ve fiyat revizyon ihtiyacını simüle eder.</p>
+      </article>
+      <article class="card feature">
+        <span class="feature-num mono">05</span>
+        <h3>TR ETS → CBAM</h3>
+        <p>Türkiye\x27de tesis düzeyinde ödenen emisyon bedelinin olası mahsup etkisini modelleyin.</p>
+      </article>
+      <article class="card feature">
+        <span class="feature-num mono">06</span>
+        <h3>Management Pack</h3>
+        <p>Çıktıyı formalite çevre raporu yerine, CFO ve satış yönetimi için operasyonel karar notuna dönüştürün.</p>
+      </article>
     </div>
   </section>
 
-  <section class="container"><Calculator /></section>
+  <section class="container">
+    <Calculator />
+  </section>
 
-  <section class="container sectors">
+  <section class="container sectors-section">
     <div class="section-head">
-      <span class="eyebrow">İlk odak</span>
+      <span class="eyebrow">İlk Odak</span>
       <h2 class="section-title">Yüksek karbon maruziyetli ihracatçı sektörler.</h2>
-      <p class="lead">İlk ürün mimarisi finansal etkinin en net ölçülebildiği sektörlere göre tasarlandı.</p>
+      <p class="lead">İlk ürün mimarisi finansal etkinin en net ölçülebildiği sanayi kollarında doğrulandı.</p>
     </div>
     <div class="sector-list">
-      <a href="/cbam-fiyati" class="sector-row"><span>Demir &amp; Çelik</span><small>CBAM · ürün bazlı maliyet</small><b>→</b></a>
-      <a href="/cbam-fiyati" class="sector-row"><span>Alüminyum</span><small>CBAM · marj ve teklif fiyatı</small><b>→</b></a>
-      <a href="/turkiye-ets" class="sector-row"><span>Çimento</span><small>TR ETS · tesis exposure</small><b>→</b></a>
-      <a href="/turkiye-ets" class="sector-row"><span>Gübre</span><small>TR ETS · enerji / proses etkisi</small><b>→</b></a>
+      <a href="/cbam-fiyati" class="sector-row">
+        <div class="sector-meta">
+          <span class="sector-title">Demir &amp; Çelik</span>
+          <small class="sector-sub">CBAM · ürün ve emisyon bazlı maliyetleme</small>
+        </div>
+        <span class="sector-badge chip">RESMÎ VERİ</span>
+        <span class="sector-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="/cbam-fiyati" class="sector-row">
+        <div class="sector-meta">
+          <span class="sector-title">Alüminyum</span>
+          <small class="sector-sub">CBAM · teklif fiyatı ve ihracat marjı koruması</small>
+        </div>
+        <span class="sector-badge chip">RESMÎ VERİ</span>
+        <span class="sector-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="/turkiye-ets" class="sector-row">
+        <div class="sector-meta">
+          <span class="sector-title">Çimento</span>
+          <small class="sector-sub">TR ETS · tesis maruziyeti ve klinker emisyon katsayısı</small>
+        </div>
+        <span class="sector-badge chip">PİLOT DÖNEM</span>
+        <span class="sector-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="/turkiye-ets" class="sector-row">
+        <div class="sector-meta">
+          <span class="sector-title">Gübre</span>
+          <small class="sector-sub">TR ETS · enerji ve proses emisyonu finansal etkisi</small>
+        </div>
+        <span class="sector-badge chip">PİLOT DÖNEM</span>
+        <span class="sector-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 
   <section class="container source-section">
-    <div class="source-copy"><span class="eyebrow">Güvenilirlik</span><h2 class="section-title">Her rakamın arkasında kaynak, dönem ve durum etiketi.</h2></div>
+    <div class="source-copy">
+      <span class="eyebrow">Veri Güvenilirliği</span>
+      <h2 class="section-title">Her rakamın arkasında kaynak, dönem ve durum etiketi.</h2>
+      <p class="lead">
+        Spekülasyonla resmî veri asla karıştırılmaz. Bütün göstergeler denetlenebilir kaynak iziyle saklanır.
+      </p>
+    </div>
     <div class="source-card card">
-      <div><span>CBAM</span><strong>European Commission</strong><small>OFFICIAL</small></div>
-      <div><span>EU ETS</span><strong>Lisanslı piyasa feed'i</strong><small>MARKET</small></div>
-      <div><span>TR ETS</span><strong>Resmî piyasa kaynağı</strong><small>PENDING</small></div>
-      <div><span>FX</span><strong>TCMB / lisanslı sağlayıcı</strong><small>REFERENCE</small></div>
+      <div class="source-row">
+        <span class="source-code mono">CBAM</span>
+        <div class="source-desc">
+          <strong>European Commission</strong>
+          <small>Doğrulanmış çeyreklik resmî bildirim</small>
+        </div>
+        <span class="chip">RESMÎ</span>
+      </div>
+      <div class="source-row">
+        <span class="source-code mono">EU ETS</span>
+        <div class="source-desc">
+          <strong>Lisanslı piyasa kotasyonu</strong>
+          <small>Spot / vadeli borsa fiyatı</small>
+        </div>
+        <span class="chip">PİYASA</span>
+      </div>
+      <div class="source-row">
+        <span class="source-code mono">TR ETS</span>
+        <div class="source-desc">
+          <strong>Resmî pilot çerçevesi</strong>
+          <small>İklim Değişikliği Başkanlığı hazırlık dönemi</small>
+        </div>
+        <span class="chip">PİLOT</span>
+      </div>
+      <div class="source-row">
+        <span class="source-code mono">FX</span>
+        <div class="source-desc">
+          <strong>TCMB referans pariteleri</strong>
+          <small>EUR / USD / TRY çapraz kurları</small>
+        </div>
+        <span class="chip">REFERANS</span>
+      </div>
     </div>
   </section>
 
-  <section class="container cta card">
-    <div><span class="eyebrow">2027 hazırlığı</span><h2>Karbon maliyetini bütçeye girmeden önce stres testine sokun.</h2></div>
-    <div class="cta-actions"><a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Stres testi başlat</a><a class="btn btn-ghost" href="https://degerlet.com">Uzmanla değerlet</a></div>
+  <section class="container cta-section">
+    <div class="cta card">
+      <div class="cta-copy">
+        <span class="eyebrow">2026–2027 Hazırlığı</span>
+        <h2>Karbon maliyetini bütçeye girmeden önce stres testine sokun.</h2>
+        <p class="lead">Finansal kararlarınızı varsayımlarla değil, doğrulanmış fiyat katmanlarıyla alın.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Stres testi başlat</a>
+        <a class="btn btn-secondary" href="https://degerlet.com" rel="noopener">Uzmanla değerlet</a>
+      </div>
+    </div>
   </section>
 </Layout>
 
 <style>
-  .hero{padding:92px 0 36px;overflow:hidden}.hero-inner{position:relative;z-index:1}.hero-copy{max-width:1000px}.hero h1{margin:24px 0 24px}.hero h1 span{color:var(--accent)}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
-  .proofbar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.proofbar div{padding:18px 16px;border-right:1px solid var(--line)}.proofbar div:last-child{border-right:0}.proofbar strong,.proofbar span{display:block}.proofbar strong{font-size:13px}.proofbar span{color:var(--muted);font-size:11px;margin-top:4px}
-  .section-head{padding:96px 0 32px}.section-head .section-title{margin:18px 0 14px}
-  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{padding:24px;min-height:210px}.feature>span{font-size:11px;color:var(--accent);letter-spacing:.12em}.feature h3{font-size:22px;margin:42px 0 10px}.feature p{color:var(--muted);font-size:14px;line-height:1.6}
-  .sectors{padding-top:16px}.sector-list{border-top:1px solid var(--line)}.sector-row{display:grid;grid-template-columns:1.2fr 1fr auto;align-items:center;padding:22px 4px;border-bottom:1px solid var(--line)}.sector-row span{font-size:22px;font-weight:650}.sector-row small{color:var(--muted)}.sector-row b{font-size:22px;color:var(--accent)}.sector-row:hover span{color:var(--accent)}
-  .source-section{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding-top:110px}.source-copy .section-title{margin-top:18px}.source-card{padding:8px}.source-card>div{display:grid;grid-template-columns:100px 1fr auto;align-items:center;padding:17px 14px;border-bottom:1px solid var(--line)}.source-card>div:last-child{border-bottom:0}.source-card span,.source-card small{color:var(--muted);font-size:11px}.source-card small{letter-spacing:.12em}.source-card strong{font-size:14px}
-  .cta{margin-top:110px;padding:42px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}.cta h2{font-size:38px;line-height:1.05;max-width:720px;margin:16px 0 0}.cta-actions{display:flex;gap:10px;flex-wrap:wrap}
-  @media(max-width:900px){.proofbar{grid-template-columns:1fr 1fr}.proofbar div:nth-child(2){border-right:0}.proofbar div:nth-child(-n+2){border-bottom:1px solid var(--line)}.feature-grid{grid-template-columns:1fr 1fr}.source-section{grid-template-columns:1fr}.cta{align-items:flex-start;flex-direction:column}}
-  @media(max-width:620px){.hero{padding-top:62px}.proofbar{grid-template-columns:1fr}.proofbar div{border-right:0;border-bottom:1px solid var(--line)!important}.proofbar div:last-child{border-bottom:0!important}.feature-grid{grid-template-columns:1fr}.sector-row{grid-template-columns:1fr auto}.sector-row small{grid-column:1}.source-card>div{grid-template-columns:78px 1fr}.source-card small{grid-column:2;margin-top:5px}.cta{padding:26px}.cta h2{font-size:31px}}
+  .hero {
+    padding: 80px 0 40px;
+    overflow: hidden;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-copy {
+    max-width: 1040px;
+  }
+  .hero h1 {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-line-1 {
+    color: var(--text-primary);
+    font-weight: 750;
+  }
+  .hero-line-2 {
+    color: var(--text-secondary);
+    font-weight: 500;
+    opacity: 0.82;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+
+  .proofbar-section {
+    margin-top: 36px;
+  }
+  .proofbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .proof-item {
+    padding: 20px 18px;
+    border-right: 1px solid var(--border-soft);
+  }
+  .proof-item:last-child {
+    border-right: 0;
+  }
+  .proof-item strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+  .proof-item span {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .section-head {
+    padding: 96px 0 32px;
+  }
+  .section-head .section-title {
+    margin: 18px 0 12px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .feature {
+    padding: 28px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .feature-num {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+  .feature h3 {
+    font-size: 21px;
+    margin: 32px 0 10px;
+    color: var(--text-primary);
+  }
+  .feature p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .sectors-section {
+    padding-top: 24px;
+  }
+  .sector-list {
+    border-top: 1px solid var(--border-soft);
+  }
+  .sector-row {
+    display: grid;
+    grid-template-columns: 1.4fr auto auto;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 8px;
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 150ms ease;
+  }
+  @media (hover: hover) {
+    .sector-row:hover .sector-title {
+      color: #FFFFFF;
+    }
+    .sector-row:hover .sector-arrow {
+      transform: translateX(4px);
+    }
+  }
+  .sector-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sector-title {
+    font-size: 21px;
+    font-weight: 650;
+    color: var(--text-primary);
+    transition: color 150ms ease;
+  }
+  .sector-sub {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+  .sector-badge {
+    justify-self: start;
+  }
+  .sector-arrow {
+    font-size: 20px;
+    color: var(--text-primary);
+    transition: transform 150ms ease;
+  }
+
+  .source-section {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 64px;
+    align-items: center;
+    padding-top: 110px;
+  }
+  .source-copy .section-title {
+    margin: 18px 0 14px;
+  }
+  .source-card {
+    padding: 10px 14px;
+  }
+  .source-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 10px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .source-row:last-child {
+    border-bottom: 0;
+  }
+  .source-code {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .source-desc strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .source-desc small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .cta-section {
+    margin-top: 110px;
+  }
+  .cta {
+    padding: 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .cta-copy h2 {
+    font-size: clamp(30px, 3.8vw, 42px);
+    line-height: 1.08;
+    max-width: 680px;
+    margin: 16px 0 12px;
+    color: var(--text-primary);
+  }
+  .cta-copy .lead {
+    margin: 0;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 920px) {
+    .hero { padding-top: 56px; }
+    .proofbar { grid-template-columns: 1fr 1fr; }
+    .proof-item:nth-child(2) { border-right: 0; }
+    .proof-item:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
+    .feature-grid { grid-template-columns: 1fr 1fr; }
+    .source-section { grid-template-columns: 1fr; gap: 36px; }
+    .cta { flex-direction: column; align-items: flex-start; padding: 32px; }
+    .cta-actions { width: 100%; }
+    .cta-actions .btn { width: 100%; }
+  }
+  @media (max-width: 640px) {
+    .proofbar { grid-template-columns: 1fr; }
+    .proof-item { border-right: 0; border-bottom: 1px solid var(--border-soft); }
+    .proof-item:last-child { border-bottom: 0; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .sector-row { grid-template-columns: 1fr auto; gap: 12px; }
+    .sector-badge { display: none; }
+    .source-row { grid-template-columns: 60px 1fr; }
+    .source-row .chip { grid-column: 2; justify-self: start; margin-top: 4px; }
+  }
 </style>

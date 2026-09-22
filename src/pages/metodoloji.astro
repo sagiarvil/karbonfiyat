@@ -1,13 +1,171 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: "Her sonuç yeniden üretilebilir olmalı.",
+  description: "KarbonFiyat veri standartları: kaynak ayrımı, tarihsel versiyonlama, deterministik hesap ve audit trail mimarisi.",
+  url: "https://karbonfiyat.com/metodoloji"
+};
 ---
-<Layout title="Metodoloji | KarbonFiyat Veri ve Hesaplama Standardı" description="KarbonFiyat veri kaynakları, fiyat statüleri, hesaplama prensipleri, versiyonlama ve audit trail yaklaşımı." canonical="/metodoloji">
-  <section class="container subhero"><span class="eyebrow">Metodoloji</span><h1 class="section-title">Her sonucun yeniden üretilebilir olması gerekir.</h1><p class="lead">KarbonFiyat fiyat, emisyon ve mevzuat parametrelerini kaynak, yürürlük tarihi, dönem, sürüm ve doğrulama statüsüyle saklayacak şekilde tasarlanır.</p></section>
+<Layout
+  title="Metodoloji Standartları | KarbonFiyat Veri Güvencesi"
+  description="KarbonFiyat veri kaynakları, fiyat statüleri, hesaplama prensipleri, tarihsel versiyonlama ve denetim izi metodolojisi."
+  canonical="/metodoloji"
+  schema={schema}
+>
+  <section class="container subhero">
+    <span class="eyebrow">Metodoloji Standardı</span>
+    <h1 class="section-title">Her sonuç yeniden üretilebilir olmalı.</h1>
+    <p class="lead">
+      Karbon maliyeti bir tahmin veya yapay zeka varsayımı değildir.
+      Bütün veriler kaynak kodu, yürürlük tarihi, yasal dönem, sürüm ve doğrulama statüsüyle saklanır.
+    </p>
+  </section>
+
   <section class="container methods">
-    <article class="card"><span>01</span><h2>Kaynak ayrımı</h2><p>Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri aynı etikette gösterilmez.</p></article>
-    <article class="card"><span>02</span><h2>Effective-date versioning</h2><p>Bir katsayının hangi tarihte geçerli olduğu saklanır; eski hesap yeniden üretilebilir.</p></article>
-    <article class="card"><span>03</span><h2>Deterministik hesap</h2><p>Finansal sonuç motoru kurallı hesap yapar. AI yalnızca sonucu açıklayabilir.</p></article>
-    <article class="card"><span>04</span><h2>Audit trail</h2><p>Kaynak, giriş, katsayı ve çıktı zinciri kaydedilir; sonucu oluşturan parametreler izlenebilir.</p></article>
+    <article class="card method-card">
+      <span class="card-step mono">01</span>
+      <h2>Kaynak ayrımı</h2>
+      <p>Resmî, piyasa, tahmin ve senaryo verileri birbirine karıştırılmaz.</p>
+      <div class="card-pill chip">KATMAN İZOLASYONU</div>
+    </article>
+
+    <article class="card method-card">
+      <span class="card-step mono">02</span>
+      <h2>Tarihsel versiyonlama</h2>
+      <p>Her katsayı yürürlük tarihiyle saklanır.</p>
+      <div class="card-pill chip">EFFECTIVE-DATE VERSIONING</div>
+    </article>
+
+    <article class="card method-card">
+      <span class="card-step mono">03</span>
+      <h2>Deterministik hesap</h2>
+      <p>Aynı veri, aynı sonucu üretir.</p>
+      <div class="card-pill chip">SIFIR HALÜSİNASYON</div>
+    </article>
+
+    <article class="card method-card">
+      <span class="card-step mono">04</span>
+      <h2>Audit trail</h2>
+      <p>Her hesap kullanılan kaynak ve parametrelerle izlenebilir.</p>
+      <div class="card-pill chip">DENETİM ZİNCİRİ</div>
+    </article>
+  </section>
+
+  <section class="container rules-section" id="audit">
+    <div class="rules-card card">
+      <div class="rules-head">
+        <span class="eyebrow">Denetim Prensibi</span>
+        <h2>Finansal Veri Hiyerarşisi</h2>
+      </div>
+      <div class="rules-grid">
+        <div class="rule-box">
+          <strong class="mono">RESMÎ</strong>
+          <p>Avrupa Komisyonu ve resmî otoritelerce yayımlanan kesinleşmiş dönem sertifika katsayıları.</p>
+        </div>
+        <div class="rule-box">
+          <strong class="mono">PİYASA</strong>
+          <p>Avrupa Enerji Borsası (EEX) ve lisanslı spot / vadeli feed\x27lerden çekilen kotasyonlar.</p>
+        </div>
+        <div class="rule-box">
+          <strong class="mono">PİLOT</strong>
+          <p>Türkiye ETS hazırlık süreci ve tebliğ kapsamındaki başlangıç parametreleri.</p>
+        </div>
+        <div class="rule-box">
+          <strong class="mono">SENARYO</strong>
+          <p>Şirketlerin stres testi ve bütçe planlamasında kendi girdikleri varsayımsal marj modelleri.</p>
+        </div>
+      </div>
+    </div>
   </section>
 </Layout>
-<style>.subhero{padding:90px 0 32px}.subhero h1{margin:18px 0}.methods{display:grid;grid-template-columns:1fr 1fr;gap:14px}.methods article{padding:26px}.methods span{color:var(--accent);font-size:11px}.methods h2{font-size:24px;margin:34px 0 10px}.methods p{color:var(--muted);line-height:1.7}@media(max-width:700px){.methods{grid-template-columns:1fr}}</style>
+
+<style>
+  .subhero {
+    padding: 88px 0 36px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+  }
+  .methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .method-card {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+  }
+  .card-step {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+  .method-card h2 {
+    font-size: 24px;
+    margin: 28px 0 10px;
+    color: var(--text-primary);
+  }
+  .method-card p {
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-size: 15px;
+    margin: 0 0 20px;
+  }
+  .card-pill {
+    align-self: flex-start;
+  }
+
+  .rules-section {
+    margin-top: 56px;
+  }
+  .rules-card {
+    padding: 40px;
+  }
+  .rules-head h2 {
+    font-size: 28px;
+    margin: 14px 0 28px;
+    color: var(--text-primary);
+  }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .rule-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .rule-box strong {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .rule-box p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .subhero { padding-top: 64px; }
+    .methods { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 540px) {
+    .rules-grid { grid-template-columns: 1fr; }
+    .rules-card { padding: 24px; }
+  }
+</style>

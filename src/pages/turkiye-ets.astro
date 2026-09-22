@@ -1,8 +1,149 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Türkiye ETS | Karbon Fiyatı, Pilot Dönem ve Sanayi Etkisi",
+  description: "Türkiye Emisyon Ticaret Sistemi hazırlık süreci, pilot dönem, tahsisat modeli ve CBAM mahsup olanakları.",
+  url: "https://karbonfiyat.com/turkiye-ets"
+};
 ---
-<Layout title="Türkiye ETS | Karbon Fiyatı, Pilot Dönem ve Şirket Etkisi" description="Türkiye Emisyon Ticaret Sistemi için fiyat oluşumu, pilot dönem, tesis etkisi ve CBAM ile birlikte finansal maruziyetin nasıl hesaplanacağını görün." canonical="/turkiye-ets">
-  <section class="container subhero"><span class="eyebrow">Türkiye ETS</span><h1 class="section-title">Türkiye ETS fiyatı oluşmadan fiyat üretmeyiz.</h1><p class="lead">Resmî piyasa fiyatı ile şirket senaryosunu birbirinden ayırmak finansal doğruluk için zorunlu. Sistem, TR ETS parametrelerini yürürlük tarihleriyle versiyonlayacak şekilde tasarlanır.</p></section>
-  <section class="container matrix card"><div><span>Durum</span><strong>Pilot</strong></div><div><span>Fiyat</span><strong>Henüz oluşmadı</strong></div><div><span>Model</span><strong>Cap + tahsisat + teslim</strong></div><div><span>Finansal kullanım</span><strong>Senaryo / bütçe</strong></div></section>
+<Layout
+  title="Türkiye ETS | Karbon Fiyatı, Pilot Dönem ve Şirket Etkisi | KarbonFiyat"
+  description="Türkiye Emisyon Ticaret Sistemi için fiyat oluşumu, pilot dönem, tesis etkisi ve CBAM ile birlikte finansal maruziyetin nasıl hesaplanacağını görün."
+  canonical="/turkiye-ets"
+  schema={schema}
+>
+  <section class="container subhero">
+    <span class="eyebrow">Türkiye Emisyon Ticaret Sistemi</span>
+    <h1 class="section-title">Türkiye ETS fiyatı oluşmadan spekülatif fiyat üretmeyiz.</h1>
+    <p class="lead">
+      Resmî piyasa fiyatı ile şirketlerin iç bütçe senaryolarını birbirinden ayırmak finansal dürüstlük gereğidir.
+      Sistem, TR ETS mevzuat parametrelerini yürürlük tarihleriyle versiyonlayacak şekilde inşa edilmiştir.
+    </p>
+  </section>
+
+  <section class="container matrix-section">
+    <div class="matrix card">
+      <div class="matrix-cell">
+        <span class="matrix-label">Mevcut Durum</span>
+        <strong class="matrix-value">Pilot Hazırlık</strong>
+        <small class="matrix-sub">İklim Kanunu taslağı ve tebliğ</small>
+      </div>
+      <div class="matrix-cell">
+        <span class="matrix-label">Piyasa Fiyatı</span>
+        <strong class="matrix-value">Henüz Oluşmadı</strong>
+        <small class="matrix-sub">Borsa İstanbul / EPİAŞ altyapısı</small>
+      </div>
+      <div class="matrix-cell">
+        <span class="matrix-label">Kapsam Mimarisi</span>
+        <strong class="matrix-value">Cap &amp; Trade</strong>
+        <small class="matrix-sub">Tesis üst sınırı ve tahsisat</small>
+      </div>
+      <div class="matrix-cell">
+        <span class="matrix-label">CBAM Etkisi</span>
+        <strong class="matrix-value">Potansiyel Mahsup</strong>
+        <small class="matrix-sub">Madde 9 uyarınca indirim</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="container info-grid">
+    <article class="card info-card">
+      <span class="chip">MEVZUAT ÇERÇEVESİ</span>
+      <h2>Tesis Düzeyinde Doğrulama</h2>
+      <p>
+        Türkiye\x27de Seragazı Emisyonlarının Takibi Hakkında Yönetmelik kapsamında MRV (İzleme, Raporlama, Doğrulama)
+        yapan tesisler için başlangıç katsayıları doğrudan izlenir.
+      </p>
+    </article>
+    <article class="card info-card">
+      <span class="chip">FİNANSAL YÖNETİM</span>
+      <h2>CBAM Mahsup Mekanizması</h2>
+      <p>
+        Türkiye ETS kapsamında fiilen ödenen karbon fiyatı, AB ithalatçısı tarafından CBAM beyanında indirim kalemi olarak
+        gösterilebilecektir. Bu ilişki kurallı marj modelinde simüle edilir.
+      </p>
+    </article>
+  </section>
 </Layout>
-<style>.subhero{padding:90px 0 30px}.subhero h1{margin:18px 0}.matrix{display:grid;grid-template-columns:repeat(4,1fr);padding:8px}.matrix div{padding:22px;border-right:1px solid var(--line)}.matrix div:last-child{border-right:0}.matrix span{display:block;color:var(--muted);font-size:11px;margin-bottom:8px}.matrix strong{font-size:18px}@media(max-width:760px){.matrix{grid-template-columns:1fr 1fr}.matrix div{border-bottom:1px solid var(--line)}} </style>
+
+<style>
+  .subhero {
+    padding: 88px 0 32px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+  }
+  .matrix-section {
+    margin-top: 16px;
+  }
+  .matrix {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 8px;
+  }
+  .matrix-cell {
+    padding: 24px 20px;
+    border-right: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .matrix-cell:last-child {
+    border-right: 0;
+  }
+  .matrix-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .matrix-value {
+    font-size: 20px;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+  .matrix-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .info-card {
+    padding: 32px;
+  }
+  .info-card .chip {
+    margin-bottom: 16px;
+  }
+  .info-card h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+  .info-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .subhero { padding-top: 64px; }
+    .matrix { grid-template-columns: 1fr 1fr; }
+    .matrix-cell:nth-child(2) { border-right: 0; }
+    .matrix-cell:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 540px) {
+    .matrix { grid-template-columns: 1fr; }
+    .matrix-cell { border-right: 0; border-bottom: 1px solid var(--border-soft); }
+    .matrix-cell:last-child { border-bottom: 0; }
+  }
+</style>

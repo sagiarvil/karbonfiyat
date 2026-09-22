@@ -1,40 +1,128 @@
-<footer class="footer">
+---
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
   <div class="container footer-grid">
-    <div>
-      <a class="footer-brand" href="/">karbonfiyat</a>
-      <p>Karbon fiyatını finansal karara çeviren bağımsız karar katmanı.</p>
+    <div class="footer-col brand-col">
+      <a class="footer-brand" href="/" aria-label="KarbonFiyat ana sayfa">karbonfiyat</a>
+      <p class="brand-desc">Karbon fiyatını finansal karara çeviren bağımsız karar katmanı.</p>
     </div>
-    <div>
-      <strong>Veri</strong>
-      <a href="/karbon-fiyati">Karbon fiyatı</a>
-      <a href="/cbam-fiyati">CBAM</a>
-      <a href="/turkiye-ets">Türkiye ETS</a>
+
+    <div class="footer-col">
+      <strong class="col-title">Veri</strong>
+      <nav class="col-links" aria-label="Veri linkleri">
+        <a href="/karbon-fiyati">Karbon Fiyatı</a>
+        <a href="/cbam-fiyati">CBAM</a>
+        <a href="/turkiye-ets">Türkiye ETS</a>
+      </nav>
     </div>
-    <div>
-      <strong>Araçlar</strong>
-      <a href="/karbon-maliyet-hesaplama">Maliyet hesaplama</a>
-      <a href="/metodoloji">Metodoloji</a>
-      <a href="https://degerlet.com" rel="noopener">Uzman değerleme</a>
+
+    <div class="footer-col">
+      <strong class="col-title">Araçlar</strong>
+      <nav class="col-links" aria-label="Araç linkleri">
+        <a href="/karbon-maliyet-hesaplama">Maliyeti Hesapla</a>
+        <a href="https://degerlet.com" rel="noopener">Uzman Değerlendirme</a>
+      </nav>
     </div>
-    <div>
-      <strong>Not</strong>
-      <p>Fiyatlar kaynak, dönem ve durum etiketiyle yayımlanır. Resmî, piyasa ve senaryo verileri birbirinden ayrılır.</p>
+
+    <div class="footer-col">
+      <strong class="col-title">Metodoloji</strong>
+      <nav class="col-links" aria-label="Metodoloji linkleri">
+        <a href="/metodoloji">Metodoloji İlkeleri</a>
+        <a href="/metodoloji">Audit &amp; Versiyonlama</a>
+      </nav>
     </div>
   </div>
+
   <div class="container footer-bottom">
-    <span>© {new Date().getFullYear()} KarbonFiyat</span>
-    <span>Carbon Financial Intelligence</span>
+    <span class="sub-notice">Piyasa, resmî ve senaryo verileri ayrı statülerde sunulur.</span>
+    <span class="sub-copy mono">© {year} KarbonFiyat · Carbon Financial Intelligence</span>
   </div>
 </footer>
 
 <style>
-  .footer{border-top:1px solid var(--line);margin-top:120px;padding:56px 0 26px;background:rgba(255,255,255,.01)}
-  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:38px}
-  .footer-grid>div{display:flex;flex-direction:column;gap:10px}
-  .footer-grid p,.footer-grid a{color:var(--muted);font-size:14px;line-height:1.6}
-  .footer-grid a:hover{color:var(--text)}
-  .footer-brand{color:var(--text)!important;font-size:22px!important;font-weight:800;letter-spacing:-.04em}
-  .footer-bottom{display:flex;justify-content:space-between;gap:20px;color:var(--muted-2);font-size:12px;padding-top:36px;margin-top:36px;border-top:1px solid var(--line)}
-  @media(max-width:850px){.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column}}
-  @media(max-width:520px){.footer-grid{grid-template-columns:1fr}}
+  .site-footer {
+    border-top: 1px solid var(--border-soft);
+    margin-top: 120px;
+    padding: 64px 0 32px;
+    background: #060707;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+    gap: 42px;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-brand {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -0.035em;
+  }
+  .brand-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 280px;
+  }
+  .col-title {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    font-weight: 650;
+  }
+  .col-links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .col-links a {
+    color: var(--text-secondary);
+    font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .col-links a:hover {
+    color: var(--text-primary);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-top: 40px;
+    margin-top: 48px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .sub-notice {
+    color: var(--text-secondary);
+  }
+  .sub-copy {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+  @media (max-width: 520px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

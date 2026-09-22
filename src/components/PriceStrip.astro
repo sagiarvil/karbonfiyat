@@ -1,31 +1,142 @@
 ---
 const cards = [
-  {label:'CBAM', value:'€75,28', meta:'Resmî · 2026 Q2', tone:'official'},
-  {label:'EU ETS', value:'Bağlantı bekleniyor', meta:'Piyasa verisi', tone:'market'},
-  {label:'TR ETS', value:'Henüz fiyat oluşmadı', meta:'Pilot dönem', tone:'pending'}
+  {
+    label: "CBAM",
+    value: "€75,28",
+    status: "RESMÎ",
+    isNumeric: true,
+    source: "Avrupa Komisyonu",
+    period: "2026 Q2",
+    audit: "Son doğrulama: 2026-09-15"
+  },
+  {
+    label: "EU ETS",
+    value: "Piyasa verisi entegrasyonu",
+    status: "PİYASA",
+    isNumeric: false,
+    source: "Lisanslı veri kaynağı",
+    period: "Gerçek zamanlı kotasyon",
+    audit: "Doğrudan borsa feed\x27i"
+  },
+  {
+    label: "TR ETS",
+    value: "Henüz fiyat oluşmadı",
+    status: "PİLOT",
+    statusTone: "warning",
+    isNumeric: false,
+    source: "Resmî pilot çerçevesi",
+    period: "Pilot uygulama",
+    audit: "Senaryo katmanı aktif"
+  }
 ];
 ---
 <section class="price-strip" aria-label="Karbon fiyat göstergeleri">
   {cards.map(card => (
-    <article class="price-card card">
-      <div class="price-top">
-        <span>{card.label}</span>
-        <span class:list={['status', card.tone]}>{card.meta.split(' · ')[0]}</span>
+    <article class="price-card">
+      <div class="card-header">
+        <span class="card-label">{card.label}</span>
+        <span class:list={["chip", card.statusTone === "warning" && "warning"]}>{card.status}</span>
       </div>
-      <strong>{card.value}</strong>
-      <small>{card.meta}</small>
+      <div class="card-body">
+        <strong class:list={["card-value", !card.isNumeric && "text-muted-value"]}>{card.value}</strong>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>{card.source}</span>
+          <span>·</span>
+          <span>{card.period}</span>
+        </div>
+        <small class="card-audit mono">{card.audit}</small>
+      </div>
     </article>
   ))}
 </section>
 
 <style>
-  .price-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
-  .price-card{padding:22px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
-  .price-top{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px}
-  .price-card strong{font-size:28px;letter-spacing:-.04em;font-weight:720}
-  .price-card small{color:var(--muted-2)}
-  .status{font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding:5px 7px;border-radius:999px;border:1px solid var(--line)}
-  .status.official{color:var(--accent);border-color:rgba(167,243,208,.25)}
-  .status.pending{color:var(--warning)}
-  @media(max-width:760px){.price-strip{grid-template-columns:1fr}.price-card{min-height:130px}}
+  .price-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .price-card {
+    padding: 26px;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    transition: border-color 180ms cubic-bezier(.2,.8,.2,1), transform 180ms cubic-bezier(.2,.8,.2,1);
+  }
+  @media (hover: hover) {
+    .price-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+  .card-body {
+    margin: 16px 0 14px;
+  }
+  .card-value {
+    font-size: 32px;
+    letter-spacing: -0.04em;
+    font-weight: 750;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+  .text-muted-value {
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 12px;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .card-audit {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 860px) {
+    .price-strip {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .price-card {
+      min-height: 150px;
+      padding: 20px;
+      border-radius: 16px;
+    }
+    .card-value {
+      font-size: 28px;
+    }
+  }
 </style>

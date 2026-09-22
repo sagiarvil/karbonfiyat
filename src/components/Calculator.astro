@@ -1,72 +1,389 @@
-<section class="calculator card" id="hesapla">
-  <div class="calc-copy">
-    <span class="eyebrow">Carbon P&amp;L</span>
-    <h2>Karbon fiyatını doğrudan ürün maliyetine çevirin.</h2>
-    <p>İhracat miktarı, gömülü emisyon ve karbon fiyatını girin. Sistem brüt karbon maruziyetini ve ton başına etkisini deterministik olarak hesaplar.</p>
-    <div class="trust-row">
-      <span>Tarayıcı içinde hesaplanır</span>
-      <span>Veri gönderilmez</span>
-      <span>Finansal çıktı</span>
+---
+---
+<section class="calculator-section" id="hesapla">
+  <div class="calc-card card">
+    <div class="calc-copy">
+      <span class="eyebrow">Carbon Financial Engine</span>
+      <h2>Karbon fiyatını doğrudan ürün maliyetine çevirin.</h2>
+      <p class="lead-text">
+        İhracat hacmi, gömülü emisyon ve karbon fiyatını finansal parametrelerinizle birleştirin.
+        Sistem brüt karbon maliyetini, marj erimesini ve fiyat revizyon ihtiyacını deterministik olarak hesaplar.
+      </p>
+      <div class="trust-grid">
+        <div class="trust-pill">
+          <span class="pill-dot"></span>
+          <span>Deterministik formül</span>
+        </div>
+        <div class="trust-pill">
+          <span class="pill-dot"></span>
+          <span>Tarayıcıda hesaplanır</span>
+        </div>
+        <div class="trust-pill">
+          <span class="pill-dot"></span>
+          <span>Sıfır veri aktarımı</span>
+        </div>
+        <div class="trust-pill">
+          <span class="pill-dot"></span>
+          <span>CFO ve Satış uyumlu</span>
+        </div>
+      </div>
     </div>
+
+    <form class="calc-form" id="carbon-calc" onsubmit="return false;">
+      <div class="inputs-grid">
+        <label class="form-group">
+          <span class="label-text">AB ihracatı</span>
+          <div class="input-wrap">
+            <input id="volume" type="number" min="0" step="100" value="10000" aria-label="AB ihracat miktarı (ton)" />
+            <span class="unit">ton</span>
+          </div>
+        </label>
+
+        <label class="form-group">
+          <span class="label-text">Gömülü emisyon</span>
+          <div class="input-wrap">
+            <input id="emission" type="number" min="0" step="0.01" value="1.84" aria-label="Gömülü emisyon yoğunluğu" />
+            <span class="unit">tCO₂e/t</span>
+          </div>
+        </label>
+
+        <label class="form-group">
+          <span class="label-text">Karbon fiyatı</span>
+          <div class="input-wrap">
+            <input id="price" type="number" min="0" step="0.01" value="75.28" aria-label="Karbon fiyatı Euro" />
+            <span class="unit">€/tCO₂e</span>
+          </div>
+        </label>
+
+        <label class="form-group">
+          <span class="label-text">Satış fiyatı</span>
+          <div class="input-wrap">
+            <input id="sales" type="number" min="0" step="1" value="850" aria-label="Ton başına mevcut satış fiyatı" />
+            <span class="unit">€/t</span>
+          </div>
+        </label>
+
+        <label class="form-group full-width">
+          <span class="label-text">Ürün maliyeti</span>
+          <div class="input-wrap">
+            <input id="cost" type="number" min="0" step="1" value="606" aria-label="Ton başına ürün maliyeti" />
+            <span class="unit">€/t</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="results-panel">
+        <div class="primary-result">
+          <span class="result-label">Brüt karbon maliyeti</span>
+          <strong class="result-hero" id="exposure">€1.385.152</strong>
+          <small class="result-note mono">Yıllık toplam maruziyet</small>
+        </div>
+
+        <div class="secondary-results">
+          <div class="sec-item">
+            <span class="sec-label">Ton başına maliyet</span>
+            <strong class="sec-value" id="per-ton">€138,52</strong>
+          </div>
+          <div class="sec-item">
+            <span class="sec-label">Karbon sonrası marj</span>
+            <strong class="sec-value" id="margin">%12,4</strong>
+          </div>
+          <div class="sec-item">
+            <span class="sec-label">Minimum satış fiyatı</span>
+            <strong class="sec-value" id="min-price">€745/t</strong>
+          </div>
+          <div class="sec-item">
+            <span class="sec-label">Gerekli fiyat revizyonu</span>
+            <strong class="sec-value" id="revision">+%16,3</strong>
+          </div>
+        </div>
+      </div>
+
+      <p class="calc-disclaimer mono">
+        Hesaplama kurallı finansal senaryo motoru ile üretilir. Ücretsiz tahsisat, mahsup mekanizmaları ve ürün bazlı mevzuat düzeltmeleri kurum değerlemesinde ayrıca uygulanır.
+      </p>
+
+      <div class="form-actions">
+        <a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Detaylı senaryo kaydet</a>
+        <a class="btn btn-secondary" href="https://degerlet.com" rel="noopener">Uzman Değerlendirme</a>
+      </div>
+    </form>
   </div>
-
-  <form class="calc-form" id="carbon-calc">
-    <label>
-      <span>AB ihracatı</span>
-      <div class="input-wrap"><input id="volume" type="number" min="0" step="100" value="10000" /><b>ton</b></div>
-    </label>
-    <label>
-      <span>Gömülü emisyon</span>
-      <div class="input-wrap"><input id="emission" type="number" min="0" step="0.01" value="1.84" /><b>tCO₂e/t</b></div>
-    </label>
-    <label>
-      <span>Karbon fiyatı</span>
-      <div class="input-wrap"><input id="price" type="number" min="0" step="0.01" value="75.28" /><b>€/tCO₂e</b></div>
-    </label>
-
-    <div class="calc-result">
-      <div><span>Brüt karbon maruziyeti</span><strong id="exposure">—</strong></div>
-      <div><span>Ürün tonu başına</span><strong id="per-ton">—</strong></div>
-    </div>
-    <p class="calc-note">Bu araç hızlı finansal senaryo içindir; ücretsiz tahsisat, mahsup, doğrulama ve ürün bazlı mevzuat düzeltmeleri ayrıca uygulanır.</p>
-    <a class="btn btn-primary" href="https://degerlet.com" rel="noopener">Detaylı şirket değerlemesi</a>
-  </form>
 </section>
 
 <script is:inline>
-  const fmt = new Intl.NumberFormat('tr-TR', { style:'currency', currency:'EUR', maximumFractionDigits:0 });
-  const fmt2 = new Intl.NumberFormat('tr-TR', { style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2 });
-  const volume = document.getElementById('volume');
-  const emission = document.getElementById('emission');
-  const price = document.getElementById('price');
-  const exposure = document.getElementById('exposure');
-  const perTon = document.getElementById('per-ton');
-  const calculate = () => {
-    const v = Math.max(0, Number(volume?.value || 0));
-    const e = Math.max(0, Number(emission?.value || 0));
-    const p = Math.max(0, Number(price?.value || 0));
-    exposure.textContent = fmt.format(v * e * p);
-    perTon.textContent = fmt2.format(e * p);
-  };
-  [volume, emission, price].forEach(el => el?.addEventListener('input', calculate));
-  calculate();
+  (function() {
+    const fmtCurrency0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const fmtCurrency2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtPercent1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    const volume = document.getElementById("volume");
+    const emission = document.getElementById("emission");
+    const price = document.getElementById("price");
+    const sales = document.getElementById("sales");
+    const cost = document.getElementById("cost");
+
+    const exposureEl = document.getElementById("exposure");
+    const perTonEl = document.getElementById("per-ton");
+    const marginEl = document.getElementById("margin");
+    const minPriceEl = document.getElementById("min-price");
+    const revisionEl = document.getElementById("revision");
+
+    function updateCalculations() {
+      const v = Math.max(0, parseFloat(volume?.value) || 0);
+      const e = Math.max(0, parseFloat(emission?.value) || 0);
+      const p = Math.max(0, parseFloat(price?.value) || 0);
+      const s = Math.max(0, parseFloat(sales?.value) || 0);
+      const c = Math.max(0, parseFloat(cost?.value) || 0);
+
+      const gross = v * e * p;
+      const perTon = e * p;
+      const totalCostWithCarbon = c + perTon;
+      const margin = s > 0 ? ((s - totalCostWithCarbon) / s) * 100 : 0;
+      const minPrice = totalCostWithCarbon;
+      const revision = s > 0 ? (perTon / s) * 100 : 0;
+
+      if (exposureEl) exposureEl.textContent = fmtCurrency0.format(gross);
+      if (perTonEl) perTonEl.textContent = fmtCurrency2.format(perTon);
+
+      if (marginEl) {
+        marginEl.textContent = "%" + fmtPercent1.format(margin);
+        if (margin < 0) {
+          marginEl.classList.add("negative-state");
+        } else {
+          marginEl.classList.remove("negative-state");
+        }
+      }
+
+      if (minPriceEl) minPriceEl.textContent = "€" + Math.round(minPrice) + "/t";
+      if (revisionEl) {
+        const sign = revision >= 0 ? "+" : "";
+        revisionEl.textContent = sign + "%" + fmtPercent1.format(revision);
+      }
+    }
+
+    [volume, emission, price, sales, cost].forEach(function(input) {
+      if (input) {
+        input.addEventListener("input", updateCalculations);
+        input.addEventListener("change", updateCalculations);
+      }
+    });
+
+    updateCalculations();
+  })();
 </script>
 
 <style>
-  .calculator{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;padding:42px;margin-top:28px}
-  .calc-copy h2{font-size:42px;line-height:1.03;margin:18px 0 16px}
-  .calc-copy p{color:var(--muted);font-size:17px;line-height:1.65;max-width:560px}
-  .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-  .trust-row span{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 9px}
-  .calc-form{background:#0a1312;border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px}
-  .calc-form label>span{font-size:12px;color:var(--muted);display:block;margin-bottom:8px}
-  .input-wrap{display:flex;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .input-wrap input{width:100%;background:transparent;color:var(--text);border:0;outline:0;padding:14px 15px;font-size:17px}
-  .input-wrap b{padding:0 14px;color:var(--muted);font-size:12px;white-space:nowrap}
-  .calc-result{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-  .calc-result>div{padding:16px;background:rgba(167,243,208,.05);border:1px solid rgba(167,243,208,.12);border-radius:12px}
-  .calc-result span{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.calc-result strong{font-size:20px}
-  .calc-note{font-size:11px;color:var(--muted-2);line-height:1.5;margin:0}
-  @media(max-width:900px){.calculator{grid-template-columns:1fr;padding:24px}.calc-copy h2{font-size:34px}}
-  @media(max-width:520px){.calc-result{grid-template-columns:1fr}}
+  .calculator-section {
+    margin-top: 56px;
+  }
+  .calc-card {
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: 48px;
+    padding: 48px;
+    background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+  }
+  .calc-copy h2 {
+    font-size: clamp(32px, 3.8vw, 44px);
+    line-height: 1.05;
+    margin: 18px 0 16px;
+    color: var(--text-primary);
+  }
+  .lead-text {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 520px;
+  }
+  .trust-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+  .trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .pill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    opacity: 0.6;
+  }
+
+  .calc-form {
+    background: #0B0E0E;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group.full-width {
+    grid-column: span 2;
+  }
+  .label-text {
+    font-size: 12px;
+    font-weight: 550;
+    color: var(--text-secondary);
+  }
+  .input-wrap {
+    display: flex;
+    align-items: center;
+    background: #060707;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .input-wrap:focus-within {
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+    outline: none;
+  }
+  .input-wrap input {
+    width: 100%;
+    background: transparent;
+    color: var(--text-primary);
+    border: 0;
+    outline: none;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .input-wrap input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  .unit {
+    padding: 0 14px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .results-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .primary-result {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .result-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    font-weight: 550;
+  }
+  .result-hero {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+  .result-note {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .secondary-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .sec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .sec-label {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .sec-value {
+    font-size: 17px;
+    font-weight: 650;
+    color: var(--text-secondary);
+  }
+  .sec-value.negative-state {
+    color: var(--state-danger);
+  }
+
+  .calc-disclaimer {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 920px) {
+    .calc-card {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 32px;
+      border-radius: 16px;
+    }
+  }
+  @media (max-width: 600px) {
+    .inputs-grid {
+      grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+      grid-column: span 1;
+    }
+    .secondary-results {
+      grid-template-columns: 1fr;
+    }
+    .form-actions {
+      flex-direction: column;
+    }
+    .form-actions .btn {
+      width: 100%;
+    }
+  }
 </style>

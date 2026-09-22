@@ -1,9 +1,43 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Calculator from '../components/Calculator.astro';
+import Layout from "../layouts/Layout.astro";
+import Calculator from "../components/Calculator.astro";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "CBAM Fiyatı ve Şirket Karbon Maliyeti Hesaplama",
+  description: "CBAM sertifika fiyatını ihracat tonajı ve gömülü emisyonla birleştirerek brüt karbon maliyetini ve ürün tonu etkisini hesaplayın.",
+  url: "https://karbonfiyat.com/cbam-fiyati"
+};
 ---
-<Layout title="CBAM Fiyatı ve Karbon Maliyeti Hesaplama | KarbonFiyat" description="CBAM sertifika fiyatını şirketinizin ihracat tonajı ve gömülü emisyonuyla birleştirerek brüt karbon maruziyetini hesaplayın." canonical="/cbam-fiyati">
-  <section class="container subhero"><span class="eyebrow">CBAM</span><h1 class="section-title">CBAM fiyatını şirket maliyetine çevirin.</h1><p class="lead">Sadece €/tCO₂e fiyatını görmek yetmez. Asıl soru bu fiyatın ürün tonu, müşteri ve yıllık ihracat bütçesine ne yaptığıdır.</p></section>
-  <section class="container"><Calculator /></section>
+<Layout
+  title="CBAM Fiyatı ve Karbon Maliyeti Hesaplama | KarbonFiyat"
+  description="CBAM sertifika fiyatını şirketinizin ihracat tonajı ve gömülü emisyonuyla birleştirerek brüt karbon maruziyetini hesaplayın."
+  canonical="/cbam-fiyati"
+  schema={schema}
+>
+  <section class="container subhero">
+    <span class="eyebrow">Sınırda Karbon Düzenleme Mekanizması</span>
+    <h1 class="section-title">CBAM fiyatını doğrudan şirket maliyetine çevirin.</h1>
+    <p class="lead">
+      Sadece €/tCO₂e birim kotasyonunu izlemek yeterli değildir.
+      Asıl finansal soru; bu fiyatın ürün tonu başına, ihracat sözleşmesi marjına ve yıllık nakit akışına getirdiği ek yükümlülüktür.
+    </p>
+  </section>
+
+  <section class="container">
+    <Calculator />
+  </section>
 </Layout>
-<style>.subhero{padding:90px 0 12px}.subhero h1{margin:18px 0}</style>
+
+<style>
+  .subhero {
+    padding: 88px 0 16px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+  }
+  @media (max-width: 860px) {
+    .subhero { padding-top: 64px; }
+  }
+</style>

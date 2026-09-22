@@ -1,36 +1,209 @@
+---
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const navItems = [
+  { label: "Karbon Fiyatı", href: "/karbon-fiyati" },
+  { label: "CBAM", href: "/cbam-fiyati" },
+  { label: "Türkiye ETS", href: "/turkiye-ets" },
+  { label: "Hesapla", href: "/karbon-maliyet-hesaplama" },
+  { label: "Metodoloji", href: "/metodoloji" }
+];
+---
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="KarbonFiyat ana sayfa">
-      <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
-      <span>karbonfiyat</span>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+          <rect width="28" height="28" rx="6" fill="#0E1010" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+          <rect x="7" y="8" width="14" height="2.2" rx="1.1" fill="#F4F5F4"/>
+          <rect x="7" y="13" width="9.5" height="2.2" rx="1.1" fill="#F4F5F4" fill-opacity="0.75"/>
+          <rect x="7" y="18" width="14" height="2.2" rx="1.1" fill="#F4F5F4"/>
+        </svg>
+      </span>
+      <span class="brand-text">karbonfiyat</span>
     </a>
 
     <nav class="desktop-nav" aria-label="Ana menü">
-      <a href="/karbon-fiyati">Karbon Fiyatı</a>
-      <a href="/cbam-fiyati">CBAM</a>
-      <a href="/turkiye-ets">Türkiye ETS</a>
-      <a href="/karbon-maliyet-hesaplama">Hesapla</a>
-      <a href="/metodoloji">Metodoloji</a>
+      {navItems.map((item) => {
+        const isActive = currentPath === item.href;
+        return (
+          <a href={item.href} class={isActive ? "active" : ""}>
+            {item.label}
+          </a>
+        );
+      })}
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-ghost compact" href="https://degerlet.com" rel="noopener">Uzman Değerleme</a>
+      <a class="btn btn-secondary compact" href="https://degerlet.com" rel="noopener">Uzman Değerlendirme</a>
       <a class="btn btn-primary compact" href="/karbon-maliyet-hesaplama">Maliyeti Hesapla</a>
+      <button class="mobile-toggle" id="menu-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-nav" aria-label="Mobil menü">
+      {navItems.map((item) => {
+        const isActive = currentPath === item.href;
+        return (
+          <a href={item.href} class={isActive ? "active" : ""}>
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+    <div class="mobile-actions">
+      <a class="btn btn-primary" href="/karbon-maliyet-hesaplama">Maliyeti Hesapla</a>
+      <a class="btn btn-secondary" href="https://degerlet.com" rel="noopener">Uzman Değerlendirme</a>
     </div>
   </div>
 </header>
 
+<script is:inline>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  if (toggleBtn && mobileMenu) {
+    toggleBtn.addEventListener("click", () => {
+      const expanded = toggleBtn.getAttribute("aria-expanded") === "true";
+      toggleBtn.setAttribute("aria-expanded", String(!expanded));
+      mobileMenu.classList.toggle("open");
+      mobileMenu.setAttribute("aria-hidden", String(expanded));
+    });
+  }
+</script>
+
 <style>
-  .site-header{position:sticky;top:0;z-index:50;background:rgba(8,16,15,.84);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)}
-  .header-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:22px}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:780;font-size:20px;letter-spacing:-.03em}
-  .brand-mark{width:28px;height:28px;border:1px solid rgba(167,243,208,.45);border-radius:8px;position:relative;display:grid;place-items:center}
-  .brand-mark span:first-child{width:14px;height:2px;background:var(--accent);transform:rotate(45deg);position:absolute}
-  .brand-mark span:last-child{width:14px;height:2px;background:var(--accent);transform:rotate(-45deg);position:absolute}
-  .desktop-nav{display:flex;gap:22px;color:var(--muted);font-size:14px}
-  .desktop-nav a:hover{color:var(--text)}
-  .header-actions{display:flex;gap:9px}
-  .compact{min-height:40px;padding:0 15px;font-size:13px}
-  @media(max-width:980px){.desktop-nav{display:none}}
-  @media(max-width:640px){.header-actions .btn-ghost{display:none}.brand{font-size:18px}}
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 72px;
+    background: rgba(6, 7, 7, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .header-inner {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 750;
+    font-size: 19px;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+  }
+  .brand-text {
+    color: var(--text-primary);
+  }
+  .desktop-nav {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .desktop-nav a {
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .desktop-nav a:hover,
+  .desktop-nav a.active {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--text-primary);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .compact {
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 9px;
+  }
+  .mobile-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--text-primary);
+    border-radius: 1px;
+    transition: transform 150ms ease;
+  }
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: #0B0D0D;
+    border-bottom: 1px solid var(--border-medium);
+    padding: 24px;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mobile-menu.open {
+    display: flex;
+  }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .mobile-nav a {
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .mobile-nav a.active,
+  .mobile-nav a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+  .mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  @media (max-width: 960px) {
+    .desktop-nav { display: none; }
+    .header-actions .btn-secondary { display: none; }
+    .mobile-toggle { display: flex; }
+  }
+  @media (max-width: 520px) {
+    .header-actions .btn-primary { display: none; }
+  }
 </style>
