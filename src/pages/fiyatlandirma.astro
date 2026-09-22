@@ -1,0 +1,723 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "KarbonFiyat Carbon Financial Intelligence",
+  description: "Karbon maliyetini ürün, müşteri, marj ve satış fiyatı kararına çeviren finansal analiz hizmetleri.",
+  brand: {
+    "@type": "Brand",
+    name: "KarbonFiyat"
+  },
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Ücretsiz Karbon Maliyet Hesaplama",
+      price: "0",
+      priceCurrency: "TRY",
+      url: "https://karbonfiyat.com/karbon-maliyet-hesaplama"
+    },
+    {
+      "@type": "Offer",
+      name: "Ön Analiz",
+      price: "4900",
+      priceCurrency: "TRY",
+      url: "https://karbonfiyat.com/fiyatlandirma"
+    },
+    {
+      "@type": "Offer",
+      name: "Carbon P&L",
+      price: "19900",
+      priceCurrency: "TRY",
+      url: "https://karbonfiyat.com/fiyatlandirma"
+    }
+  ]
+};
+
+const plans = [
+  {
+    eyebrow: "ÜCRETSİZ",
+    name: "Karbon Maliyet Hesaplama",
+    price: "0 TL",
+    sub: "Anında",
+    copy: "Karbon fiyatının şirketinizde ne büyüklükte bir maliyet yaratabileceğini hızlıca görün.",
+    features: [
+      "Hızlı exposure hesabı",
+      "Ton başına karbon maliyeti",
+      "Basit senaryo görünümü",
+      "Anında sonuç"
+    ],
+    cta: "Ücretsiz Hesapla",
+    href: "/karbon-maliyet-hesaplama",
+    featured: false
+  },
+  {
+    eyebrow: "EN HIZLI BAŞLANGIÇ",
+    name: "Ön Analiz",
+    price: "4.900 TL",
+    sub: "+ KDV · 1 iş günü",
+    copy: "Şirketinizin gerçek ürün, tonaj ve emisyon verisiyle ilk finansal maruziyetini netleştirin.",
+    features: [
+      "CBAM brüt maliyeti",
+      "Ton başına karbon maliyeti",
+      "Ürün bazlı ilk exposure",
+      "3 karbon fiyat senaryosu",
+      "Temel marj etkisi",
+      "PDF yönetim özeti"
+    ],
+    cta: "Ön Analiz Başlat",
+    href: "/#basvuru",
+    featured: false
+  },
+  {
+    eyebrow: "ÖNERİLEN",
+    name: "Carbon P&L",
+    price: "19.900 TL",
+    sub: "+ KDV · 3 iş günü",
+    copy: "Karbon maliyetini ürün, müşteri, marj ve satış fiyatı kararına bağlayan CFO seviyesi finansal model.",
+    features: [
+      "Ürün bazlı Carbon P&L",
+      "Müşteri bazlı kârlılık",
+      "Karbon sonrası brüt marj",
+      "Minimum satış fiyatı",
+      "Gerekli fiyat artışı",
+      "Break-even carbon price",
+      "2026–2030 senaryoları",
+      "Yönetim kurulu çıktısı"
+    ],
+    cta: "Carbon P&L Analizi",
+    href: "/#basvuru",
+    featured: true
+  },
+  {
+    eyebrow: "KURUMSAL",
+    name: "Kurumsal Model",
+    price: "59.900 TL",
+    sub: "’den başlayan",
+    copy: "Çoklu ürün, müşteri ve tesis yapılarında karbon riskini şirket ölçeğinde yönetin.",
+    features: [
+      "Çoklu ürün ve müşteri",
+      "Çoklu tesis",
+      "Excel veri aktarımı",
+      "Fiyatlama motoru",
+      "Müşteri bazlı aksiyon",
+      "Karbon bütçesi",
+      "Yönetim dashboard",
+      "Özel senaryo mimarisi"
+    ],
+    cta: "Kurumsal Modeli Görüş",
+    href: "/#huni",
+    featured: false
+  }
+];
+
+const comparison = [
+  ["CBAM exposure", "✓", "✓", "✓", "✓"],
+  ["Ton başına karbon maliyeti", "✓", "✓", "✓", "✓"],
+  ["Marj etkisi", "—", "Sınırlı", "✓", "✓"],
+  ["Müşteri kârlılığı", "—", "—", "✓", "✓"],
+  ["Satış fiyatı kararı", "—", "—", "✓", "✓"],
+  ["Break-even carbon price", "—", "—", "✓", "✓"],
+  ["Yönetim raporu", "—", "✓", "✓", "✓"],
+  ["Dashboard / özel model", "—", "—", "—", "✓"]
+];
+---
+
+<Layout
+  title="Fiyatlandırma | KarbonFiyat"
+  description="KarbonFiyat fiyatlandırması: ücretsiz karbon maliyeti hesaplama, 4.900 TL Ön Analiz, 19.900 TL Carbon P&L ve kurumsal karbon finansal karar modeli."
+  canonical="/fiyatlandirma"
+  schema={schema}
+>
+  <section class="pricing-hero grid-overlay">
+    <div class="container hero-inner">
+      <div class="hero-kicker">
+        <span class="eyebrow">FİYATLANDIRMA</span>
+        <span class="hero-status">Şeffaf fiyat · Net çıktı</span>
+      </div>
+
+      <h1>Karbon maliyetini görmek ücretsiz.<br /><span>Kararını çıkarmak ücretli.</span></h1>
+
+      <p class="hero-copy">
+        Hesap makinesinden CFO seviyesinde Carbon P&amp;L modeline kadar ihtiyacınız kadar ilerleyin.
+        Fiyatı saklamıyoruz; hangi aşamada ne alacağınızı baştan görün.
+      </p>
+
+      <div class="price-rail" aria-label="KarbonFiyat ürün fiyatları">
+        <div><strong>0 TL</strong><span>Başlangıç</span></div>
+        <div><strong>4.900 TL</strong><span>Ön Analiz</span></div>
+        <div><strong>19.900 TL</strong><span>Carbon P&amp;L</span></div>
+        <div><strong>59.900 TL+</strong><span>Kurumsal</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="plans-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ÜRÜN MERDİVENİ</span>
+        <h2>Net fiyat. Net çıktı. Net karar.</h2>
+        <p>Her paket bir sonraki seviyeye veri ve karar altyapısı hazırlar. Gereksiz modül satmıyoruz.</p>
+      </div>
+
+      <div class="plans-grid">
+        {plans.map((plan) => (
+          <article class:list={["plan-card", { featured: plan.featured }]}>
+            {plan.featured && <div class="featured-line" aria-hidden="true"></div>}
+            <div class="plan-head">
+              <span class:list={["plan-badge", { "plan-badge-featured": plan.featured }]}>{plan.eyebrow}</span>
+              {plan.featured && <span class="recommended">CFO SEÇİMİ</span>}
+            </div>
+
+            <h3>{plan.name}</h3>
+            <div class="price-block">
+              <strong>{plan.price}</strong>
+              <span>{plan.sub}</span>
+            </div>
+
+            <p class="plan-copy">{plan.copy}</p>
+
+            <div class="feature-divider"></div>
+
+            <ul>
+              {plan.features.map((feature) => <li>{feature}</li>)}
+            </ul>
+
+            <a class:list={["btn", "plan-cta", plan.featured ? "btn-primary" : "btn-secondary"]} href={plan.href}>
+              {plan.cta}
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="comparison-section">
+    <div class="container">
+      <div class="section-head compact-head">
+        <span class="eyebrow">KARŞILAŞTIRMA</span>
+        <h2>Hangi seviyede hangi karar açılıyor?</h2>
+      </div>
+
+      <div class="comparison-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>Karar / çıktı</th>
+              <th>Ücretsiz</th>
+              <th>Ön Analiz</th>
+              <th class="focus-col">Carbon P&amp;L</th>
+              <th>Kurumsal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map((row) => (
+              <tr>
+                {row.map((cell, index) => (
+                  <td class:list={{ "metric-name": index === 0, "focus-col": index === 3 }}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="monitor-section">
+    <div class="container">
+      <div class="monitor-shell">
+        <div class="monitor-main">
+          <span class="eyebrow">SÜREKLİ TAKİP</span>
+          <h2>Carbon Monitor</h2>
+          <p>
+            Karbon fiyatı değiştikçe şirketinizin maruziyeti, marj etkisi ve fiyatlama ihtiyacı yeniden izlenir.
+            Abonelik kapsamı şirket veri yapısına göre devreye alınır.
+          </p>
+          <div class="monitor-features">
+            <span>CBAM fiyat değişimi</span>
+            <span>EU ETS / TR ETS takibi</span>
+            <span>Exposure güncellemesi</span>
+            <span>Marj ve fiyat alarmı</span>
+          </div>
+        </div>
+
+        <div class="monitor-action">
+          <span class="monitor-label">AYLIK MONİTÖR</span>
+          <strong>Teklifli</strong>
+          <small>Şirket kapsamına göre</small>
+          <a class="btn btn-primary" href="/#basvuru">Monitör Talebi Oluştur</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-section">
+    <div class="container">
+      <div class="closing-card">
+        <div>
+          <span class="eyebrow">SONRAKİ ADIM</span>
+          <h2>Karbon fiyatını değil, şirketinizdeki etkisini satın alın.</h2>
+          <p>İlk hesap ücretsiz. Finansal karar gerektiğinde analiz seviyesini seçin.</p>
+        </div>
+        <div class="closing-actions">
+          <a class="btn btn-primary" href="/#basvuru">4.900 TL Ön Analiz</a>
+          <a class="btn btn-secondary" href="/karbon-maliyet-hesaplama">Ücretsiz Hesapla</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pricing-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 112px 0 64px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .pricing-hero::after {
+    content: "";
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    right: -200px;
+    top: -240px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.06);
+    box-shadow:
+      0 0 0 64px rgba(255,255,255,.018),
+      0 0 0 128px rgba(255,255,255,.01);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-kicker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .hero-status {
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 1020px;
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(50px, 7vw, 92px);
+    line-height: .96;
+    letter-spacing: -.055em;
+    font-weight: 750;
+  }
+
+  h1 span {
+    color: #FFFFFF;
+  }
+
+  .hero-copy {
+    max-width: 790px;
+    margin: 28px 0 0;
+    color: var(--text-secondary);
+    font-size: clamp(17px, 2vw, 20px);
+    line-height: 1.65;
+  }
+
+  .price-rail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 44px;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255,255,255,.018);
+  }
+
+  .price-rail div {
+    min-height: 92px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    border-right: 1px solid var(--border-soft);
+  }
+
+  .price-rail div:last-child { border-right: 0; }
+
+  .price-rail strong {
+    color: #FFFFFF;
+    font-size: 22px;
+    letter-spacing: -.03em;
+  }
+
+  .price-rail span {
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .plans-section,
+  .comparison-section,
+  .monitor-section,
+  .closing-section {
+    padding: 82px 0;
+  }
+
+  .section-head {
+    max-width: 760px;
+    margin-bottom: 38px;
+  }
+
+  .section-head h2,
+  .monitor-main h2,
+  .closing-card h2 {
+    margin: 12px 0 14px;
+    color: var(--text-primary);
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -.04em;
+  }
+
+  .section-head p,
+  .monitor-main p,
+  .closing-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .plan-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 26px 22px 22px;
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.025), transparent 32%),
+      var(--surface-1);
+    overflow: hidden;
+  }
+
+  .plan-card.featured {
+    border-color: rgba(255,255,255,.28);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.07), transparent 38%),
+      #161A20;
+    box-shadow: 0 24px 70px rgba(0,0,0,.34);
+    transform: translateY(-8px);
+  }
+
+  .featured-line {
+    position: absolute;
+    top: 0;
+    left: 22px;
+    right: 22px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
+    opacity: .9;
+  }
+
+  .plan-head {
+    min-height: 34px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .plan-badge,
+  .recommended {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 9px;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .plan-badge-featured,
+  .recommended {
+    color: #FFFFFF;
+    border-color: rgba(255,255,255,.18);
+    background: rgba(255,255,255,.05);
+  }
+
+  .plan-card h3 {
+    margin: 0 0 18px;
+    color: var(--text-primary);
+    font-size: 21px;
+  }
+
+  .price-block {
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .price-block strong {
+    color: #FFFFFF;
+    font-size: clamp(30px, 3vw, 39px);
+    line-height: 1;
+    letter-spacing: -.05em;
+    white-space: nowrap;
+  }
+
+  .price-block span {
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+
+  .plan-copy {
+    min-height: 102px;
+    margin: 18px 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .feature-divider {
+    height: 1px;
+    background: var(--border-soft);
+    margin-bottom: 18px;
+  }
+
+  .plan-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 26px;
+    display: grid;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .plan-card li {
+    position: relative;
+    padding-left: 18px;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .plan-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #FFFFFF;
+    font-size: 11px;
+  }
+
+  .plan-cta {
+    width: 100%;
+    min-height: 46px;
+    padding-inline: 14px;
+    font-size: 12.5px;
+    text-align: center;
+  }
+
+  .comparison-section {
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    background: rgba(255,255,255,.012);
+  }
+
+  .compact-head { margin-bottom: 30px; }
+
+  .comparison-shell {
+    overflow-x: auto;
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    background: var(--surface-1);
+  }
+
+  table {
+    width: 100%;
+    min-width: 820px;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 18px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  th {
+    color: var(--text-primary);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,.018);
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .metric-name {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .focus-col {
+    background: rgba(255,255,255,.025);
+    color: #FFFFFF;
+  }
+
+  .monitor-shell {
+    display: grid;
+    grid-template-columns: 1.45fr .55fr;
+    gap: 16px;
+    padding: 30px;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.035), transparent 45%),
+      #101318;
+  }
+
+  .monitor-main {
+    padding: 10px 10px 10px 4px;
+  }
+
+  .monitor-main p {
+    max-width: 700px;
+  }
+
+  .monitor-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .monitor-features span {
+    padding: 7px 10px;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-size: 11px;
+  }
+
+  .monitor-action {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    background: rgba(0,0,0,.22);
+  }
+
+  .monitor-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: .12em;
+  }
+
+  .monitor-action strong {
+    margin-top: 10px;
+    color: #FFFFFF;
+    font-size: 38px;
+    letter-spacing: -.045em;
+  }
+
+  .monitor-action small {
+    color: var(--text-muted);
+    margin: 3px 0 22px;
+  }
+
+  .closing-section {
+    padding-top: 20px;
+    padding-bottom: 96px;
+  }
+
+  .closing-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+    padding: 38px;
+    border: 1px solid var(--border-medium);
+    border-radius: 24px;
+    background: #0F1216;
+  }
+
+  .closing-card > div:first-child {
+    max-width: 760px;
+  }
+
+  .closing-actions {
+    min-width: 228px;
+    display: grid;
+    gap: 10px;
+  }
+
+  @media (max-width: 1100px) {
+    .plans-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .plan-card.featured { transform: none; }
+  }
+
+  @media (max-width: 820px) {
+    .pricing-hero { padding-top: 88px; }
+    .hero-kicker { align-items: flex-start; flex-direction: column; }
+    .price-rail { grid-template-columns: repeat(2, 1fr); }
+    .price-rail div:nth-child(2) { border-right: 0; }
+    .price-rail div:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
+    .monitor-shell { grid-template-columns: 1fr; }
+    .closing-card { align-items: stretch; flex-direction: column; }
+    .closing-actions { min-width: 0; width: 100%; }
+  }
+
+  @media (max-width: 600px) {
+    .plans-section,
+    .comparison-section,
+    .monitor-section,
+    .closing-section { padding: 58px 0; }
+
+    .plans-grid { grid-template-columns: 1fr; }
+    .price-rail { grid-template-columns: 1fr; }
+    .price-rail div { border-right: 0; border-bottom: 1px solid var(--border-soft); }
+    .price-rail div:last-child { border-bottom: 0; }
+    .plan-copy { min-height: 0; }
+    .recommended { display: none; }
+    .monitor-shell,
+    .closing-card { padding: 22px; }
+  }
+</style>
