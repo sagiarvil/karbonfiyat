@@ -39,6 +39,11 @@ const defaultCbamPrice = 75.28;
           </label>
 
           <label class="field">
+            <span>Tesis / lokasyon</span>
+            <input type="text" data-kf="facility" placeholder="Örn. İzmir Tesisi" />
+          </label>
+
+          <label class="field">
             <span>Ürün / GTİP</span>
             <input type="text" data-kf="product" placeholder="Örn. 7208 sıcak haddelenmiş yassı" />
           </label>
@@ -287,6 +292,7 @@ const defaultCbamPrice = 75.28;
       return {
         version: 1,
         company: fields.company?.value?.trim() || "",
+        facility: fields.facility?.value?.trim() || "",
         product: fields.product?.value?.trim() || "",
         volume,
         intensity,
@@ -314,7 +320,7 @@ const defaultCbamPrice = 75.28;
 
     const apply = (data) => {
       if (!data) return;
-      ["company", "product", "volume", "intensity", "salesPrice", "productionCost", "carbonPrice", "targetMargin"].forEach((key) => {
+      ["company", "facility", "product", "volume", "intensity", "salesPrice", "productionCost", "carbonPrice", "targetMargin"].forEach((key) => {
         const sourceKey = key === "targetMargin" ? "targetMarginPct" : key;
         if (fields[key] && data[sourceKey] !== undefined && data[sourceKey] !== null) {
           fields[key].value = String(data[sourceKey]);
@@ -423,6 +429,7 @@ const defaultCbamPrice = 75.28;
       const rows = [
         ["Alan", "Değer"],
         ["Şirket", d.company],
+        ["Tesis / lokasyon", d.facility],
         ["Ürün", d.product],
         ["Yıllık AB ihracatı (ton)", d.volume],
         ["Emisyon yoğunluğu (tCO2/ton)", d.intensity],
@@ -452,6 +459,7 @@ const defaultCbamPrice = 75.28;
     root.querySelector("[data-reset-workspace]")?.addEventListener("click", () => {
       apply({
         company: "",
+        facility: "",
         product: "",
         volume: 1000,
         intensity: 1.8,
