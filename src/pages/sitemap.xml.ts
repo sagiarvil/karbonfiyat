@@ -8,6 +8,8 @@ export async function GET() {
     "/karbon-maliyet-hesaplama",
     "/carbon-pnl",
     "/musteri-karliligi",
+    "/workspace",
+    "/fiyatlandirma",
     "/metodoloji"
   ];
 
