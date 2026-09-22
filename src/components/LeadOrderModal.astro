@@ -8,11 +8,11 @@
         <!-- Sol: Teklif & Kapsam Özeti -->
         <div class="offer-summary-col">
           <div class="offer-badge">
-            <span>RESMÎ ÖN ANALİZ HİZMETİ</span>
+            <span>ÖN ANALİZ BAŞVURUSU</span>
           </div>
           <h2 class="offer-title">İhracat marjınızı korumaya şimdi başlayın.</h2>
           <p class="offer-sub">
-            4.900 TL (+ KDV) Ön Analiz Raporu ile şirketinizin gerçek GTIP ve tesis emisyonlarıyla hesaplanmış net CBAM yükümlülüğünü ve savunma yol haritasını 1 iş gününde alın.
+            4.900 TL (+ KDV) Ön Analiz ile şirketinizin GTİP, tonaj ve doğrulanmış tesis emisyon verilerini finansal maruziyet, marj ve fiyatlama kararına dönüştürün. Hedef teslim süresi eksiksiz veri alımından sonra 1 iş günüdür.
           </p>
 
           <div class="deliverables-list">
@@ -40,8 +40,8 @@
             <div class="deliv-item">
               <span class="deliv-check">✓</span>
               <div>
-                <strong>1 İş Gününde CFO Yönetici Özeti Formatında Teslim</strong>
-                <small>Yönetim kurulu veya banka finansman sunumuna hazır PDF tablo.</small>
+                <strong>CFO Yönetici Özeti Formatında Teslim</strong>
+                <small>Yönetim kullanımı için PDF/CSV çıktı paketi ve hesaplama özeti.</small>
               </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="contact-links">
               <a href="mailto:analiz@karbonfiyat.com" class="direct-link">✉️ analiz@karbonfiyat.com</a>
               <span class="sep">•</span>
-              <a href="https://wa.me/905320000000?text=KarbonFiyat%204900%20TL%20Ön%20Analiz%20Hakkında%20Bilgi%20Almak%20İstiyorum" target="_blank" rel="noopener" class="direct-link whatsapp-link">💬 WhatsApp Destek</a>
+              <a href="/metodoloji#veri-politikasi" class="direct-link">Veri politikası</a>
             </div>
           </div>
         </div>
@@ -61,10 +61,10 @@
           <div class="form-panel">
             <div class="form-header">
               <h3 class="form-title">Ön Analiz Talep Formu</h3>
-              <span class="form-step-tag">KONTENJAN: İLK 10 İHRACATÇI</span>
+              <span class="form-step-tag">GÜVENLİ BAŞVURU</span>
             </div>
 
-            <form class="actual-lead-form" id="actual-lead-form" onsubmit="handleFormSubmit(event)">
+            <form class="actual-lead-form" id="actual-lead-form">
               <div class="form-row">
                 <div class="form-field">
                   <label for="company-name">Şirket Unvanı *</label>
@@ -111,19 +111,17 @@
 
               <div class="form-terms">
                 <label class="checkbox-label">
-                  <input type="checkbox" required checked />
-                  <span>Verilerimin gizlilik sözleşmesi (NDA) ve KVKK kapsamında işlenmesini onaylıyorum.</span>
+                  <input type="checkbox" name="consent" value="yes" required />
+                  <span>Başvuru bilgilerimin değerlendirme ve geri dönüş amacıyla işlenmesini kabul ediyorum. Ayrıntılar için <a href="/metodoloji#veri-politikasi">veri politikasını</a> okudum.</span>
                 </label>
               </div>
 
               <button type="submit" class="btn btn-submit-order" id="btn-submit">
-                <span>4.900 TL Ön Analiz Başvurusunu Tamamla</span>
+                <span>Başvuru Paketini Hazırla</span>
                 <span class="btn-arrow" aria-hidden="true">→</span>
               </button>
 
-              <div id="form-success-msg" class="success-message" style="display: none;">
-                ✓ Talebiniz alındı. Finans ekibimiz 2 saat içinde veri şablonu ve detaylar için sizinle iletişime geçecektir.
-              </div>
+              <div id="form-success-msg" class="success-message" style="display: none;"></div>
             </form>
           </div>
         </div>
@@ -133,19 +131,81 @@
 </section>
 
 <script is:inline>
-  function handleFormSubmit(e) {
-    e.preventDefault();
+  (() => {
+    const form = document.getElementById("actual-lead-form");
     const btn = document.getElementById("btn-submit");
     const msg = document.getElementById("form-success-msg");
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = "Kaydediliyor...";
-    }
-    setTimeout(function() {
-      if (btn) btn.style.display = "none";
-      if (msg) msg.style.display = "block";
-    }, 600);
-  }
+    if (!form || !btn || !msg) return;
+
+    const safe = (value) => String(value ?? "").trim().slice(0, 500);
+
+    const downloadJson = (filename, data) => {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const requestId = "KF-LEAD-" + Date.now().toString(36).toUpperCase();
+      const payload = {
+        requestId,
+        createdAt: new Date().toISOString(),
+        source: "karbonfiyat.com",
+        service: "Ön Analiz 4.900 TL + KDV",
+        company: safe(data.get("company")),
+        name: safe(data.get("name")),
+        phone: safe(data.get("phone")),
+        email: safe(data.get("email")),
+        sector: safe(data.get("sector")),
+        volume: safe(data.get("volume")),
+        consent: data.get("consent") === "yes"
+      };
+
+      try {
+        const drafts = JSON.parse(localStorage.getItem("karbonfiyat_lead_drafts_v1") || "[]");
+        const next = Array.isArray(drafts) ? drafts.slice(-9) : [];
+        next.push(payload);
+        localStorage.setItem("karbonfiyat_lead_drafts_v1", JSON.stringify(next));
+      } catch {}
+
+      downloadJson(requestId.toLowerCase() + ".json", payload);
+
+      const body = [
+        "KarbonFiyat Ön Analiz Başvurusu",
+        "",
+        "Başvuru No: " + payload.requestId,
+        "Şirket: " + payload.company,
+        "Yetkili: " + payload.name,
+        "Telefon: " + payload.phone,
+        "E-posta: " + payload.email,
+        "Sektör: " + payload.sector,
+        "Yıllık AB tonajı: " + (payload.volume || "Belirtilmedi"),
+        "",
+        "Hizmet: " + payload.service,
+        "",
+        "Not: Başvuru JSON paketi tarayıcı tarafından ayrıca indirildi."
+      ].join("\n");
+
+      const subject = encodeURIComponent("KarbonFiyat Ön Analiz Başvurusu · " + requestId);
+      const mailBody = encodeURIComponent(body);
+
+      msg.style.display = "block";
+      msg.textContent = "Başvuru paketi oluşturuldu (" + requestId + "). JSON kopyası indirildi ve e-posta taslağı açılıyor. Başvurunun bize ulaşması için e-postayı göndermeniz gerekir.";
+      btn.disabled = false;
+
+      window.location.href = "mailto:analiz@karbonfiyat.com?subject=" + subject + "&body=" + mailBody;
+    });
+  })();
 </script>
 
 <style>
@@ -380,6 +440,12 @@
 
   .checkbox-label input {
     margin-top: 2px;
+  }
+
+  .checkbox-label a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .btn-submit-order {
