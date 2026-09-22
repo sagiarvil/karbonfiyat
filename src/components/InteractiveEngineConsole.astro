@@ -1,5 +1,5 @@
 ---
-import { OFFICIAL_GTIP_DATABASE } from "../lib/cbam-report-engine";
+import { REFERENCE_GTIP_PROFILES } from "../lib/cbam-report-engine";
 import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 ---
 
@@ -11,9 +11,9 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
         <span class="pulse-indicator"></span>
         <span>AKTİF ENDÜSTRİYEL KARAR MOTORLARI · DETERMINISTIC ENGINE V2.4</span>
       </div>
-      <h2 class="console-title">Gerçek zamanlı çalışan 3 kurumsal finansal karar motoru.</h2>
+      <h2 class="console-title">Çalışan 3 finansal karar motoru.</h2>
       <p class="console-sub">
-        Bu motorlar statik bir metin değil; AB Tüzüğü (EU 2023/956) formülleriyle çalışan, şirket verilerinizi anında finansal kâr erimesine, müşteri riskine ve bütçe deltasına çeviren aktif karar sistemleridir.
+        Bu motorlar şirket verilerini deterministik finansal formüllerle karbon maliyetine, müşteri riskine ve bütçe deltasına çevirir. Demo referans katsayıları resmî emisyon faktörü değildir; gerçek analizde doğrulanmış tesis/ürün verisi kullanılmalıdır.
       </p>
     </div>
 
@@ -23,17 +23,17 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
         <button type="button" class="tab-btn active" data-tab="engine-02" id="tab-02">
           <span class="tab-num">MOTOR 02 · 4.900 TL</span>
           <span class="tab-name">Ön Analiz Rapor Motoru</span>
-          <span class="tab-status-chip chip-amber">OPERASYONEL HAZIR</span>
+          <span class="tab-status-chip chip-amber">ÇALIŞAN MOTOR</span>
         </button>
         <button type="button" class="tab-btn" data-tab="engine-03" id="tab-03">
           <span class="tab-num">MOTOR 03 · 19.900 TL</span>
           <span class="tab-name">Müşteri Portföy &amp; Mahsup Motoru</span>
-          <span class="tab-status-chip chip-blue">MİMARİ HAZIR</span>
+          <span class="tab-status-chip chip-blue">ÇALIŞAN SİMÜLASYON</span>
         </button>
         <button type="button" class="tab-btn" data-tab="engine-04" id="tab-04">
           <span class="tab-num">MOTOR 04 · MONİTÖR</span>
           <span class="tab-name">Aylık Delta Risk Simülatörü</span>
-          <span class="tab-status-chip chip-blue">SİMÜLASYON AKTİF</span>
+          <span class="tab-status-chip chip-blue">ÇALIŞAN SİMÜLASYON</span>
         </button>
       </div>
 
@@ -43,7 +43,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
           <!-- Sol: Girdiler -->
           <div class="pane-box form-side">
             <h3 class="box-title">Tesis &amp; GTIP Emisyon Parametreleri</h3>
-            <p class="box-desc">Ürününüzün GTIP kodunu ve tesis emisyonlarını girin; motor anında net CBAM yükümlülüğü ve bilanço marj kaybı raporunu çıkarsın.</p>
+            <p class="box-desc">Ürününüzün GTİP kodunu ve tesis emisyonlarını girin; motor finansal CBAM maruziyeti ve marj etkisini hesaplasın. Listelenen başlangıç emisyonları yalnızca demo referansıdır.</p>
             
             <div class="inputs-stack">
               <div class="field-item">
@@ -54,7 +54,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
               <div class="field-item">
                 <label for="m2-gtip">GTIP Kodu ve Ürün Kategorisi</label>
                 <select id="m2-gtip">
-                  {OFFICIAL_GTIP_DATABASE.map(g => (
+                  {REFERENCE_GTIP_PROFILES.map(g => (
                     <option value={g.gtipCode} data-s1={g.defaultScope1} data-s2={g.defaultScope2} data-bench={g.benchmarkEur}>
                       {g.gtipCode} - {g.name}
                     </option>
