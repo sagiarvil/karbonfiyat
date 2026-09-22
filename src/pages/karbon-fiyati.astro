@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import MarketPriceCard from "../components/MarketPriceCard.astro";
+import MarketIntelligenceTerminal from "../components/MarketIntelligenceTerminal.astro";
 import ExpertCTA from "../components/ExpertCTA.astro";
-import { marketPrices } from "../data/market-prices";
 import { seoPages } from "../data/seo";
 ---
+
 <Layout
   title={seoPages.karbonFiyati.title}
   description={seoPages.karbonFiyati.description}
@@ -14,39 +14,68 @@ import { seoPages } from "../data/seo";
     <span class="eyebrow">PİYASA VE REGÜLASYON İZLEME</span>
     <h1 class="section-title">Karbon fiyatı tek bir sayı değildir.</h1>
     <p class="lead">
-      CBAM sertifika fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS fiyatı farklı mekanizmalardır.
-      Finansal modelleme yaparken spekülatif piyasa feed\x27leri ile yasal bağlayıcılığı olan resmî katsayılar birbirinden ayrılmalıdır.
+      Resmî CBAM sertifika fiyatını, EUA piyasa görünümünü ve Türkiye ETS statüsünü birbirinden ayırın.
+      Sonra her birini şirketinizin maliyetine, marjına ve fiyatlama kararına çevirin.
     </p>
   </section>
 
-  <section class="container prices-grid-section">
-    <div class="market-cards-grid">
-      {marketPrices.map(card => (
-        <MarketPriceCard card={card} />
-      ))}
-    </div>
-  </section>
+  <MarketIntelligenceTerminal />
 
   <section class="container comparison-section">
     <div class="card compare-card">
-      <span class="eyebrow">Mekanizma Karşılaştırması</span>
-      <h2>Üç Rejimin Finansal Anlamı</h2>
+      <span class="eyebrow">MEKANİZMA AYRIMI</span>
+      <h2>Üç rejimin finansal anlamı farklıdır.</h2>
+
       <div class="compare-grid">
         <div class="compare-col">
+          <span class="compare-no">01</span>
           <strong class="compare-name">CBAM</strong>
           <span class="chip">RESMÎ DÖNEM FİYATI</span>
-          <p>AB ithalatçısı tarafından ödenen, çeyreklik resmî açık artırma ağırlıklı ortalamasıyla kesinleşen yasal sertifika bedelidir.</p>
+          <p>
+            2026 boyunca Avrupa Komisyonu tarafından çeyreklik yayımlanan resmî sertifika fiyatıdır.
+            Finansal yükümlülük ve raporlama modelinde “resmî referans” olarak ayrı tutulur.
+          </p>
         </div>
+
         <div class="compare-col">
-          <strong class="compare-name">EU ETS</strong>
-          <span class="chip">PİYASA FİYATI</span>
-          <p>Avrupa Enerji Borsası\x27nda arz-talep dengesine göre anlık değişen, spot ve vadeli enstrümanları içeren piyasa kotasyonudur.</p>
+          <span class="compare-no">02</span>
+          <strong class="compare-name">EU ETS · EUA</strong>
+          <span class="chip">PİYASA GÖRÜNÜMÜ</span>
+          <p>
+            ICE Endex üzerinde işlem gören EUA kontratları piyasa beklentisini ve fiyat riskini yansıtır.
+            Piyasa kotasyonu ile CBAM sertifika fiyatı aynı veri değildir.
+          </p>
         </div>
+
         <div class="compare-col">
+          <span class="compare-no">03</span>
           <strong class="compare-name">TÜRKİYE ETS</strong>
-          <span class="chip warning">ULUSAL PİYASA / HENÜZ OLUŞMADI</span>
-          <p>Türkiye İklim Değişikliği Başkanlığı gözetiminde pilot aşamasında olan; henüz borsa fiyatı oluşmamış ulusal mekanizmadır.</p>
+          <span class="chip warning">FİYAT OLUŞMADI</span>
+          <p>
+            Resmî piyasa fiyatı oluşana kadar tahmin rakamı “canlı fiyat” olarak gösterilmez.
+            Yönetim senaryoları açıkça senaryo etiketiyle çalıştırılır.
+          </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container decision-section">
+    <div class="decision-shell">
+      <div>
+        <span class="eyebrow">KARBONFİYAT FARKI</span>
+        <h2>Grafiğin bittiği yerde karar motoru başlar.</h2>
+        <p>
+          Bir piyasa ekranı size yalnızca “karbon kaç Euro?” sorusunu cevaplar. KarbonFiyat’ın işi bundan sonra başlar:
+          bu fiyatın ürün tonuna, müşteri kârlılığına, brüt marja, teklif fiyatına ve yıllık bütçeye etkisini hesaplamak.
+        </p>
+      </div>
+
+      <div class="decision-list">
+        <div><span>01</span><strong>Fiyatı doğrula</strong><small>Resmî / piyasa / senaryo kaynağını ayır.</small></div>
+        <div><span>02</span><strong>Maliyete çevir</strong><small>Tonaj × emisyon yoğunluğu × karbon fiyatı.</small></div>
+        <div><span>03</span><strong>Marjı ölç</strong><small>Karbon sonrası gerçek brüt kârlılığı gör.</small></div>
+        <div><span>04</span><strong>Fiyatı koru</strong><small>Gerekli satış fiyatı ve müzakere eşiğini çıkar.</small></div>
       </div>
     </div>
   </section>
@@ -56,55 +85,143 @@ import { seoPages } from "../data/seo";
 
 <style>
   .subhero {
-    padding: 88px 0 32px;
+    padding: 88px 0 46px;
   }
+
   .subhero h1 {
     margin: 18px 0 16px;
-    font-size: clamp(34px, 4.8vw, 56px);
+    font-size: clamp(38px, 5vw, 62px);
   }
-  .market-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 16px;
-  }
+
   .comparison-section {
-    margin-top: 56px;
+    margin-top: 64px;
   }
+
   .compare-card {
-    padding: 44px;
+    padding: 42px;
   }
+
   .compare-card h2 {
-    font-size: 28px;
-    margin: 14px 0 28px;
+    max-width: 760px;
+    font-size: clamp(30px, 4vw, 44px);
+    margin: 14px 0 30px;
     color: var(--text-primary);
   }
+
   .compare-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 16px;
   }
+
   .compare-col {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: rgba(255,255,255,.012);
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
   }
+
+  .compare-no {
+    color: var(--text-muted);
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+  }
+
   .compare-name {
+    margin-top: 8px;
     font-size: 18px;
     color: var(--text-primary);
   }
+
   .compare-col p {
     color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 4px 0 0;
+  }
+
+  .decision-section {
+    padding: 28px 0 90px;
+  }
+
+  .decision-shell {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 28px;
+    padding: 34px;
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.025), transparent 40%),
+      #0e1112;
+  }
+
+  .decision-shell h2 {
+    margin: 14px 0;
+    color: #fff;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.02;
+  }
+
+  .decision-shell p {
     margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .decision-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .decision-list > div {
+    min-height: 136px;
+    padding: 18px;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    background: rgba(255,255,255,.014);
+  }
+
+  .decision-list span,
+  .decision-list strong,
+  .decision-list small {
+    display: block;
+  }
+
+  .decision-list span {
+    color: var(--text-muted);
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+  }
+
+  .decision-list strong {
+    margin-top: 24px;
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+
+  .decision-list small {
+    margin-top: 6px;
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
   }
 
   @media (max-width: 860px) {
-    .subhero { padding-top: 56px; }
-    .market-cards-grid { grid-template-columns: 1fr; }
-    .compare-grid { grid-template-columns: 1fr; }
-    .compare-card { padding: 28px; }
+    .subhero { padding-top: 58px; }
+    .compare-grid,
+    .decision-shell { grid-template-columns: 1fr; }
+    .compare-card,
+    .decision-shell { padding: 24px; }
+  }
+
+  @media (max-width: 560px) {
+    .decision-list { grid-template-columns: 1fr; }
   }
 </style>
