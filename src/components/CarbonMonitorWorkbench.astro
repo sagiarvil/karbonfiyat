@@ -1,0 +1,271 @@
+---
+const defaultBasePrice = 75.28;
+---
+
+<section class="monitor-workbench" id="carbon-monitor">
+  <div class="container">
+    <div class="monitor-head">
+      <div>
+        <span class="eyebrow">CARBON MONITOR WORKBENCH</span>
+        <h1>Karbon fiyatındaki değişimi bütçe ve marj deltasına çevirin.</h1>
+        <p>Fiyat değişiminin yıllık bütçeye, aylık/haftalık nakit akışına ve ton başına teklif zammına etkisini deterministik olarak izleyin.</p>
+      </div>
+      <div class="monitor-note">
+        <strong>LOCAL-FIRST MONITOR</strong>
+        <small>Snapshot geçmişi bu tarayıcıda saklanır</small>
+      </div>
+    </div>
+
+    <div class="monitor-grid">
+      <section class="monitor-panel">
+        <div class="panel-label">01 · GİRDİLER</div>
+        <div class="field-grid">
+          <label><span>Baz karbon fiyatı</span><div class="unit-input"><input type="number" value={defaultBasePrice} min="0" step="0.01" data-mon="base" /><em>€/tCO₂</em></div></label>
+          <label><span>Güncel / senaryo fiyatı</span><div class="unit-input"><input type="number" value="90" min="0" step="0.01" data-mon="current" /><em>€/tCO₂</em></div></label>
+          <label><span>Yıllık AB hacmi</span><div class="unit-input"><input type="number" value="10000" min="0" step="100" data-mon="volume" /><em>ton</em></div></label>
+          <label><span>Emisyon yoğunluğu</span><div class="unit-input"><input type="number" value="1.84" min="0" step="0.01" data-mon="factor" /><em>tCO₂/ton</em></div></label>
+          <label><span>Yıllık satış geliri</span><div class="unit-input"><input type="number" value="8500000" min="0" step="10000" data-mon="revenue" /><em>€</em></div></label>
+          <label><span>Alarm eşiği</span><div class="unit-input"><input type="number" value="50000" min="0" step="1000" data-mon="threshold" /><em>€ / yıl</em></div></label>
+        </div>
+
+        <div class="scenario-buttons">
+          <button type="button" data-mon-preset="75.28">€75,28</button>
+          <button type="button" data-mon-preset="90">€90</button>
+          <button type="button" data-mon-preset="110">€110</button>
+          <button type="button" data-mon-preset="150">€150</button>
+        </div>
+
+        <div class="monitor-actions">
+          <button class="btn btn-primary" type="button" data-save-snapshot>Snapshot Kaydet</button>
+          <button class="btn btn-secondary" type="button" data-export-monitor>CSV Dışa Aktar</button>
+        </div>
+      </section>
+
+      <section class="monitor-panel result-panel">
+        <div class="panel-label">02 · DELTA SONUCU</div>
+        <div class="alert-card" data-alert-level="normal">
+          <div class="alert-top">
+            <span>RİSK SEVİYESİ</span>
+            <strong data-out="level">NORMAL</strong>
+          </div>
+          <strong class="delta-number" data-out="annualDelta">€0</strong>
+          <p data-out="message">Fiyat deltası hesaplanıyor.</p>
+        </div>
+
+        <div class="metric-grid">
+          <article><span>Fiyat değişimi</span><strong data-out="priceDelta">€0</strong></article>
+          <article><span>Fiyat değişimi %</span><strong data-out="pricePct">%0</strong></article>
+          <article><span>Aylık bütçe deltası</span><strong data-out="monthlyDelta">€0</strong></article>
+          <article><span>Haftalık bütçe deltası</span><strong data-out="weeklyDelta">€0</strong></article>
+          <article><span>Marj erimesi</span><strong data-out="marginErosion">0 puan</strong></article>
+          <article><span>Teklif zammı</span><strong data-out="surcharge">€0 / ton</strong></article>
+        </div>
+      </section>
+    </div>
+
+    <section class="history-panel">
+      <div class="history-head">
+        <div><span class="panel-label">03 · SNAPSHOT GEÇMİŞİ</span><h2>Fiyat ve maruziyet geçmişi</h2></div>
+        <button class="mini-btn" type="button" data-clear-monitor>Geçmişi temizle</button>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead><tr><th>Zaman</th><th>Karbon fiyatı</th><th>Yıllık maliyet</th><th>Bazdan fark</th><th>Marj etkisi</th><th>Risk</th></tr></thead>
+          <tbody data-monitor-history><tr><td colspan="6" class="empty-row">Henüz snapshot yok.</td></tr></tbody>
+        </table>
+      </div>
+      <div class="monitor-message" data-monitor-message aria-live="polite"></div>
+    </section>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("#carbon-monitor");
+    if (!root) return;
+
+    const fields = {};
+    root.querySelectorAll("[data-mon]").forEach((el) => fields[el.dataset.mon] = el);
+    const outputs = {};
+    root.querySelectorAll("[data-out]").forEach((el) => outputs[el.dataset.out] = el);
+    const alertCard = root.querySelector(".alert-card");
+    const historyBody = root.querySelector("[data-monitor-history]");
+    const messageEl = root.querySelector("[data-monitor-message]");
+    const STORAGE_KEY = "karbonfiyat_monitor_history_v1";
+
+    const eur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const eur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const pct2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const n = (key) => {
+      const parsed = Number.parseFloat(fields[key]?.value || "0");
+      return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+    };
+
+    const calculate = () => {
+      const base = n("base");
+      const current = n("current");
+      const volume = Math.max(1, n("volume"));
+      const factor = Math.max(0, n("factor"));
+      const revenue = Math.max(1, n("revenue"));
+      const threshold = n("threshold") || 50000;
+
+      const priceDelta = current - base;
+      const pricePct = base > 0 ? (priceDelta / base) * 100 : 0;
+      const baseCost = volume * factor * base;
+      const currentCost = volume * factor * current;
+      const annualDelta = currentCost - baseCost;
+      const monthlyDelta = annualDelta / 12;
+      const weeklyDelta = annualDelta / 52;
+      const marginErosion = (annualDelta / revenue) * 100;
+      const surcharge = factor * priceDelta;
+
+      let level = "NORMAL";
+      let levelKey = "normal";
+      let message = "Fiyat deltası tanımlanan yıllık bütçe toleransı içinde.";
+      if (annualDelta > threshold * 2 || pricePct > 25) {
+        level = "KRİTİK";
+        levelKey = "critical";
+        message = "Karbon fiyat değişimi kritik bütçe sapması yaratıyor. Açık teklifler ve müşteri fiyat geçişleri öncelikli olarak gözden geçirilmeli.";
+      } else if (annualDelta >= threshold || pricePct > 10) {
+        level = "YÜKSEK";
+        levelKey = "elevated";
+        message = "Karbon maliyeti alarm eşiğine ulaştı. Bütçe rezervi ve teklif fiyatı güncellemesi değerlendirilmelidir.";
+      }
+
+      outputs.level.textContent = level;
+      outputs.annualDelta.textContent = eur0.format(annualDelta);
+      outputs.message.textContent = message;
+      outputs.priceDelta.textContent = eur2.format(priceDelta);
+      outputs.pricePct.textContent = "%" + pct2.format(pricePct);
+      outputs.monthlyDelta.textContent = eur0.format(monthlyDelta);
+      outputs.weeklyDelta.textContent = eur0.format(weeklyDelta);
+      outputs.marginErosion.textContent = pct2.format(marginErosion) + " puan";
+      outputs.surcharge.textContent = eur2.format(surcharge) + " / ton";
+      if (alertCard) alertCard.dataset.alertLevel = levelKey;
+
+      return { base, current, volume, factor, revenue, threshold, priceDelta, pricePct, baseCost, currentCost, annualDelta, monthlyDelta, weeklyDelta, marginErosion, surcharge, level, levelKey, message, createdAt: new Date().toISOString() };
+    };
+
+    const history = () => {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch { return []; }
+    };
+
+    const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    const render = () => {
+      const items = history().slice().reverse();
+      if (!items.length) {
+        historyBody.innerHTML = '<tr><td colspan="6" class="empty-row">Henüz snapshot yok.</td></tr>';
+        return;
+      }
+      historyBody.innerHTML = items.map((item) => '<tr>' +
+        '<td>' + escapeHtml(new Date(item.createdAt).toLocaleString("tr-TR")) + '</td>' +
+        '<td>' + escapeHtml(eur2.format(item.current)) + '</td>' +
+        '<td>' + escapeHtml(eur0.format(item.currentCost)) + '</td>' +
+        '<td>' + escapeHtml(eur0.format(item.annualDelta)) + '</td>' +
+        '<td>' + escapeHtml(pct2.format(item.marginErosion)) + ' puan</td>' +
+        '<td><span class="history-risk" data-level="' + escapeHtml(item.levelKey) + '">' + escapeHtml(item.level) + '</span></td>' +
+      '</tr>').join("");
+    };
+
+    const say = (text) => {
+      if (!messageEl) return;
+      messageEl.textContent = text;
+      setTimeout(() => { if (messageEl.textContent === text) messageEl.textContent = ""; }, 4500);
+    };
+
+    root.querySelectorAll("[data-mon]").forEach((el) => el.addEventListener("input", calculate));
+    root.querySelectorAll("[data-mon-preset]").forEach((button) => button.addEventListener("click", () => {
+      fields.current.value = button.dataset.monPreset;
+      calculate();
+    }));
+
+    root.querySelector("[data-save-snapshot]")?.addEventListener("click", () => {
+      const item = calculate();
+      const items = history();
+      items.push(item);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items.slice(-50)));
+      render();
+      say("Snapshot bu cihazda kaydedildi.");
+    });
+
+    root.querySelector("[data-clear-monitor]")?.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+      say("Snapshot geçmişi temizlendi.");
+    });
+
+    root.querySelector("[data-export-monitor]")?.addEventListener("click", () => {
+      const items = history();
+      const rows = [["Zaman","Baz fiyat","Güncel fiyat","Yıllık maliyet","Yıllık delta","Aylık delta","Haftalık delta","Marj erimesi","Risk"]];
+      (items.length ? items : [calculate()]).forEach((item) => rows.push([item.createdAt,item.base,item.current,item.currentCost,item.annualDelta,item.monthlyDelta,item.weeklyDelta,item.marginErosion,item.level]));
+      const csv = rows.map((row) => row.map((cell) => '"' + String(cell ?? "").replaceAll('"','""') + '"').join(";")).join("\n");
+      const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "karbonfiyat-carbon-monitor.csv";
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      say("Monitor geçmişi CSV olarak indirildi.");
+    });
+
+    calculate();
+    render();
+  })();
+</script>
+
+<style>
+  .monitor-workbench { padding:88px 0 96px; background:#070909; }
+  .monitor-head { display:flex; justify-content:space-between; align-items:flex-end; gap:28px; margin-bottom:24px; }
+  .monitor-head > div:first-child { max-width:820px; }
+  .monitor-head h1 { margin:14px 0; color:#fff; font-size:clamp(42px,6vw,70px); line-height:.98; letter-spacing:-.05em; }
+  .monitor-head p { margin:0; color:var(--text-secondary); line-height:1.7; }
+  .monitor-note { min-width:230px; padding:14px; border:1px solid var(--border-soft); border-radius:12px; background:#101313; }
+  .monitor-note strong,.monitor-note small { display:block; }
+  .monitor-note strong { color:#fff; font-size:10px; letter-spacing:.09em; }
+  .monitor-note small { color:var(--text-muted); font-size:10px; margin-top:4px; }
+  .monitor-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:14px; }
+  .monitor-panel,.history-panel { padding:22px; border:1px solid var(--border-soft); border-radius:18px; background:#101313; }
+  .panel-label { color:var(--text-muted); font-size:9px; font-weight:800; letter-spacing:.12em; }
+  .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-top:18px; }
+  .field-grid label > span { display:block; margin-bottom:6px; color:var(--text-muted); font-size:9px; }
+  .unit-input { display:flex; align-items:center; min-height:44px; border:1px solid var(--border-soft); border-radius:9px; background:#0b0e0f; padding-right:9px; }
+  .unit-input input { width:100%; min-width:0; border:0; background:transparent; color:#fff; padding:0 10px; outline:0; }
+  .unit-input em { color:var(--text-muted); font-size:9px; font-style:normal; white-space:nowrap; }
+  .scenario-buttons { display:flex; gap:7px; flex-wrap:wrap; margin-top:14px; }
+  .scenario-buttons button,.mini-btn { min-height:30px; border:1px solid var(--border-soft); border-radius:999px; background:transparent; color:var(--text-muted); padding:0 10px; font-size:9px; cursor:pointer; }
+  .scenario-buttons button:hover,.mini-btn:hover { color:#fff; border-color:var(--border-medium); }
+  .monitor-actions { display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
+  .monitor-actions .btn { min-height:40px; font-size:10px; }
+  .alert-card { margin-top:18px; padding:20px; border:1px solid var(--border-soft); border-radius:14px; background:#0b0e0f; }
+  .alert-card[data-alert-level="elevated"] { border-color:rgba(217,119,6,.4); }
+  .alert-card[data-alert-level="critical"] { border-color:rgba(220,38,38,.5); }
+  .alert-top { display:flex; justify-content:space-between; gap:16px; }
+  .alert-top span { color:var(--text-muted); font-size:9px; letter-spacing:.1em; }
+  .alert-top strong { color:#fff; font-size:10px; }
+  .delta-number { display:block; margin-top:18px; color:#fff; font-size:clamp(40px,5vw,58px); line-height:1; letter-spacing:-.05em; }
+  .alert-card p { margin:10px 0 0; color:var(--text-secondary); font-size:11px; line-height:1.6; }
+  .metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px; }
+  .metric-grid article { padding:14px; border:1px solid var(--border-soft); border-radius:10px; background:rgba(255,255,255,.012); }
+  .metric-grid span,.metric-grid strong { display:block; }
+  .metric-grid span { color:var(--text-muted); font-size:8px; text-transform:uppercase; letter-spacing:.05em; }
+  .metric-grid strong { margin-top:9px; color:#fff; font-size:15px; }
+  .history-panel { margin-top:14px; }
+  .history-head { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:14px; }
+  .history-head h2 { margin:6px 0 0; color:#fff; font-size:26px; }
+  .history-table-wrap { overflow-x:auto; }
+  .history-table { width:100%; min-width:760px; border-collapse:collapse; }
+  .history-table th,.history-table td { padding:11px 10px; text-align:left; border-bottom:1px solid var(--border-soft); color:var(--text-secondary); font-size:10px; }
+  .history-table th { color:var(--text-muted); font-size:8px; text-transform:uppercase; letter-spacing:.06em; }
+  .history-risk { display:inline-flex; padding:4px 7px; border:1px solid var(--border-soft); border-radius:999px; font-size:8px; font-weight:800; }
+  .history-risk[data-level="elevated"] { color:#FBBF24; border-color:rgba(217,119,6,.35); }
+  .history-risk[data-level="critical"] { color:#F87171; border-color:rgba(220,38,38,.4); }
+  .empty-row { text-align:center !important; padding:22px !important; color:var(--text-muted) !important; }
+  .monitor-message { min-height:18px; margin-top:8px; color:var(--text-muted); font-size:10px; }
+  @media(max-width:900px){ .monitor-head { align-items:flex-start; flex-direction:column; } .monitor-note { width:100%; } .monitor-grid { grid-template-columns:1fr; } }
+  @media(max-width:560px){ .field-grid,.metric-grid { grid-template-columns:1fr; } .monitor-actions .btn { width:100%; } }
+</style>
