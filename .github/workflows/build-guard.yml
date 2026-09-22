@@ -42,4 +42,11 @@ jobs:
           test -f dist/workspace/index.html
           test -f dist/carbon-monitor/index.html
           test -f dist/musteri-karliligi/index.html
-          echo "Critical routes verified."
+          test -f dist/hakkimizda/index.html
+          test -f dist/iletisim/index.html
+          test -f dist/gizlilik/index.html
+          test -f dist/llms.txt
+          test -f dist/llms-full.txt
+          test -f dist/index.md
+          test -f dist/sitemap.xml
+          echo "Critical routes and SEO surfaces verified."
