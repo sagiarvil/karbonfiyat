@@ -88,7 +88,7 @@ for (const relative of htmlFiles) {
   const inputMatches = [...html.matchAll(/<input\b[^>]*>/gi)];
   for (const match of inputMatches) {
     const input = match[0];
-    if (/type=["']hidden["']/i.test(input) || /aria-hidden=["']true["']/i.test(input)) continue;
+    if (/type=["']hidden["']/i.test(input) || /\shidden(?:\s|\/?>)/i.test(input) || /aria-hidden=["']true["']/i.test(input)) continue;
     if (/aria-label=["'][^"']+["']/i.test(input) || /aria-labelledby=["'][^"']+["']/i.test(input)) continue;
 
     const before = html.slice(0, match.index);
