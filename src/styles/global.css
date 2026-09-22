@@ -1,28 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #060707;
-  --bg-secondary: #0B0D0D;
-  --surface-1: #101313;
-  --surface-2: #141818;
-  --surface-3: #191D1D;
+  /* Anlamsal Terminal Renk Skalası */
+  --bg-primary: #0A0C0F;      /* Neredeyse siyah antrasit zemin */
+  --bg-secondary: #101318;    /* İkincil zemin / kart altı */
+  --surface-1: #14171C;       /* Panel / hesaplayıcı kutusu */
+  --surface-2: #1A1F26;       /* Yükseltilmiş kart / girdi alanı */
+  --surface-3: #222832;       /* Hover kart yüzeyi */
 
-  --border-soft: rgba(255,255,255,0.07);
-  --border-medium: rgba(255,255,255,0.12);
-  --border-strong: rgba(255,255,255,0.18);
+  --border-soft: rgba(255,255,255,0.08);
+  --border-medium: rgba(255,255,255,0.14);
+  --border-strong: rgba(255,255,255,0.22);
 
-  --text-primary: #F4F5F4;
-  --text-secondary: #A7AEAC;
-  --text-muted: #7C8582;
+  --text-primary: #E8EAED;    /* Kırık beyaz - başlıklar ve ana rakamlar */
+  --text-secondary: #9AA1AC;  /* Soluk gri - açıklamalar, kaynak notları */
+  --text-muted: #6B7280;      /* Arka plan etiketleri ve dipnotlar */
 
-  --accent-primary: #F4F5F4;
-  --accent-secondary: #C8CECC;
+  --brand-blue: #2B5CE6;      /* Marka & Finansal Otorite Mavisi */
+  --brand-blue-hover: #1E40AF;/* Koyu doygun mavi */
+  --brand-blue-soft: rgba(43, 92, 230, 0.12);
+  --brand-blue-border: rgba(43, 92, 230, 0.35);
 
-  --state-warning: #C9A761;
-  --state-danger: #C76E6E;
-  --state-success: #DCE4E1;
+  --state-warning: #D97706;   /* Risk - Orta (Amber): Kilitli metrikler, uyarılar */
+  --state-danger: #DC2626;    /* Risk - Kritik (Kırmızı): Zarar bölgesi, marj erimesi */
+  --state-success: #16A34A;   /* Onay / Mahsup (Kısıtlı Yeşil): Yalnızca mahsup edilen/korunan rakamlarda */
 
-  /* Aliases for consistency */
+  /* Aliases */
   --bg: var(--bg-primary);
   --bg-soft: var(--bg-secondary);
   --panel: var(--surface-1);
@@ -32,11 +35,12 @@
   --text: var(--text-primary);
   --muted: var(--text-secondary);
   --muted-2: var(--text-muted);
-  --accent: var(--accent-primary);
-  --accent-2: var(--accent-secondary);
+  --accent: var(--brand-blue);
+  --accent-2: var(--brand-blue-hover);
   --accent-3: #FFFFFF;
   --warning: var(--state-warning);
   --danger: var(--state-danger);
+  --success: var(--state-success);
   --radius: 20px;
 }
 
@@ -50,8 +54,8 @@ body {
   margin: 0;
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 15% 0%, rgba(255,255,255,.025), transparent 28%),
-    linear-gradient(180deg, #070808 0%, #050606 100%);
+    radial-gradient(circle at 15% 0%, rgba(43, 92, 230, 0.035), transparent 28%),
+    linear-gradient(180deg, #0A0C0F 0%, #08090C 100%);
   background-color: var(--bg-primary);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -136,34 +140,36 @@ h1,h2,h3 { letter-spacing: -0.03em; font-weight: 700; }
 }
 
 .btn-primary {
-  background: #F4F5F4;
-  color: #090A0A;
-  border: 1px solid #F4F5F4;
+  background: var(--brand-blue);
+  color: #FFFFFF;
+  border: 1px solid var(--brand-blue);
+  box-shadow: 0 4px 14px rgba(43, 92, 230, 0.25);
 }
 
 .btn-secondary,
 .btn-ghost {
-  background: transparent;
-  color: #F4F5F4;
-  border: 1px solid rgba(255,255,255,.16);
+  background: #14171C;
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
 }
 
 @media (hover: hover) {
   .btn-primary:hover {
-    background: #FFFFFF;
-    border-color: #FFFFFF;
+    background: var(--brand-blue-hover);
+    border-color: var(--brand-blue-hover);
     transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(43, 92, 230, 0.35);
   }
   .btn-secondary:hover,
   .btn-ghost:hover {
-    background: rgba(255,255,255,.035);
+    background: #1A1F26;
     border-color: rgba(255,255,255,.28);
     transform: translateY(-1px);
   }
 }
 
 .card {
-  background: linear-gradient(180deg, #121515 0%, #0E1010 100%);
+  background: var(--surface-1);
   border: 1px solid var(--border-soft);
   border-radius: 20px;
   transition: border-color 180ms cubic-bezier(.2,.8,.2,1), transform 180ms cubic-bezier(.2,.8,.2,1);

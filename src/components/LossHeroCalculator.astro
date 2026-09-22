@@ -498,9 +498,9 @@ const sectorData = [
   }
 
   .pill-btn.active {
-    background: rgba(201, 167, 97, 0.15);
-    border-color: rgba(201, 167, 97, 0.4);
-    color: #E6C687;
+    background: var(--brand-blue-soft);
+    border-color: var(--brand-blue-border);
+    color: #93C5FD;
   }
 
   .calc-meta-info {
@@ -527,7 +527,7 @@ const sectorData = [
   }
 
   .skdm-link {
-    color: #E6C687;
+    color: #60A5FA;
     font-weight: 650;
     font-size: 12px;
     text-decoration: underline;
@@ -541,8 +541,8 @@ const sectorData = [
 
   /* Sağ Panel: Kilitli Sonuç Bloğu */
   .calc-result-pane {
-    background: #070909;
-    border: 1px solid var(--border-soft);
+    background: #14171C;
+    border: 1px solid var(--border-medium);
     border-radius: 18px;
     padding: 28px;
     display: flex;
@@ -560,19 +560,19 @@ const sectorData = [
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
-    color: #C9A761;
+    color: #60A5FA;
   }
 
   .verified-tag {
     font-size: 11px;
-    color: #A7AEAC;
+    color: var(--text-secondary);
     font-weight: 500;
   }
 
   /* Büyük Maruziyet Kutusu */
   .exposure-hero-box {
-    background: linear-gradient(180deg, rgba(201, 167, 97, 0.08) 0%, rgba(0, 0, 0, 0.2) 100%);
-    border: 1px solid rgba(201, 167, 97, 0.25);
+    background: linear-gradient(180deg, rgba(43, 92, 230, 0.12) 0%, rgba(10, 12, 15, 0.4) 100%);
+    border: 1px solid rgba(43, 92, 230, 0.35);
     border-radius: 16px;
     padding: 24px;
   }
@@ -619,7 +619,7 @@ const sectorData = [
   }
 
   .locked-kpi-card {
-    background: rgba(255, 255, 255, 0.015);
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-soft);
     border-radius: 12px;
     padding: 14px;
@@ -631,7 +631,8 @@ const sectorData = [
   }
 
   .locked-kpi-card.danger-accent {
-    border-color: rgba(199, 110, 110, 0.2);
+    border-color: rgba(220, 38, 38, 0.3);
+    background: rgba(220, 38, 38, 0.04);
   }
 
   .locked-header {
@@ -669,18 +670,18 @@ const sectorData = [
   }
 
   .blurred-val.danger-text {
-    color: #E08585;
+    color: #DC2626;
   }
 
   .locked-overlay-tag {
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--border-soft);
+    background: rgba(217, 119, 6, 0.15);
+    border: 1px solid rgba(217, 119, 6, 0.4);
     border-radius: 4px;
     padding: 2px 6px;
-    color: var(--text-secondary);
+    color: #FBBF24;
   }
 
   /* Kilit Açma Kutusu */
@@ -738,19 +739,23 @@ const sectorData = [
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: #F4F5F4;
-    color: #060707;
+    background: var(--brand-blue);
+    color: #FFFFFF;
     font-size: 14px;
     font-weight: 700;
     padding: 16px 20px;
     border-radius: 12px;
-    transition: transform 150ms ease, background 150ms ease;
+    border: 1px solid var(--brand-blue);
+    box-shadow: 0 4px 16px rgba(43, 92, 230, 0.3);
+    transition: transform 150ms ease, background 150ms ease, box-shadow 150ms ease;
     text-align: center;
   }
 
   .btn-unlock:hover {
-    background: #FFFFFF;
+    background: var(--brand-blue-hover);
+    border-color: var(--brand-blue-hover);
     transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(43, 92, 230, 0.45);
   }
 
   .btn-arrow {

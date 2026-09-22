@@ -21,19 +21,19 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
     <div class="engine-tabs-wrapper">
       <div class="engine-tabs-nav" role="tablist">
         <button type="button" class="tab-btn active" data-tab="engine-02" id="tab-02">
-          <span class="tab-num">MOTOR 02</span>
-          <span class="tab-name">Ön Analiz Rapor Motoru (4.900 TL)</span>
-          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+          <span class="tab-num">MOTOR 02 · 4.900 TL</span>
+          <span class="tab-name">Ön Analiz Rapor Motoru</span>
+          <span class="tab-status-chip chip-amber">OPERASYONEL HAZIR</span>
         </button>
         <button type="button" class="tab-btn" data-tab="engine-03" id="tab-03">
-          <span class="tab-num">MOTOR 03</span>
-          <span class="tab-name">Müşteri Portföy &amp; Mahsup Karar Motoru (19.900 TL)</span>
-          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+          <span class="tab-num">MOTOR 03 · 19.900 TL</span>
+          <span class="tab-name">Müşteri Portföy &amp; Mahsup Motoru</span>
+          <span class="tab-status-chip chip-blue">MİMARİ HAZIR</span>
         </button>
         <button type="button" class="tab-btn" data-tab="engine-04" id="tab-04">
-          <span class="tab-num">MOTOR 04</span>
-          <span class="tab-name">Aylık Monitör &amp; Fiyat Delta Motoru</span>
-          <span class="tab-status-chip">CANLI ÇALIŞIYOR</span>
+          <span class="tab-num">MOTOR 04 · MONİTÖR</span>
+          <span class="tab-name">Aylık Delta Risk Simülatörü</span>
+          <span class="tab-status-chip chip-blue">SİMÜLASYON AKTİF</span>
         </button>
       </div>
 
@@ -589,7 +589,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 <style>
   .engines-console-section {
     padding: 88px 0;
-    background: #080A0A;
+    background: #0A0C0F;
     border-top: 1px solid var(--border-medium);
     border-bottom: 1px solid var(--border-medium);
   }
@@ -605,22 +605,22 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
     align-items: center;
     gap: 8px;
     padding: 6px 14px;
-    background: rgba(80, 200, 120, 0.1);
-    border: 1px solid rgba(80, 200, 120, 0.25);
+    background: rgba(43, 92, 230, 0.12);
+    border: 1px solid rgba(43, 92, 230, 0.35);
     border-radius: 100px;
     font-size: 11px;
     font-weight: 750;
     letter-spacing: 0.12em;
-    color: #85E0A3;
+    color: #93C5FD;
     margin-bottom: 18px;
   }
 
   .pulse-indicator {
     width: 8px;
     height: 8px;
-    background: #50C878;
+    background: #2B5CE6;
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(80, 200, 120, 0.8);
+    box-shadow: 0 0 10px rgba(43, 92, 230, 0.8);
     animation: pulse 2s infinite;
   }
 
@@ -649,7 +649,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .tab-btn {
-    background: #0D1010;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 14px;
     padding: 18px 20px;
@@ -662,14 +662,14 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .tab-btn:hover {
-    background: #121616;
+    background: #1A1F26;
     border-color: rgba(255, 255, 255, 0.2);
   }
 
   .tab-btn.active {
-    background: linear-gradient(180deg, #171C1C 0%, #0E1212 100%);
-    border-color: rgba(201, 167, 97, 0.6);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(180deg, #1C2433 0%, #14171C 100%);
+    border-color: var(--brand-blue-border);
+    box-shadow: 0 4px 20px rgba(43, 92, 230, 0.15);
   }
 
   .tab-num {
@@ -680,7 +680,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .tab-btn.active .tab-num {
-    color: #E6C687;
+    color: #60A5FA;
   }
 
   .tab-name {
@@ -694,10 +694,17 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
     font-size: 9.5px;
     letter-spacing: 0.1em;
     font-weight: 750;
-    color: #85E0A3;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+  }
+
+  .tab-status-chip.chip-amber {
+    color: #FBBF24;
+  }
+
+  .tab-status-chip.chip-blue {
+    color: #93C5FD;
   }
 
   .tab-status-chip::before {
@@ -728,7 +735,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .pane-box {
-    background: #0C0F0F;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 18px;
     padding: 30px;
@@ -768,7 +775,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 
   .field-item input,
   .field-item select {
-    background: #040606;
+    background: #0A0C0F;
     border: 1px solid var(--border-soft);
     border-radius: 10px;
     padding: 10px 14px;
@@ -781,7 +788,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 
   .field-item input:focus,
   .field-item select:focus {
-    border-color: rgba(255, 255, 255, 0.35);
+    border-color: rgba(43, 92, 230, 0.5);
   }
 
   .two-fields {
@@ -792,8 +799,8 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 
   /* Rapor Kağıdı (Yazdırılabilir) */
   .report-paper {
-    background: #070909;
-    border: 1px solid rgba(201, 167, 97, 0.3);
+    background: #101318;
+    border: 1px solid var(--brand-blue-border);
     border-radius: 14px;
     padding: 24px;
     display: flex;
@@ -812,7 +819,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   .rep-tag {
     font-size: 10px;
     letter-spacing: 0.12em;
-    color: #E6C687;
+    color: #60A5FA;
     font-weight: 750;
   }
 
@@ -830,42 +837,45 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 
   .rep-id-box {
     font-size: 11px;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.04);
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-soft);
     padding: 4px 8px;
     border-radius: 6px;
-    border: 1px solid var(--border-soft);
+    color: var(--text-secondary);
   }
 
   .rep-kpi-summary {
-    background: linear-gradient(180deg, rgba(201, 167, 97, 0.08) 0%, rgba(0, 0, 0, 0.3) 100%);
-    border: 1px solid rgba(201, 167, 97, 0.25);
+    background: rgba(43, 92, 230, 0.08);
+    border: 1px solid var(--brand-blue-border);
     border-radius: 12px;
-    padding: 18px;
+    padding: 18px 20px;
+  }
+
+  .rep-kpi-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .rep-lbl {
-    font-size: 11px;
+    font-size: 10.5px;
     letter-spacing: 0.1em;
-    color: var(--text-secondary);
-    display: block;
-    margin-bottom: 4px;
+    color: var(--text-muted);
+    font-weight: 700;
   }
 
   .rep-num-big {
-    font-size: clamp(32px, 3.8vw, 42px);
-    font-weight: 800;
+    font-size: 32px;
+    font-weight: 850;
     color: #FFFFFF;
     letter-spacing: -0.03em;
-    display: block;
-    line-height: 1.1;
   }
 
   .rep-sub {
     font-size: 12px;
-    color: #E6C687;
-    margin-top: 4px;
-    display: block;
+    color: #FBBF24;
+    font-weight: 600;
   }
 
   .rep-mini-table {
@@ -887,20 +897,20 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .rep-action-tr {
-    background: rgba(201, 167, 97, 0.08);
+    background: rgba(217, 119, 6, 0.1);
   }
 
   .rep-action-tr td {
-    color: #E6C687;
+    color: #FBBF24;
     font-weight: 700;
   }
 
   .danger-text {
-    color: #E08585 !important;
+    color: #DC2626 !important;
   }
 
   .highlight-num {
-    color: #E6C687 !important;
+    color: #60A5FA !important;
     font-weight: 800 !important;
   }
 
@@ -912,13 +922,13 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .btn-print {
-    background: #E6C687;
-    color: #060707;
+    background: var(--brand-blue);
+    color: #FFFFFF;
     font-weight: 750;
   }
 
   .btn-print:hover {
-    background: #F0D59E;
+    background: var(--brand-blue-hover);
   }
 
   /* MOTOR 03 STILLERI */
@@ -929,7 +939,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .scenario-slider-box {
-    background: #0C0F0F;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 18px;
     padding: 28px;
@@ -941,7 +951,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   .s-eyebrow {
     font-size: 10.5px;
     letter-spacing: 0.12em;
-    color: #E6C687;
+    color: #60A5FA;
     font-weight: 750;
   }
 
@@ -968,7 +978,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
 
   .slider-control input[type="range"] {
     width: 100%;
-    accent-color: #E6C687;
+    accent-color: var(--brand-blue);
     cursor: pointer;
   }
 
@@ -980,7 +990,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .contracts-table-card {
-    background: #0C0F0F;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 18px;
     overflow: hidden;
@@ -994,7 +1004,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .contracts-table th {
-    background: #070909;
+    background: #0D1015;
     padding: 14px 18px;
     font-size: 11px;
     letter-spacing: 0.08em;
@@ -1010,7 +1020,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .danger-bold {
-    color: #E08585 !important;
+    color: #DC2626 !important;
     font-weight: 800;
   }
 
@@ -1023,21 +1033,21 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .badge-safe {
-    background: rgba(80, 200, 120, 0.12);
-    color: #85E0A3;
-    border: 1px solid rgba(80, 200, 120, 0.3);
+    background: rgba(22, 163, 74, 0.12);
+    color: #4ADE80;
+    border: 1px solid rgba(22, 163, 74, 0.35);
   }
 
   .badge-warn {
-    background: rgba(201, 167, 97, 0.12);
-    color: #E6C687;
-    border: 1px solid rgba(201, 167, 97, 0.3);
+    background: rgba(217, 119, 6, 0.12);
+    color: #FBBF24;
+    border: 1px solid rgba(217, 119, 6, 0.35);
   }
 
   .badge-danger {
-    background: rgba(199, 110, 110, 0.15);
-    color: #E08585;
-    border: 1px solid rgba(199, 110, 110, 0.35);
+    background: rgba(220, 38, 38, 0.15);
+    color: #F87171;
+    border: 1px solid rgba(220, 38, 38, 0.4);
   }
 
   .action-rec {
@@ -1098,7 +1108,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .interactive-slider-group {
-    background: #060808;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 14px;
     padding: 20px;
@@ -1115,12 +1125,12 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   .slider-live-num {
     font-size: 20px;
     font-weight: 800;
-    color: #E6C687;
+    color: #60A5FA;
   }
 
   .interactive-slider-group input[type="range"] {
     width: 100%;
-    accent-color: #E6C687;
+    accent-color: var(--brand-blue);
     cursor: pointer;
   }
 
@@ -1147,18 +1157,18 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .delta-hero-card.critical-alert {
-    background: linear-gradient(180deg, rgba(199, 110, 110, 0.15) 0%, rgba(199, 110, 110, 0.03) 100%);
-    border-color: rgba(199, 110, 110, 0.5);
-    box-shadow: 0 0 30px rgba(199, 110, 110, 0.15);
+    background: linear-gradient(180deg, rgba(220, 38, 38, 0.18) 0%, rgba(220, 38, 38, 0.04) 100%);
+    border-color: rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.2);
   }
 
   .delta-hero-card.elevated-alert {
-    background: linear-gradient(180deg, rgba(201, 167, 97, 0.12) 0%, rgba(201, 167, 97, 0.03) 100%);
-    border-color: rgba(201, 167, 97, 0.4);
+    background: linear-gradient(180deg, rgba(217, 119, 6, 0.15) 0%, rgba(217, 119, 6, 0.03) 100%);
+    border-color: rgba(217, 119, 6, 0.45);
   }
 
   .delta-hero-card.normal-alert {
-    background: rgba(255, 255, 255, 0.02);
+    background: #14171C;
     border-color: var(--border-soft);
   }
 
@@ -1173,7 +1183,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
     font-size: 10.5px;
     font-weight: 800;
     letter-spacing: 0.1em;
-    color: #E08585;
+    color: #DC2626;
   }
 
   .delta-pct {
@@ -1212,7 +1222,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .delta-sub-box {
-    background: #080A0A;
+    background: #14171C;
     border: 1px solid var(--border-soft);
     border-radius: 12px;
     padding: 16px;
@@ -1222,8 +1232,8 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .delta-sub-box.highlight-box {
-    border-color: rgba(201, 167, 97, 0.35);
-    background: rgba(201, 167, 97, 0.04);
+    border-color: var(--brand-blue-border);
+    background: rgba(43, 92, 230, 0.08);
   }
 
   .sub-lbl {
@@ -1238,7 +1248,7 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   }
 
   .gold-text {
-    color: #E6C687 !important;
+    color: #60A5FA !important;
   }
 
   .delta-sub-box small {

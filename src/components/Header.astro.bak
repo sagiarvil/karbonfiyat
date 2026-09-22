@@ -7,16 +7,7 @@ const navItems = navLinks;
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="KarbonFiyat ana sayfa">
       <span class="brand-mark" aria-hidden="true">
-  <img
-    src="/logo/karbonfiyat-logo.png"
-    alt=""
-    class="brand-logo-img"
-    width="44"
-    height="44"
-    loading="eager"
-    decoding="async"
-  />
-</span>
+        <img src="/tulip-logo.png" alt="KarbonFiyat Logo" class="brand-logo-img" width="30" height="42" />
       </span>
       <span class="brand-text">karbonfiyat</span>
     </a>
