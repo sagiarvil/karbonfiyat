@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ExpertCTA from "../components/ExpertCTA.astro";
+import CustomerPortfolioWorkbench from "../components/CustomerPortfolioWorkbench.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { seoPages } from "../data/seo";
 
@@ -23,50 +24,14 @@ const clientData = [
       Gerçek marjı ve gerekli fiyat revizyonunu görün.
     </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://degerlet.com" rel="noopener" target="_blank">
+      <a class="btn btn-primary" href="#musteri-portfoyu">
         Müşteri bazlı analiz oluştur
       </a>
       <a class="btn btn-secondary" href="/karbon-maliyet-hesaplama">Hızlı hesapla</a>
     </div>
   </section>
 
-  <section class="container table-section">
-    <SectionHeading
-      eyebrow="ÖRNEK PORTFÖY DAĞILIMI"
-      title="Müşteri Bazında Karbon P&amp;L Dağılımı"
-      subtitle="Aynı ürün, farklı müşteri sözleşmelerinde farklı marj erimesi yaratır."
-    />
-    <div class="card client-table-card">
-      <div class="table-responsive">
-        <table class="client-table">
-          <thead>
-            <tr>
-              <th>Müşteri</th>
-              <th>Ciro</th>
-              <th>Karbon Yükü</th>
-              <th>Karbon Sonrası Marj</th>
-              <th>Stratejik Aksiyon</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientData.map(row => (
-              <tr>
-                <td class="client-name"><strong>{row.client}</strong></td>
-                <td class="mono">{row.revenue}</td>
-                <td class="mono">{row.carbonCost}</td>
-                <td class:list={["mono", row.badge === "danger" && "text-danger", row.badge === "warning" && "text-warning"]}>{row.margin}</td>
-                <td>
-                  <span class:list={["chip", row.badge === "warning" && "warning", row.badge === "danger" && "danger-chip"]}>
-                    {row.action}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+  <CustomerPortfolioWorkbench />
 
   <section class="container insights-section">
     <div class="insights-grid">
