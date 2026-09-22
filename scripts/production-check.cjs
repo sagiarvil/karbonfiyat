@@ -136,7 +136,7 @@ for (const route of ["/hakkimizda", "/iletisim", "/gizlilik"]) {
 if (/<lastmod>/i.test(sitemap)) fail("Sitemap must not emit synthetic build-time lastmod values.");
 
 const firebase = JSON.parse(fs.readFileSync(path.join(root, "firebase.json"), "utf8"));
-const globalHeaderBlock = (firebase.hosting?.headers || []).find((entry) => entry.source === "/**");
+const globalHeaderBlock = (firebase.hosting?.headers || []).find((entry) => entry.source === "**");
 const headerMap = new Map((globalHeaderBlock?.headers || []).map((h) => [String(h.key).toLowerCase(), String(h.value)]));
 const expectedHeaders = {
   "strict-transport-security": "max-age=31536000",
