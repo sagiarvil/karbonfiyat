@@ -51,6 +51,8 @@ const sampleRows = [
       <div class="portfolio-toolbar">
         <button class="btn btn-secondary" type="button" data-add-row>Müşteri Ekle</button>
         <button class="btn btn-secondary" type="button" data-save-portfolio>Portföyü Kaydet</button>
+        <button class="btn btn-secondary" type="button" data-import-portfolio>CSV İçe Aktar</button>
+        <input type="file" accept=".csv,text/csv" data-import-file hidden />
         <button class="btn btn-secondary" type="button" data-export-portfolio>CSV Dışa Aktar</button>
       </div>
     </div>
@@ -234,6 +236,72 @@ const sampleRows = [
       const data = calculate();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       setMessage("Portföy bu cihazda kaydedildi. Sunucuya veri gönderilmedi.");
+    });
+
+    const importButton = root.querySelector("[data-import-portfolio]");
+    const importFile = root.querySelector("[data-import-file]");
+    importButton?.addEventListener("click", () => importFile?.click());
+
+    importFile?.addEventListener("change", async () => {
+      const file = importFile.files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const lines = text.split(/\r?\n/).filter((line) => line.trim());
+        if (lines.length < 2) throw new Error("CSV içinde veri satırı bulunamadı.");
+
+        const delimiter = lines[0].includes(";") ? ";" : ",";
+        const parseLine = (line) => {
+          const out = [];
+          let current = "";
+          let quoted = false;
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+              if (quoted && line[i + 1] === '"') {
+                current += '"';
+                i++;
+              } else {
+                quoted = !quoted;
+              }
+            } else if (ch === delimiter && !quoted) {
+              out.push(current.trim());
+              current = "";
+            } else {
+              current += ch;
+            }
+          }
+          out.push(current.trim());
+          return out;
+        };
+
+        const dataRows = lines.slice(1)
+          .map(parseLine)
+          .filter((cols) => cols.length >= 6 && cols[0] && cols[0] !== "Karbon fiyatı");
+
+        if (!dataRows.length) throw new Error("Beklenen 6 kolonlu müşteri verisi bulunamadı.");
+
+        body.innerHTML = "";
+        dataRows.slice(0, 100).forEach((cols) => {
+          body.appendChild(makeRow({
+            client: cols[0],
+            country: cols[1],
+            volume: cols[2],
+            sales: cols[3],
+            cost: cols[4],
+            emission: cols[5]
+          }));
+        });
+
+        bind();
+        calculate();
+        setMessage(dataRows.length + " müşteri CSV'den içe aktarıldı.");
+      } catch (error) {
+        setMessage("CSV içe aktarılamadı: " + (error?.message || "format hatası"));
+      } finally {
+        importFile.value = "";
+      }
     });
 
     root.querySelector("[data-export-portfolio]")?.addEventListener("click", () => {
