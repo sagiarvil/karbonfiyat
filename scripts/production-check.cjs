@@ -14,6 +14,7 @@ const required = [
   "karbon-fiyati/index.html",
   "fiyatlandirma/index.html",
   "workspace/index.html",
+  "carbon-monitor/index.html",
   "carbon-pnl/index.html",
   "musteri-karliligi/index.html",
   "metodoloji/index.html",
@@ -57,5 +58,13 @@ if (!indexHtml.includes("canli-karbon-fiyatlari")) fail("Market intelligence sec
 const workspaceHtml = fs.readFileSync(path.join(dist, "workspace/index.html"), "utf8");
 if (!workspaceHtml.includes("CARBON FINANCIAL WORKSPACE")) fail("Workspace content missing.");
 if (!workspaceHtml.includes("data-export-csv")) fail("Workspace export capability missing.");
+
+const monitorHtml = fs.readFileSync(path.join(dist, "carbon-monitor/index.html"), "utf8");
+if (!monitorHtml.includes("CARBON MONITOR WORKBENCH")) fail("Carbon Monitor content missing.");
+if (!monitorHtml.includes("data-save-snapshot")) fail("Carbon Monitor persistence capability missing.");
+
+const customerHtml = fs.readFileSync(path.join(dist, "musteri-karliligi/index.html"), "utf8");
+if (!customerHtml.includes("CANLI PORTFÖY KARAR MOTORU")) fail("Customer portfolio engine missing.");
+if (!customerHtml.includes("data-export-portfolio")) fail("Customer portfolio export capability missing.");
 
 console.log("Production checks passed: critical routes, placeholders and core capabilities verified.");
