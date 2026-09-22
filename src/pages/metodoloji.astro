@@ -32,6 +32,30 @@ import { seoPages } from "../data/seo";
     </div>
   </section>
 
+  <section class="container eeat-section">
+    <div class="card eeat-mentor-card">
+      <div class="eeat-top-bar">
+        <span class="eyebrow">METODOLOJİ VE HESAPLAMA GÜVENCESİ</span>
+        <a href="https://www.linkedin.com/in/barisbagirlar/" target="_blank" rel="noopener" class="eeat-link">
+          LinkedIn Profili ↗
+        </a>
+      </div>
+      <div class="eeat-content-row">
+        <div class="eeat-avatar">BB</div>
+        <div>
+          <h2>Barış Bağırlar</h2>
+          <p class="eeat-titles">
+            <strong>Tarımkon (Uluslararası Tarım ve Gıda Konfederasyonu)</strong> Danışma Kurulu Üyesi<br />
+            <strong>Gaziantep Üniversitesi</strong> TS EN ISO 14064-1 Kurumsal Karbon Ayak İzi Hesaplama Mentörü
+          </p>
+          <p class="eeat-bio">
+            KarbonFiyat metodoloji mimarisi, uluslararası sera gazı muhasebesi standartları (TS EN ISO 14064-1, GHG Protocol) ve AB Komisyonu (EU 2023/956) uygulama yönetmelikleri doğrultusunda Barış Bağırlar danışmanlığında modellenmektedir.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="container policy-section" id="veri-politikasi">
     <div class="card policy-card">
       <span class="eyebrow">Yasal &amp; Güvenlik Beyanı</span>
@@ -60,6 +84,72 @@ import { seoPages } from "../data/seo";
     gap: 16px;
     margin-top: 16px;
   }
+  .eeat-section {
+    margin-top: 56px;
+  }
+  .eeat-mentor-card {
+    padding: 40px;
+    background: linear-gradient(180deg, #111515 0%, #0C0F0F 100%);
+    border: 1px solid rgba(201, 167, 97, 0.35);
+  }
+  .eeat-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .eeat-link {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .eeat-link:hover {
+    color: #E6C687;
+  }
+  .eeat-content-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .eeat-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1C2222 0%, #0A0D0D 100%);
+    border: 1px solid rgba(201, 167, 97, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #E6C687;
+    flex-shrink: 0;
+  }
+  .eeat-content-row h2 {
+    font-size: 24px;
+    margin: 0 0 8px;
+    color: var(--text-primary);
+  }
+  .eeat-titles {
+    font-size: 14px;
+    color: #E6C687;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+  .eeat-titles strong {
+    color: var(--text-primary);
+  }
+  .eeat-bio {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
   .policy-section {
     margin-top: 56px;
   }
@@ -83,5 +173,6 @@ import { seoPages } from "../data/seo";
     .subhero { padding-top: 56px; }
     .methods-grid { grid-template-columns: 1fr; }
     .policy-card { padding: 28px; }
+    .eeat-content-row { flex-direction: column; gap: 16px; }
   }
 </style>

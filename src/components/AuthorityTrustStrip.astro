@@ -43,6 +43,53 @@ const trustPillars = [
       ))}
     </div>
 
+    <!-- E-E-A-T Uzmanlık & Metodoloji Liderliği -->
+    <div class="eeat-expert-card">
+      <div class="eeat-expert-header">
+        <span class="eeat-badge">E-E-A-T DOĞRULAMA &amp; METODOLOJİ LİDERİ</span>
+        <a href="https://www.linkedin.com/in/barisbagirlar/" target="_blank" rel="noopener" class="eeat-linkedin-link">
+          <span>LinkedIn Profili</span>
+          <span class="ext-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="eeat-expert-body">
+        <div class="eeat-profile-info">
+          <div class="eeat-avatar-placeholder" aria-hidden="true">BB</div>
+          <div>
+            <h3 class="eeat-name">Barış Bağırlar</h3>
+            <span class="eeat-role-main">Karbon Finansmanı &amp; SKDM Modelleme Lideri</span>
+          </div>
+        </div>
+
+        <div class="eeat-credentials-grid">
+          <div class="eeat-cred-item">
+            <span class="cred-icon">🏛️</span>
+            <div>
+              <strong>Tarımkon Danışma Kurulu Üyesi</strong>
+              <small>Uluslararası Tarım ve Gıda Konfederasyonu</small>
+            </div>
+          </div>
+
+          <div class="eeat-cred-item">
+            <span class="cred-icon">🎓</span>
+            <div>
+              <strong>TS EN ISO 14064-1 Hesaplama Mentörü</strong>
+              <small>Gaziantep Üniversitesi · Kurumsal Karbon Ayak İzi</small>
+            </div>
+          </div>
+
+          <div class="eeat-cred-item">
+            <span class="cred-icon">📊</span>
+            <div>
+              <strong>Carbon Financial Intelligence</strong>
+              <small>AB SKDM &amp; TR-ETS Finansal Marj Modellemesi</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Kimlik / Otorite Şeridi (Hofstede gereği ayrı sayfa yerine tek satır kimlik) -->
     <div class="identity-authority-strip">
       <div class="id-mark">
@@ -125,6 +172,148 @@ const trustPillars = [
     line-height: 1.65;
     color: var(--text-secondary);
     margin: 0;
+  }
+
+  /* E-E-A-T Uzman Kartı Stilleri */
+  .eeat-expert-card {
+    background: linear-gradient(180deg, #111515 0%, #0C0F0F 100%);
+    border: 1px solid rgba(201, 167, 97, 0.35);
+    border-radius: 18px;
+    padding: 32px;
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  }
+
+  .eeat-expert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .eeat-badge {
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+    background: rgba(201, 167, 97, 0.12);
+    border: 1px solid rgba(201, 167, 97, 0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .eeat-linkedin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-soft);
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 150ms ease;
+  }
+
+  .eeat-linkedin-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+  }
+
+  .ext-arrow {
+    font-size: 14px;
+  }
+
+  .eeat-expert-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .eeat-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eeat-avatar-placeholder {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #1C2222 0%, #0A0D0D 100%);
+    border: 1px solid rgba(201, 167, 97, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: #E6C687;
+    letter-spacing: 0.05em;
+  }
+
+  .eeat-name {
+    font-size: 22px;
+    font-weight: 750;
+    color: var(--text-primary);
+    margin: 0 0 2px;
+    letter-spacing: -0.02em;
+  }
+
+  .eeat-role-main {
+    font-size: 13px;
+    color: #A7AEAC;
+    font-weight: 550;
+  }
+
+  .eeat-credentials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .eeat-cred-item {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .cred-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .eeat-cred-item strong {
+    display: block;
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .eeat-cred-item small {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 860px) {
+    .eeat-credentials-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Alt Kimlik & Sürüm Şeridi */
