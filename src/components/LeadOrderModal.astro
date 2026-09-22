@@ -116,8 +116,9 @@
                 </label>
               </div>
 
+              <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true" />
               <button type="submit" class="btn btn-submit-order" id="btn-submit">
-                <span>Başvuru Paketini Hazırla</span>
+                <span>Başvuruyu Gönder</span>
                 <span class="btn-arrow" aria-hidden="true">→</span>
               </button>
 
@@ -137,6 +138,7 @@
     const msg = document.getElementById("form-success-msg");
     if (!form || !btn || !msg) return;
 
+    const API_ENDPOINT = "https://europe-west1-studio-7658156126-ffb8e.cloudfunctions.net/leadIntake";
     const safe = (value) => String(value ?? "").trim().slice(0, 500);
 
     const downloadJson = (filename, data) => {
@@ -151,39 +153,20 @@
       URL.revokeObjectURL(url);
     };
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (!form.reportValidity()) return;
-
-      const data = new FormData(form);
-      const requestId = "KF-LEAD-" + Date.now().toString(36).toUpperCase();
-      const payload = {
-        requestId,
-        createdAt: new Date().toISOString(),
-        source: "karbonfiyat.com",
-        service: "Ön Analiz 4.900 TL + KDV",
-        company: safe(data.get("company")),
-        name: safe(data.get("name")),
-        phone: safe(data.get("phone")),
-        email: safe(data.get("email")),
-        sector: safe(data.get("sector")),
-        volume: safe(data.get("volume")),
-        consent: data.get("consent") === "yes"
-      };
-
+    const saveReceipt = (payload) => {
       try {
-        const drafts = JSON.parse(localStorage.getItem("karbonfiyat_lead_drafts_v1") || "[]");
+        const drafts = JSON.parse(localStorage.getItem("karbonfiyat_lead_receipts_v1") || "[]");
         const next = Array.isArray(drafts) ? drafts.slice(-9) : [];
         next.push(payload);
-        localStorage.setItem("karbonfiyat_lead_drafts_v1", JSON.stringify(next));
+        localStorage.setItem("karbonfiyat_lead_receipts_v1", JSON.stringify(next));
       } catch {}
+    };
 
-      downloadJson(requestId.toLowerCase() + ".json", payload);
-
+    const fallbackToEmail = (payload, localRequestId) => {
       const body = [
         "KarbonFiyat Ön Analiz Başvurusu",
         "",
-        "Başvuru No: " + payload.requestId,
+        "Yerel Başvuru No: " + localRequestId,
         "Şirket: " + payload.company,
         "Yetkili: " + payload.name,
         "Telefon: " + payload.phone,
@@ -193,17 +176,91 @@
         "",
         "Hizmet: " + payload.service,
         "",
-        "Not: Başvuru JSON paketi tarayıcı tarafından ayrıca indirildi."
+        "Not: Sunucu bağlantısı kurulamadığı için bu e-posta yedek teslim kanalı olarak açıldı."
       ].join("\n");
 
-      const subject = encodeURIComponent("KarbonFiyat Ön Analiz Başvurusu · " + requestId);
-      const mailBody = encodeURIComponent(body);
+      downloadJson(localRequestId.toLowerCase() + ".json", {
+        ...payload,
+        requestId: localRequestId,
+        fallback: "email",
+        createdAt: new Date().toISOString()
+      });
 
       msg.style.display = "block";
-      msg.textContent = "Başvuru paketi oluşturuldu (" + requestId + "). JSON kopyası indirildi ve e-posta taslağı açılıyor. Başvurunun bize ulaşması için e-postayı göndermeniz gerekir.";
-      btn.disabled = false;
+      msg.dataset.state = "fallback";
+      msg.textContent = "Merkezi başvuru servisine ulaşılamadı. Veri kaybını önlemek için JSON kopyası indirildi ve e-posta taslağı açıldı. Başvurunun ulaşması için e-postayı gönderin.";
 
-      window.location.href = "mailto:analiz@karbonfiyat.com?subject=" + subject + "&body=" + mailBody;
+      window.location.href =
+        "mailto:analiz@karbonfiyat.com?subject=" +
+        encodeURIComponent("KarbonFiyat Ön Analiz Başvurusu · " + localRequestId) +
+        "&body=" +
+        encodeURIComponent(body);
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      if (safe(data.get("website"))) return;
+
+      const payload = {
+        service: "Ön Analiz 4.900 TL + KDV",
+        company: safe(data.get("company")),
+        name: safe(data.get("name")),
+        phone: safe(data.get("phone")),
+        email: safe(data.get("email")),
+        sector: safe(data.get("sector")),
+        volume: safe(data.get("volume")),
+        consent: data.get("consent") === "yes",
+        website: ""
+      };
+
+      const localRequestId = "KF-LEAD-" + Date.now().toString(36).toUpperCase();
+      btn.disabled = true;
+      btn.dataset.loading = "true";
+      const originalHtml = btn.innerHTML;
+      btn.textContent = "Güvenli başvuru gönderiliyor...";
+      msg.style.display = "none";
+      msg.textContent = "";
+
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), 8000);
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok || !result.requestId) {
+          throw new Error(result.error || "lead_api_error");
+        }
+
+        saveReceipt({
+          requestId: result.requestId,
+          submittedAt: new Date().toISOString(),
+          company: payload.company,
+          email: payload.email,
+          service: payload.service,
+          channel: "firebase"
+        });
+
+        msg.style.display = "block";
+        msg.dataset.state = "success";
+        msg.textContent = "Başvurunuz güvenli biçimde kaydedildi. Başvuru no: " + result.requestId + ". Bu numarayı referans olarak saklayın.";
+        form.reset();
+      } catch (error) {
+        fallbackToEmail(payload, localRequestId);
+      } finally {
+        window.clearTimeout(timer);
+        btn.disabled = false;
+        btn.dataset.loading = "false";
+        btn.innerHTML = originalHtml;
+      }
     });
   })();
 </script>
@@ -477,6 +534,15 @@
     font-size: 16px;
   }
 
+  .hp-field {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    left: -9999px !important;
+  }
+
   .success-message {
     background: rgba(22, 163, 74, 0.12);
     border: 1px solid rgba(22, 163, 74, 0.35);
@@ -485,6 +551,12 @@
     border-radius: 10px;
     font-size: 13px;
     line-height: 1.5;
+  }
+
+  .success-message[data-state="fallback"] {
+    background: rgba(217, 119, 6, 0.12);
+    border-color: rgba(217, 119, 6, 0.35);
+    color: #FBBF24;
   }
 
   @media (max-width: 960px) {
