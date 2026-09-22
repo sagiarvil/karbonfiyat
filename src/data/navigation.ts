@@ -8,6 +8,7 @@ export const navLinks: NavLink[] = [
   { label: "CBAM", href: "/cbam-fiyati" },
   { label: "Türkiye ETS", href: "/turkiye-ets" },
   { label: "Workspace", href: "/workspace" },
+  { label: "Monitor", href: "/carbon-monitor" },
   { label: "Fiyatlandırma", href: "/fiyatlandirma" },
   { label: "Resmî SKDM Raporu ↗", href: "https://skdmhesapla.com/" },
   { label: "Metodoloji", href: "/metodoloji" }
@@ -27,6 +28,7 @@ export const footerColumns = [
     title: "Araçlar & Motorlar",
     links: [
       { label: "Workspace", href: "/workspace" },
+      { label: "Carbon Monitor", href: "/carbon-monitor" },
       { label: "Fiyatlandırma", href: "/fiyatlandirma" },
       { label: "Resmî SKDM Raporu Hazırla ↗", href: "https://skdmhesapla.com/" },
       { label: "Karbon Maliyet Hesaplama", href: "/karbon-maliyet-hesaplama" },
