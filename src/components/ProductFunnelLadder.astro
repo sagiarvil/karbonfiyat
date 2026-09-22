@@ -1,0 +1,301 @@
+---
+const steps = [
+  {
+    step: "ADIM 01",
+    name: "Ön Tarama",
+    price: "0 TL",
+    priceSub: "Ücretsiz & Anlık",
+    target: "Kayıp Farkındalığı",
+    output: "Sektörel katsayılarla 30 saniyede brüt parasal maruziyet ve risk büyüklüğü tespiti.",
+    cta: "Yukarıda Hesapla",
+    href: "#hesapla",
+    badge: "BAŞLANGIÇ",
+    isPrimary: false
+  },
+  {
+    step: "ADIM 02",
+    name: "Ön Analiz Raporu",
+    price: "4.900 TL",
+    priceSub: "+ KDV · 1 İş Günü",
+    target: "Tesis & GTIP Analizi",
+    output: "Şirketinize ait gerçek ürün kodları, tonaj ve emisyon verisiyle net CBAM yükümlülüğü ve brüt marj kaybı tablosu.",
+    cta: "Ön Analiz Başvurusu",
+    href: "#basvuru",
+    badge: "EN ÇOK TERCİH EDİLEN",
+    isPrimary: true
+  },
+  {
+    step: "ADIM 03",
+    name: "Finansal Karar Sistemi",
+    price: "19.900 TL",
+    priceSub: "+ KDV · 3 İş Günü",
+    target: "CFO & Yönetim Kurulu",
+    output: "Müşteri ve sözleşme bazlı kârlılık, üçüncü ülke mahsup senaryoları, koruyucu fiyat revizyon matrisi ve müzakere planı.",
+    cta: "Detaylı Bilgi Al",
+    href: "#basvuru",
+    badge: "TAM KAPSAM",
+    isPrimary: false
+  },
+  {
+    step: "ADIM 04",
+    name: "Aylık Monitör",
+    price: "Aylık Abonelik",
+    priceSub: "Sürekli Dinamik Takip",
+    target: "Sürekli Fiyat Koruması",
+    output: "AB haftalık CBAM borsa fiyatı değiştikçe otomatik maruziyet güncellemesi, delta uyarıları ve revize teklif marjı.",
+    cta: "Monitör Başlat",
+    href: "#basvuru",
+    badge: "KURUMSAL",
+    isPrimary: false
+  }
+];
+---
+
+<section class="funnel-ladder-section" id="huni">
+  <div class="container">
+    <div class="ladder-header">
+      <span class="eyebrow">ŞEFFAF HİZMET MERDİVENİ</span>
+      <h2 class="ladder-title">Bu bir rapor değil; 4 adımlı finansal karar sistemi.</h2>
+      <p class="ladder-sub">
+        Ön taramadan CFO yönetim kurulu savunma planına kadar her adımın fiyatı, süresi ve teslim çıktısı şeffaftır.
+      </p>
+    </div>
+
+    <div class="steps-grid">
+      {steps.map((s) => (
+        <article class={`step-card ${s.isPrimary ? "highlight-step" : ""}`}>
+          <div class="card-head">
+            <span class="step-badge mono">{s.step}</span>
+            <span class={`step-tier ${s.isPrimary ? "tier-primary" : ""}`}>{s.badge}</span>
+          </div>
+
+          <h3 class="step-title">{s.name}</h3>
+          
+          <div class="price-container">
+            <span class="price-val">{s.price}</span>
+            <span class="price-sub">{s.priceSub}</span>
+          </div>
+
+          <div class="step-target-box">
+            <span class="target-label">HEDEF ÇIKTI</span>
+            <span class="target-text">{s.target}</span>
+          </div>
+
+          <p class="step-desc">{s.output}</p>
+
+          <a href={s.href} class={`btn ${s.isPrimary ? "btn-primary" : "btn-secondary"} step-cta`}>
+            {s.cta}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <!-- Güvence Notu -->
+    <div class="ladder-guarantee">
+      <div class="guarantee-icon" aria-hidden="true">🛡️</div>
+      <div class="guarantee-text">
+        <strong>KarbonFiyat Çıktı Standardı:</strong> Tüm analizlerimiz, kurum içi veya bağımsız denetçilere doğrudan sunulabilir formatta, AB Tüzüğü (EU 2023/956) ve IFRS S2 iklim riskleri raporlama normlarına uyumlu hazırlanır.
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .funnel-ladder-section {
+    padding: 84px 0;
+    background: #060707;
+  }
+
+  .ladder-header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 52px;
+  }
+
+  .ladder-title {
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin: 14px 0 12px;
+    letter-spacing: -0.03em;
+  }
+
+  .ladder-sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .step-card {
+    background: #0E1010;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 150ms ease, border-color 150ms ease;
+    position: relative;
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .step-card.highlight-step {
+    background: linear-gradient(180deg, #161815 0%, #0E1010 100%);
+    border: 1px solid rgba(201, 167, 97, 0.4);
+    box-shadow: 0 10px 30px rgba(201, 167, 97, 0.08);
+  }
+
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .step-badge {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .step-tier {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+  }
+
+  .tier-primary {
+    background: rgba(201, 167, 97, 0.18);
+    color: #E6C687;
+    border: 1px solid rgba(201, 167, 97, 0.35);
+  }
+
+  .step-title {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin: 0 0 14px;
+    font-weight: 700;
+  }
+
+  .price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .price-val {
+    font-size: 26px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.03em;
+  }
+
+  .highlight-step .price-val {
+    color: #F4F5F4;
+  }
+
+  .price-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .step-target-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .target-label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .target-text {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .step-desc {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 24px;
+    flex-grow: 1;
+  }
+
+  .step-cta {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+
+  .ladder-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #0B0E0E;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 36px;
+  }
+
+  .guarantee-icon {
+    font-size: 24px;
+  }
+
+  .guarantee-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .guarantee-text strong {
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+    .ladder-guarantee {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>

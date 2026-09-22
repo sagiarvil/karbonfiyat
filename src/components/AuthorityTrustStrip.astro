@@ -1,0 +1,190 @@
+---
+const trustPillars = [
+  {
+    icon: "📜",
+    title: "Dinamik Mevzuat Motoru",
+    desc: "Mevzuat formülleri koda hard-code edilmez. AB Komisyonu (EU 2023/956) tebliğleri ve T.C. İklim Kanunu güncellendikçe kural tabloları anlık versiyonlanır; geçmiş tüm hesaplar geriye dönük denetlenebilir kalır."
+  },
+  {
+    icon: "⚖️",
+    title: "Mahsup Belirsizliğine Karşı Dürüstlük",
+    desc: "Türkiye'de ödenen yerel karbon vergilerinin AB CBAM'ından mahsup edilme kuralları 2026 içinde ikili müzakerelerle şekillenecektir. Analizlerimiz 'kesin indirim var' yanılgısı yaratmaz; en kötü ve en iyi mahsup senaryolarını ayrı modeller."
+  },
+  {
+    icon: "🛡️",
+    title: "Deterministik Hesap & Sıfır Halüsinasyon",
+    desc: "Finansal rakamlar hiçbir şekilde üretken AI modellerine tahmin ettirilmez. Her sonuç, doğrulanmış matematiksel modeller ve resmî katsayılar ile deterministik olarak üretilir."
+  },
+  {
+    icon: "🔒",
+    title: "Kurumsal Gizlilik & NDA Güvencesi",
+    desc: "Şirketinize ait ihracat tonajları, ürün maliyetleri ve müşteri bilgileri ticari sırdır. Tüm ön analiz süreçleri kurumsal gizlilik sözleşmesi (NDA) çerçevesinde yürütülür, üçüncü taraflarla paylaşılmaz."
+  }
+];
+---
+
+<section class="authority-trust-section" id="guven">
+  <div class="container">
+    <div class="authority-header">
+      <span class="eyebrow">METODOLOJİ &amp; GÜVENCE STANDARDI</span>
+      <h2 class="authority-title">Pazarlama vaadi değil; doğrulanabilir ve denetlenebilir finansal zemin.</h2>
+      <p class="authority-sub">
+        Yüksek belirsizlik içeren karbon piyasasında en büyük risk yanıltıcı güvendir. KarbonFiyat, her hesabın arkasında yasal kaynak ve matematiksel kesinlik sunar.
+      </p>
+    </div>
+
+    <div class="pillars-grid">
+      {trustPillars.map((p) => (
+        <article class="pillar-card">
+          <div class="pillar-icon" aria-hidden="true">{p.icon}</div>
+          <h3 class="pillar-title">{p.title}</h3>
+          <p class="pillar-desc">{p.desc}</p>
+        </article>
+      ))}
+    </div>
+
+    <!-- Kimlik / Otorite Şeridi (Hofstede gereği ayrı sayfa yerine tek satır kimlik) -->
+    <div class="identity-authority-strip">
+      <div class="id-mark">
+        <span class="pulse-ring"></span>
+        <span class="id-title">KarbonFiyat Carbon Financial Intelligence</span>
+      </div>
+      <div class="id-meta">
+        <span>Sürüm: <strong>v2026.2.1</strong></span>
+        <span class="sep">•</span>
+        <span>Son Resmî Veri Doğrulama: <strong>Eylül 2026 (EU CBAM Q2)</strong></span>
+        <span class="sep">•</span>
+        <span>Regülasyon Takip: <strong>AB Resmi Gazetesi + T.C. Resmî Gazete</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .authority-trust-section {
+    padding: 80px 0;
+    background: #060707;
+  }
+
+  .authority-header {
+    max-width: 840px;
+    margin-bottom: 48px;
+  }
+
+  .authority-title {
+    font-size: clamp(28px, 3.8vw, 42px);
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin: 12px 0 10px;
+    letter-spacing: -0.03em;
+  }
+
+  .authority-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .pillar-card {
+    background: #0E1010;
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 150ms ease;
+  }
+
+  .pillar-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .pillar-icon {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+
+  .pillar-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .pillar-desc {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* Alt Kimlik & Sürüm Şeridi */
+  .identity-authority-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0A0D0D;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .id-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pulse-ring {
+    width: 8px;
+    height: 8px;
+    background: #50C878;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(80, 200, 120, 0.6);
+  }
+
+  .id-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .id-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .id-meta strong {
+    color: var(--text-primary);
+  }
+
+  .sep {
+    opacity: 0.3;
+  }
+
+  @media (max-width: 860px) {
+    .pillars-grid {
+      grid-template-columns: 1fr;
+    }
+    .identity-authority-strip {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -1,42 +1,29 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import MarketPriceCard from "../components/MarketPriceCard.astro";
-import MetricCard from "../components/MetricCard.astro";
-import CarbonCalculator from "../components/CarbonCalculator.astro";
-import SectionHeading from "../components/SectionHeading.astro";
-import ExpertCTA from "../components/ExpertCTA.astro";
-import { marketPrices } from "../data/market-prices";
+import LossHeroCalculator from "../components/LossHeroCalculator.astro";
+import RegulatoryTimelineStrip from "../components/RegulatoryTimelineStrip.astro";
+import ProductFunnelLadder from "../components/ProductFunnelLadder.astro";
+import ExecutiveSampleOutput from "../components/ExecutiveSampleOutput.astro";
+import AuthorityTrustStrip from "../components/AuthorityTrustStrip.astro";
+import LeadOrderModal from "../components/LeadOrderModal.astro";
 import { seoPages } from "../data/seo";
 
-const differentiationCards = [
-  {
-    index: "01",
-    enTitle: "Carbon Exposure",
-    trTitle: "Karbon maruziyeti",
-    description: "Şirketinizin mevcut karbon fiyatıyla karşı karşıya olduğu brüt maliyeti görün."
-  },
-  {
-    index: "02",
-    enTitle: "Margin Impact",
-    trTitle: "Marj etkisi",
-    description: "Karbon maliyetinin ürün ve müşteri kârlılığından ne kadar götürdüğünü hesaplayın."
-  },
-  {
-    index: "03",
-    enTitle: "Required Selling Price",
-    trTitle: "Gerekli satış fiyatı",
-    description: "Mevcut marjı korumak için satış fiyatının hangi seviyeye çıkması gerektiğini görün."
-  },
-  {
-    index: "04",
-    enTitle: "Carbon Break-even",
-    trTitle: "Karbon kırılma fiyatı",
-    description: "Karbon fiyatının hangi seviyede ürününüzü zarara geçirdiğini tespit edin."
-  }
-];
-
 const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "KarbonFiyat Carbon Financial Intelligence",
+    url: "https://karbonfiyat.com",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: "4900",
+      priceCurrency: "TRY",
+      name: "CBAM Ön Maliyet Analiz Raporu"
+    },
+    description: "AB SKDM (CBAM) ve Türkiye ETS maliyetlerini şirket bilançosuna, ürün maliyetine ve brüt marj kaybına çeviren finansal karar sistemi."
+  },
   {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -53,197 +40,28 @@ const schema = [
   }
 ];
 ---
+
 <Layout
-  title={seoPages.home.title}
-  description={seoPages.home.description}
+  title="KarbonFiyat · SKDM & CBAM Karbon Maliyet ve Marj Kaybı Hesaplama"
+  description="AB'ye ihracat yapan Türk sanayicileri için SKDM (CBAM) ve TR-ETS karbon maliyetini, brüt marj kaybını ve koruyucu fiyat revizyonunu hesaplayan finansal karar sistemi."
   canonical={seoPages.home.canonical}
   schema={schema}
 >
-  <Hero />
+  <!-- 1. & 2. Bölüm: Hero + Anlık Kayıp Hesaplayıcısı & Kilitli Teaser Bloğu -->
+  <LossHeroCalculator />
 
-  <section class="container prices-section" id="fiyatlar">
-    <SectionHeading
-      eyebrow="PİYASA VE RESMÎ FİYATLAR"
-      title="Üç farklı piyasa. Tek finansal görünüm."
-      subtitle="CBAM sertifika fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS aynı veri değildir. KarbonFiyat her veriyi kaynağı, dönemi ve statüsüyle ayrı gösterir."
-    />
-    <div class="market-cards-grid">
-      {marketPrices.map(card => (
-        <MarketPriceCard card={card} />
-      ))}
-    </div>
-  </section>
+  <!-- 3. Bölüm: "Neden Şimdi?" Yasal Gerçeklik Şeridi -->
+  <RegulatoryTimelineStrip />
 
-  <section class="container differentiation-section" id="neden">
-    <SectionHeading
-      eyebrow="STRATEJİK DÖNÜŞÜM"
-      title="Emisyonu değil, parasal etkisini görün."
-      subtitle="Ton CO₂ bilgisi tek başına bir yönetim kararı değildir. KarbonFiyat emisyon verisini finansal sonuçlara bağlar."
-    />
-    <div class="metric-cards-grid">
-      {differentiationCards.map(c => (
-        <MetricCard
-          index={c.index}
-          enTitle={c.enTitle}
-          trTitle={c.trTitle}
-          description={c.description}
-        />
-      ))}
-    </div>
-  </section>
+  <!-- 4. Bölüm: Ürün Merdiveni (Funnel: 0 TL -> 4.900 TL -> 19.900 TL -> Monitör) -->
+  <ProductFunnelLadder />
 
-  <div class="container">
-    <CarbonCalculator />
-  </div>
+  <!-- 5. Bölüm: Örnek CFO Çıktı Önizlemesi (Yönetim Kurulu Karar Tablosu) -->
+  <ExecutiveSampleOutput />
 
-  <section class="container why-section">
-    <SectionHeading
-      eyebrow="NEDEN KARBONFIYAT?"
-      title="Uyum raporundan finansal karara."
-      subtitle="Tüm sistem aynı vaadi güçlendirir: Karbon → Para → Marj → Fiyat → Karar."
-    />
-    <div class="why-grid">
-      <article class="card why-card">
-        <span class="why-badge chip">VERİ GÜVENCESİ</span>
-        <h3>Kaynak kontrollü</h3>
-        <p>Her fiyat ve katsayı; kaynak, dönem, yürürlük tarihi ve doğrulama statüsüyle tutulur.</p>
-      </article>
-      <article class="card why-card">
-        <span class="why-badge chip">KARAR KATMANI</span>
-        <h3>Finans odaklı</h3>
-        <p>Sonuç yalnız ton CO₂ değildir. Ürün maliyeti, brüt marj, satış fiyatı ve müşteri kârlılığı etkisine çevrilir.</p>
-      </article>
-      <article class="card why-card">
-        <span class="why-badge chip">DETERMİNİSTİK</span>
-        <h3>Yeniden üretilebilir</h3>
-        <p>Aynı veri ve aynı mevzuat sürümü her zaman aynı finansal sonucu üretir. AI hesap yapmaz.</p>
-      </article>
-    </div>
-  </section>
+  <!-- 6. Bölüm: Hofstede Uyumlu Güven & Dinamik Mevzuat Şeridi -->
+  <AuthorityTrustStrip />
 
-  <section class="container sectors-section">
-    <SectionHeading
-      eyebrow="İHRACAT MARUZİYETİ"
-      title="Yüksek karbon maruziyetli ihracatçı sektörler."
-      subtitle="İlk ürün mimarisi finansal etkinin en net ölçülebildiği sanayi kollarında doğrulandı."
-    />
-    <div class="sector-list">
-      <a href="/cbam-fiyati" class="sector-row">
-        <div class="sector-meta">
-          <span class="sector-title">Demir &amp; Çelik</span>
-          <small class="sector-sub">CBAM · ürün ve gömülü emisyon bazlı ton maliyeti</small>
-        </div>
-        <span class="chip">RESMÎ VERİ</span>
-        <span class="sector-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="/cbam-fiyati" class="sector-row">
-        <div class="sector-meta">
-          <span class="sector-title">Alüminyum</span>
-          <small class="sector-sub">CBAM · teklif fiyatı ve ihracat marjı koruması</small>
-        </div>
-        <span class="chip">RESMÎ VERİ</span>
-        <span class="sector-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="/turkiye-ets" class="sector-row">
-        <div class="sector-meta">
-          <span class="sector-title">Çimento</span>
-          <small class="sector-sub">TR ETS · tesis emisyon üst sınırı ve klinker katsayısı</small>
-        </div>
-        <span class="chip warning">PİLOT DÖNEM</span>
-        <span class="sector-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="/turkiye-ets" class="sector-row">
-        <div class="sector-meta">
-          <span class="sector-title">Gübre</span>
-          <small class="sector-sub">TR ETS · proses ve enerji emisyonu bütçe etkisi</small>
-        </div>
-        <span class="chip warning">PİLOT DÖNEM</span>
-        <span class="sector-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <ExpertCTA />
+  <!-- 7. Bölüm: Kapanış Başvuru & 4.900 TL Talep Bloğu -->
+  <LeadOrderModal />
 </Layout>
-
-<style>
-  .market-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .metric-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .why-card {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
-  }
-  .why-badge {
-    align-self: flex-start;
-  }
-  .why-card h3 {
-    font-size: 22px;
-    margin: 20px 0 10px;
-    color: var(--text-primary);
-  }
-  .why-card p {
-    color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.65;
-    margin: 0;
-  }
-  .sector-list {
-    border-top: 1px solid var(--border-soft);
-  }
-  .sector-row {
-    display: grid;
-    grid-template-columns: 1.4fr auto auto;
-    align-items: center;
-    gap: 20px;
-    padding: 24px 8px;
-    border-bottom: 1px solid var(--border-soft);
-    transition: background 150ms ease;
-  }
-  @media (hover: hover) {
-    .sector-row:hover .sector-title { color: #FFFFFF; }
-    .sector-row:hover .sector-arrow { transform: translateX(4px); }
-  }
-  .sector-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .sector-title {
-    font-size: 21px;
-    font-weight: 650;
-    color: var(--text-primary);
-    transition: color 150ms ease;
-  }
-  .sector-sub {
-    color: var(--text-secondary);
-    font-size: 13px;
-  }
-  .sector-arrow {
-    font-size: 20px;
-    color: var(--text-primary);
-    transition: transform 150ms ease;
-  }
-
-  @media (max-width: 860px) {
-    .market-cards-grid { grid-template-columns: 1fr; }
-    .metric-cards-grid { grid-template-columns: 1fr; }
-    .why-grid { grid-template-columns: 1fr; }
-    .sector-row { grid-template-columns: 1fr auto; gap: 12px; }
-  }
-</style>

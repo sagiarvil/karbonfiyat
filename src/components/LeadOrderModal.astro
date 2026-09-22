@@ -1,0 +1,435 @@
+---
+---
+
+<section class="lead-order-section" id="basvuru">
+  <div class="container">
+    <div class="order-card-wrapper">
+      <div class="order-grid">
+        <!-- Sol: Teklif & Kapsam Özeti -->
+        <div class="offer-summary-col">
+          <div class="offer-badge">
+            <span>RESMÎ ÖN ANALİZ HİZMETİ</span>
+          </div>
+          <h2 class="offer-title">İhracat marjınızı korumaya şimdi başlayın.</h2>
+          <p class="offer-sub">
+            4.900 TL (+ KDV) Ön Analiz Raporu ile şirketinizin gerçek GTIP ve tesis emisyonlarıyla hesaplanmış net CBAM yükümlülüğünü ve savunma yol haritasını 1 iş gününde alın.
+          </p>
+
+          <div class="deliverables-list">
+            <div class="deliv-item">
+              <span class="deliv-check">✓</span>
+              <div>
+                <strong>Tesis &amp; GTIP Özelinde Net CBAM Maliyeti</strong>
+                <small>Varsayılan katsayılar değil, şirketinize özel gerçek yükümlülük.</small>
+              </div>
+            </div>
+            <div class="deliv-item">
+              <span class="deliv-check">✓</span>
+              <div>
+                <strong>Müşteri ve Ürün Bazlı Marj Erime Analizi</strong>
+                <small>Karbon maliyetinin hangi müşteride zarara yol açtığının tespiti.</small>
+              </div>
+            </div>
+            <div class="deliv-item">
+              <span class="deliv-check">✓</span>
+              <div>
+                <strong>Asgari Fiyat Revizyon Önerisi</strong>
+                <small>AB alıcısıyla müzakerelerde marjı koruyan koruyucu fiyat seviyeleri.</small>
+              </div>
+            </div>
+            <div class="deliv-item">
+              <span class="deliv-check">✓</span>
+              <div>
+                <strong>1 İş Gününde CFO Yönetici Özeti Formatında Teslim</strong>
+                <small>Yönetim kurulu veya banka finansman sunumuna hazır PDF tablo.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="direct-contact-note">
+            <span class="contact-lbl">Sorularınız için doğrudan kurumsal hat:</span>
+            <div class="contact-links">
+              <a href="mailto:analiz@karbonfiyat.com" class="direct-link">✉️ analiz@karbonfiyat.com</a>
+              <span class="sep">•</span>
+              <a href="https://wa.me/905320000000?text=KarbonFiyat%204900%20TL%20Ön%20Analiz%20Hakkında%20Bilgi%20Almak%20İstiyorum" target="_blank" rel="noopener" class="direct-link whatsapp-link">💬 WhatsApp Destek</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sağ: Başvuru Formu -->
+        <div class="order-form-col">
+          <div class="form-panel">
+            <div class="form-header">
+              <h3 class="form-title">Ön Analiz Talep Formu</h3>
+              <span class="form-step-tag">KONTENJAN: İLK 10 İHRACATÇI</span>
+            </div>
+
+            <form class="actual-lead-form" id="actual-lead-form" onsubmit="handleFormSubmit(event)">
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="company-name">Şirket Unvanı *</label>
+                  <input type="text" id="company-name" name="company" placeholder="Örn: ABC Demir Çelik San. A.Ş." required />
+                </div>
+              </div>
+
+              <div class="form-row two-col">
+                <div class="form-field">
+                  <label for="contact-name">Yetkili Ad Soyad / Görev *</label>
+                  <input type="text" id="contact-name" name="name" placeholder="Örn: Ahmet Yılmaz (CFO)" required />
+                </div>
+                <div class="form-field">
+                  <label for="contact-phone">Telefon Numarası *</label>
+                  <input type="tel" id="contact-phone" name="phone" placeholder="0532 123 45 67" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="contact-email">Kurumsal E-posta *</label>
+                  <input type="email" id="contact-email" name="email" placeholder="ahmet@abcmetal.com" required />
+                </div>
+              </div>
+
+              <div class="form-row two-col">
+                <div class="form-field">
+                  <label for="form-sector">İhracat Sektörü *</label>
+                  <select id="form-sector" name="sector" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Demir & Çelik">Demir &amp; Çelik</option>
+                    <option value="Alüminyum">Alüminyum</option>
+                    <option value="Çimento">Çimento</option>
+                    <option value="Gübre">Gübre</option>
+                    <option value="Elektrik / Hidrojen">Elektrik / Hidrojen</option>
+                    <option value="Diğer İhracatçı">Diğer İhracatçı</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="form-volume">Tahmini Yıllık AB Tonajı</label>
+                  <input type="text" id="form-volume" name="volume" placeholder="Örn: 10.000 ton" />
+                </div>
+              </div>
+
+              <div class="form-terms">
+                <label class="checkbox-label">
+                  <input type="checkbox" required checked />
+                  <span>Verilerimin gizlilik sözleşmesi (NDA) ve KVKK kapsamında işlenmesini onaylıyorum.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-submit-order" id="btn-submit">
+                <span>4.900 TL Ön Analiz Başvurusunu Tamamla</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </button>
+
+              <div id="form-success-msg" class="success-message" style="display: none;">
+                ✓ Talebiniz alındı. Finans ekibimiz 2 saat içinde veri şablonu ve detaylar için sizinle iletişime geçecektir.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById("btn-submit");
+    const msg = document.getElementById("form-success-msg");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Kaydediliyor...";
+    }
+    setTimeout(function() {
+      if (btn) btn.style.display = "none";
+      if (msg) msg.style.display = "block";
+    }, 600);
+  }
+</script>
+
+<style>
+  .lead-order-section {
+    padding: 84px 0 100px;
+    background: #060707;
+  }
+
+  .order-card-wrapper {
+    background: linear-gradient(180deg, #101414 0%, #0A0C0C 100%);
+    border: 1px solid var(--border-medium);
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  }
+
+  .order-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+  }
+
+  /* Sol Sütun */
+  .offer-summary-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .offer-badge {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+    background: rgba(201, 167, 97, 0.12);
+    border: 1px solid rgba(201, 167, 97, 0.3);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  .offer-title {
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.03em;
+  }
+
+  .offer-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .deliverables-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 12px 0 8px;
+  }
+
+  .deliv-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .deliv-check {
+    width: 22px;
+    height: 22px;
+    background: rgba(201, 167, 97, 0.18);
+    color: #E6C687;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .deliv-item strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .deliv-item small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  .direct-contact-note {
+    border-top: 1px solid var(--border-soft);
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact-lbl {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+
+  .direct-link {
+    color: var(--text-primary);
+    font-weight: 550;
+    transition: color 150ms ease;
+  }
+
+  .direct-link:hover {
+    color: #E6C687;
+  }
+
+  .whatsapp-link {
+    color: #50C878;
+  }
+
+  .sep {
+    opacity: 0.3;
+  }
+
+  /* Sağ Sütun: Form Paneli */
+  .form-panel {
+    background: #090B0B;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 16px;
+  }
+
+  .form-title {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .form-step-tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    font-weight: 750;
+    color: #E6C687;
+    background: rgba(201, 167, 97, 0.1);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .actual-lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-row.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .form-field input,
+  .form-field select {
+    background: #040505;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1.45;
+  }
+
+  .checkbox-label input {
+    margin-top: 2px;
+  }
+
+  .btn-submit-order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #FFFFFF;
+    color: #060707;
+    font-size: 14px;
+    font-weight: 750;
+    padding: 16px;
+    border-radius: 12px;
+    border: 0;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: all 150ms ease;
+  }
+
+  .btn-submit-order:hover {
+    background: #F4F5F4;
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    font-size: 16px;
+  }
+
+  .success-message {
+    background: rgba(80, 200, 120, 0.12);
+    border: 1px solid rgba(80, 200, 120, 0.3);
+    color: #85E0A3;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 960px) {
+    .order-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .order-card-wrapper {
+      padding: 30px;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .form-row.two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

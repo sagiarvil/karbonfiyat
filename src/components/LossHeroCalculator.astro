@@ -1,0 +1,762 @@
+---
+interface Props {
+  defaultSector?: string;
+  defaultVolume?: number;
+  defaultSalesPrice?: number;
+}
+
+const {
+  defaultSector = "steel",
+  defaultVolume = 10000,
+  defaultSalesPrice = 850
+} = Astro.props;
+
+// Sektör varsayılan emisyon katsayıları (tCO2e / ton)
+const sectorData = [
+  { id: "steel", name: "Demir & Çelik", factor: 1.84, defaultPrice: 850, note: "Gömülü emisyon katsayısı: 1.84 tCO₂e/t" },
+  { id: "aluminum", name: "Alüminyum", factor: 4.20, defaultPrice: 2400, note: "Gömülü emisyon katsayısı: 4.20 tCO₂e/t" },
+  { id: "cement", name: "Çimento", factor: 0.65, defaultPrice: 95, note: "Gömülü emisyon katsayısı: 0.65 tCO₂e/t" },
+  { id: "fertilizer", name: "Gübre", factor: 2.10, defaultPrice: 420, note: "Gömülü emisyon katsayısı: 2.10 tCO₂e/t" }
+];
+---
+
+<section class="loss-hero-section">
+  <div class="container">
+    <!-- Üst Başlık & Otorite Sinyali -->
+    <div class="hero-header">
+      <div class="status-chip">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span class="status-text">2026 MALİ DÖNEMİ BAŞLADI · 1 OCAK 2026 YÜRÜRLÜK</span>
+      </div>
+      <h1 class="hero-loss-title">
+        AB'ye ihracat mı yapıyorsunuz?<br />
+        <span class="highlight-loss">SKDM kârınızı sessizce eritiyor olabilir.</span>
+      </h1>
+      <p class="hero-loss-sub">
+        Demir-çelik, alüminyum, çimento ve gübre üreticisi KOBİ'ler için: AB ithalatçınız maliyeti size rücu etmeden önce gerçek maruziyetinizi ve marj kaybınızı 5 saniyede hesaplayın.
+      </p>
+    </div>
+
+    <!-- Mini Hesaplayıcı & Kilitli Teaser Kartı -->
+    <div class="calculator-hero-card">
+      <!-- Sol: Girdi Formu -->
+      <div class="calc-input-pane">
+        <div class="pane-header">
+          <span class="pane-tag">GÖSTERGE HESAPLAMA MOTORU</span>
+          <h2 class="pane-title">İhracat Parametreleriniz</h2>
+        </div>
+
+        <form class="hero-calc-form" onsubmit="return false;">
+          <!-- Sektör Seçimi -->
+          <div class="form-group">
+            <label class="input-label" for="sector-select">Sektör / Ürün Grubu</label>
+            <div class="select-wrapper">
+              <select id="sector-select" class="calc-select">
+                {sectorData.map((s) => (
+                  <option value={s.id} data-factor={s.factor} data-price={s.defaultPrice} selected={s.id === defaultSector}>
+                    {s.name} ({s.factor} tCO₂e/t)
+                  </option>
+                ))}
+              </select>
+              <span class="select-arrow" aria-hidden="true">▾</span>
+            </div>
+            <span class="input-hint" id="sector-hint">Ortalama gömülü emisyon: 1.84 tCO₂e / ton</span>
+          </div>
+
+          <!-- Yıllık AB Satış Tonajı -->
+          <div class="form-group">
+            <div class="label-row">
+              <label class="input-label" for="volume-input">Yıllık AB İhracat Tonajı</label>
+              <span class="quick-preset-label">Hızlı Seçim</span>
+            </div>
+            <div class="input-with-unit">
+              <input type="number" id="volume-input" class="calc-input" min="100" step="500" value={defaultVolume} />
+              <span class="unit-tag">ton / yıl</span>
+            </div>
+            <div class="preset-pills">
+              <button type="button" class="pill-btn" data-val="2500">2.500</button>
+              <button type="button" class="pill-btn" data-val="5000">5.000</button>
+              <button type="button" class="pill-btn active" data-val="10000">10.000</button>
+              <button type="button" class="pill-btn" data-val="25000">25.000</button>
+            </div>
+          </div>
+
+          <!-- Ortalama Satış Fiyatı -->
+          <div class="form-group">
+            <label class="input-label" for="price-input">Ortalama Satış Fiyatınız (FOB/CIF)</label>
+            <div class="input-with-unit">
+              <input type="number" id="price-input" class="calc-input" min="50" step="10" value={defaultSalesPrice} />
+              <span class="unit-tag">€ / ton</span>
+            </div>
+          </div>
+
+          <div class="calc-meta-info">
+            <div class="meta-row">
+              <span class="meta-label">Resmî CBAM Fiyat Göstergesi:</span>
+              <span class="meta-value">€75,28 / tCO₂ (AB Komisyonu 2026/Q2)</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Hesaplama Mantığı:</span>
+              <span class="meta-value">Deterministik · Sıfır AI Halüsinasyonu</span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sağ: Kilitli Sonuç & Paynkolay Odaklı Büyük Kutu -->
+      <div class="calc-result-pane">
+        <div class="result-badge-row">
+          <span class="result-badge">TAHMİNİ BRÜT MARUZİYET</span>
+          <span class="verified-tag">✓ 2026 Regülasyon Kuralı</span>
+        </div>
+
+        <!-- Büyük Parasal Kayıp Kutusu -->
+        <div class="exposure-hero-box">
+          <span class="exposure-lead">Tahmini Yıllık Karbon Maliyet Maruziyetiniz:</span>
+          <div class="exposure-number-wrap">
+            <span class="exposure-val" id="display-exposure">€1.385.152</span>
+          </div>
+          <p class="exposure-desc">
+            Bu tutar, ürününüzün AB gümrüğünde beyan edilmemesi veya mahsup edilmemesi durumunda <strong>ithalatçınız tarafından talep edilecek doğrudan brüt maliyettir</strong>.
+          </p>
+        </div>
+
+        <!-- Kilitli Detay Analiz Izgarası (Teaser / Kayıp Derinliği) -->
+        <div class="locked-metrics-grid">
+          <div class="locked-kpi-card">
+            <div class="locked-header">
+              <span class="locked-name">Ton Başı Net Ek Yük</span>
+              <span class="lock-icon" title="Ön Analiz Raporu ile açılır">🔒</span>
+            </div>
+            <div class="blur-value-wrap">
+              <span class="blurred-val" id="display-per-ton">€138,52/t</span>
+              <span class="locked-overlay-tag">KİLİTLİ</span>
+            </div>
+          </div>
+
+          <div class="locked-kpi-card danger-accent">
+            <div class="locked-header">
+              <span class="locked-name">Gerçek Brüt Marj Kaybı</span>
+              <span class="lock-icon" title="Ön Analiz Raporu ile açılır">🔒</span>
+            </div>
+            <div class="blur-value-wrap">
+              <span class="blurred-val danger-text" id="display-margin-loss">−%16,3 puan</span>
+              <span class="locked-overlay-tag">KİLİTLİ</span>
+            </div>
+          </div>
+
+          <div class="locked-kpi-card">
+            <div class="locked-header">
+              <span class="locked-name">Zarara Geçiren Kırılma Fiyatı</span>
+              <span class="lock-icon" title="Ön Analiz Raporu ile açılır">🔒</span>
+            </div>
+            <div class="blur-value-wrap">
+              <span class="blurred-val" id="display-breakeven">€68,40/t</span>
+              <span class="locked-overlay-tag">KİLİTLİ</span>
+            </div>
+          </div>
+
+          <div class="locked-kpi-card">
+            <div class="locked-header">
+              <span class="locked-name">Marjı Koruyan Fiyat Zammı</span>
+              <span class="lock-icon" title="Ön Analiz Raporu ile açılır">🔒</span>
+            </div>
+            <div class="blur-value-wrap">
+              <span class="blurred-val" id="display-price-rev">+%16,3 revizyon</span>
+              <span class="locked-overlay-tag">KİLİTLİ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Funnel Kilit Açma CTA'sı -->
+        <div class="unlock-action-box">
+          <div class="unlock-info">
+            <div class="price-stack">
+              <span class="price-origin">Ön Analiz Raporu</span>
+              <span class="price-main">4.900 TL</span>
+              <span class="price-sub">+ KDV · 1 İş Gününde Teslim</span>
+            </div>
+            <p class="unlock-statement">
+              Tesis ve GTIP kodlarınıza özel net CBAM yükümlülüğü, üçüncü ülke mahsup senaryosu ve kilitli 4 kritik metrik <strong>yönetici özet raporu</strong> olarak teslim edilir.
+            </p>
+          </div>
+          <a href="#basvuru" class="btn btn-unlock" id="btn-unlock-cta">
+            <span>Gerçek Karbon Maliyetimi & Savunma Raporumu Al</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    const sectorEl = document.getElementById("sector-select");
+    const volumeEl = document.getElementById("volume-input");
+    const priceEl = document.getElementById("price-input");
+    const hintEl = document.getElementById("sector-hint");
+    const pills = document.querySelectorAll(".pill-btn");
+
+    const dispExposure = document.getElementById("display-exposure");
+    const dispPerTon = document.getElementById("display-per-ton");
+    const dispMarginLoss = document.getElementById("display-margin-loss");
+    const dispBreakeven = document.getElementById("display-breakeven");
+    const dispPriceRev = document.getElementById("display-price-rev");
+
+    const cbamPrice = 75.28; // AB Komisyonu resmi gösterge fiyatı
+
+    const fmtEur = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const fmtEurDec = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtPct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    function calculate() {
+      const selectedOption = sectorEl ? sectorEl.options[sectorEl.selectedIndex] : null;
+      const factor = selectedOption ? parseFloat(selectedOption.getAttribute("data-factor") || "1.84") : 1.84;
+      const vol = Math.max(1, parseFloat(volumeEl ? volumeEl.value : "10000") || 10000);
+      const salesPrice = Math.max(1, parseFloat(priceEl ? priceEl.value : "850") || 850);
+
+      // Toplam maruziyet = Tonaj * Gömülü Emisyon * CBAM Fiyatı
+      const totalExposure = vol * factor * cbamPrice;
+      const perTonCost = factor * cbamPrice;
+
+      // Varsayılan standart brüt marj %25 üzerinden marj erimesi
+      const marginLossPct = (perTonCost / salesPrice) * 100;
+      const requiredPriceRevision = (perTonCost / salesPrice) * 100;
+      const breakEvenCarbonPrice = (salesPrice * 0.25) / factor; // marjı sıfırlayan karbon fiyatı
+
+      if (dispExposure) dispExposure.textContent = fmtEur.format(totalExposure);
+      if (dispPerTon) dispPerTon.textContent = fmtEurDec.format(perTonCost) + "/t";
+      if (dispMarginLoss) dispMarginLoss.textContent = "−%" + fmtPct.format(marginLossPct) + " puan";
+      if (dispBreakeven) dispBreakeven.textContent = fmtEurDec.format(breakEvenCarbonPrice) + "/t";
+      if (dispPriceRev) dispPriceRev.textContent = "+%" + fmtPct.format(requiredPriceRevision);
+    }
+
+    if (sectorEl) {
+      sectorEl.addEventListener("change", function() {
+        const selectedOption = sectorEl.options[sectorEl.selectedIndex];
+        const factor = selectedOption.getAttribute("data-factor");
+        const defaultP = selectedOption.getAttribute("data-price");
+        if (hintEl) hintEl.textContent = "Ortalama gömülü emisyon: " + factor + " tCO₂e / ton";
+        if (priceEl && defaultP) priceEl.value = defaultP;
+        calculate();
+      });
+    }
+
+    if (volumeEl) volumeEl.addEventListener("input", calculate);
+    if (priceEl) priceEl.addEventListener("input", calculate);
+
+    pills.forEach(function(pill) {
+      pill.addEventListener("click", function() {
+        pills.forEach(function(p) { p.classList.remove("active"); });
+        pill.classList.add("active");
+        if (volumeEl) {
+          volumeEl.value = pill.getAttribute("data-val") || "10000";
+          calculate();
+        }
+      });
+    });
+
+    calculate();
+  })();
+</script>
+
+<style>
+  .loss-hero-section {
+    padding: 60px 0 40px;
+    background: radial-gradient(circle at 50% 0%, rgba(201, 167, 97, 0.04) 0%, transparent 60%);
+  }
+
+  .hero-header {
+    text-align: center;
+    max-width: 920px;
+    margin: 0 auto 48px;
+  }
+
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(201, 167, 97, 0.1);
+    border: 1px solid rgba(201, 167, 97, 0.25);
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #C9A761;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(201, 167, 97, 0.8);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+  }
+
+  .status-text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #E6C687;
+  }
+
+  .hero-loss-title {
+    font-size: clamp(34px, 4.8vw, 56px);
+    line-height: 1.1;
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+    margin: 0 0 20px;
+  }
+
+  .highlight-loss {
+    color: #E2BC72;
+    background: linear-gradient(180deg, #FFFFFF 20%, #C9A761 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-loss-sub {
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Kart Yapısı */
+  .calculator-hero-card {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 32px;
+    background: #0D1010;
+    border: 1px solid var(--border-medium);
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Sol Panel */
+  .calc-input-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .pane-header {
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 16px;
+  }
+
+  .pane-tag {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    font-weight: 650;
+    text-transform: uppercase;
+  }
+
+  .pane-title {
+    font-size: 22px;
+    color: var(--text-primary);
+    margin: 6px 0 0;
+  }
+
+  .hero-calc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .input-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .quick-preset-label {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .calc-select {
+    width: 100%;
+    appearance: none;
+    background: #060707;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+
+  .calc-select:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 14px;
+  }
+
+  .input-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .input-with-unit {
+    display: flex;
+    align-items: center;
+    background: #060707;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 150ms ease;
+  }
+
+  .input-with-unit:focus-within {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .calc-input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    color: var(--text-primary);
+    padding: 13px 16px;
+    font-size: 17px;
+    font-weight: 650;
+    outline: none;
+  }
+
+  .unit-tag {
+    padding: 0 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .preset-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .pill-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 6px 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .pill-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+  }
+
+  .pill-btn.active {
+    background: rgba(201, 167, 97, 0.15);
+    border-color: rgba(201, 167, 97, 0.4);
+    color: #E6C687;
+  }
+
+  .calc-meta-info {
+    border-top: 1px solid var(--border-soft);
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .meta-label {
+    color: var(--text-muted);
+  }
+
+  .meta-value {
+    color: var(--text-secondary);
+    font-weight: 550;
+  }
+
+  /* Sağ Panel: Kilitli Sonuç Bloğu */
+  .calc-result-pane {
+    background: #070909;
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .result-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .result-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #C9A761;
+  }
+
+  .verified-tag {
+    font-size: 11px;
+    color: #A7AEAC;
+    font-weight: 500;
+  }
+
+  /* Büyük Maruziyet Kutusu */
+  .exposure-hero-box {
+    background: linear-gradient(180deg, rgba(201, 167, 97, 0.08) 0%, rgba(0, 0, 0, 0.2) 100%);
+    border: 1px solid rgba(201, 167, 97, 0.25);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .exposure-lead {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .exposure-number-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .exposure-val {
+    font-size: clamp(34px, 4.2vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #FFFFFF;
+    line-height: 1.05;
+  }
+
+  .exposure-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 12px 0 0;
+  }
+
+  .exposure-desc strong {
+    color: #F4F5F4;
+  }
+
+  /* Kilitli Metrikler Izgarası */
+  .locked-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .locked-kpi-card {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .locked-kpi-card.danger-accent {
+    border-color: rgba(199, 110, 110, 0.2);
+  }
+
+  .locked-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .locked-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 550;
+    line-height: 1.3;
+  }
+
+  .lock-icon {
+    font-size: 12px;
+    opacity: 0.75;
+  }
+
+  .blur-value-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .blurred-val {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    filter: blur(5px);
+    user-select: none;
+    color: var(--text-primary);
+  }
+
+  .blurred-val.danger-text {
+    color: #E08585;
+  }
+
+  .locked-overlay-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: var(--text-secondary);
+  }
+
+  /* Kilit Açma Kutusu */
+  .unlock-action-box {
+    border-top: 1px solid var(--border-soft);
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .unlock-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .price-stack {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .price-origin {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .price-main {
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+  }
+
+  .price-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .unlock-statement {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .unlock-statement strong {
+    color: var(--text-primary);
+  }
+
+  .btn-unlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #F4F5F4;
+    color: #060707;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 16px 20px;
+    border-radius: 12px;
+    transition: transform 150ms ease, background 150ms ease;
+    text-align: center;
+  }
+
+  .btn-unlock:hover {
+    background: #FFFFFF;
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    font-size: 16px;
+    transition: transform 150ms ease;
+  }
+
+  .btn-unlock:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 960px) {
+    .calculator-hero-card {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 28px;
+    }
+    .loss-hero-section {
+      padding-top: 40px;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .locked-metrics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
