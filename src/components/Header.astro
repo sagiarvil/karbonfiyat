@@ -138,9 +138,10 @@ const navItems = navLinks;
   }
   .desktop-nav {
     display: flex;
-    gap: 28px;
+    gap: 22px;
     font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
   }
   .desktop-nav a {
     color: var(--text-secondary);
@@ -224,9 +225,14 @@ const navItems = navLinks;
     padding-top: 10px;
   }
 
+  @media (max-width: 1180px) {
+    .header-inner { gap: 18px; }
+    .desktop-nav { gap: 16px; font-size: 13px; }
+    .header-actions .btn-secondary { display: none; }
+  }
+
   @media (max-width: 960px) {
     .desktop-nav { display: none; }
-    .header-actions .btn-secondary { display: none; }
     .mobile-toggle { display: flex; }
   }
 
