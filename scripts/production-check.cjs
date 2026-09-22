@@ -85,16 +85,22 @@ for (const relative of htmlFiles) {
     fail(relative + " contains an unexpected noindex directive");
   }
 
-  const inputs = [...html.matchAll(/<input\b[^>]*>/gi)].map((m) => m[0]);
-  for (const input of inputs) {
+  const inputMatches = [...html.matchAll(/<input\b[^>]*>/gi)];
+  for (const match of inputMatches) {
+    const input = match[0];
     if (/type=["']hidden["']/i.test(input) || /aria-hidden=["']true["']/i.test(input)) continue;
     if (/aria-label=["'][^"']+["']/i.test(input) || /aria-labelledby=["'][^"']+["']/i.test(input)) continue;
+
+    const before = html.slice(0, match.index);
+    const wrappedByLabel = before.lastIndexOf("<label") > before.lastIndexOf("</label>");
+    if (wrappedByLabel) continue;
 
     const idMatch = input.match(/\bid=["']([^"']+)["']/i);
     if (!idMatch) fail(relative + " contains an input without id/accessible name: " + input.slice(0, 120));
     const escapedId = idMatch[1].replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
     const labelRe = new RegExp("<label[^>]+for=[\\\"']" + escapedId + "[\\\"'][^>]*>", "i");
     if (!labelRe.test(html)) fail(relative + " contains input #" + idMatch[1] + " without an associated label");
+  }
   }
 }
 
