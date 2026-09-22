@@ -41,7 +41,9 @@ import { seoPages } from "../data/seo";
         </a>
       </div>
       <div class="eeat-content-row">
-        <div class="eeat-avatar">BB</div>
+        <div class="eeat-avatar-frame">
+          <img src="/images/baris-bagirlar-thumb.jpg" alt="Barış Bağırlar" class="eeat-avatar-img" width="68" height="68" loading="lazy" />
+        </div>
         <div>
           <h2>Barış Bağırlar</h2>
           <p class="eeat-titles">
@@ -115,19 +117,21 @@ import { seoPages } from "../data/seo";
     gap: 24px;
     align-items: flex-start;
   }
-  .eeat-avatar {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #1C2222 0%, #0A0D0D 100%);
-    border: 1px solid rgba(201, 167, 97, 0.4);
+  .eeat-avatar-frame {
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: #E6C687;
+    border: 2px solid rgba(201, 167, 97, 0.6);
+    box-shadow: 0 0 16px rgba(201, 167, 97, 0.25);
+    overflow: hidden;
     flex-shrink: 0;
+    background: #0D1010;
+  }
+  .eeat-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .eeat-content-row h2 {
     font-size: 24px;

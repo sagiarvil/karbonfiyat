@@ -55,7 +55,9 @@ const trustPillars = [
 
       <div class="eeat-expert-body">
         <div class="eeat-profile-info">
-          <div class="eeat-avatar-placeholder" aria-hidden="true">BB</div>
+          <div class="eeat-avatar-frame">
+            <img src="/images/baris-bagirlar-thumb.jpg" alt="Barış Bağırlar" class="eeat-avatar-img" width="64" height="64" loading="lazy" />
+          </div>
           <div>
             <h3 class="eeat-name">Barış Bağırlar</h3>
             <span class="eeat-role-main">Karbon Finansmanı &amp; SKDM Modelleme Lideri</span>
@@ -244,19 +246,22 @@ const trustPillars = [
     gap: 16px;
   }
 
-  .eeat-avatar-placeholder {
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, #1C2222 0%, #0A0D0D 100%);
-    border: 1px solid rgba(201, 167, 97, 0.4);
+  .eeat-avatar-frame {
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: #E6C687;
-    letter-spacing: 0.05em;
+    border: 2px solid rgba(201, 167, 97, 0.6);
+    box-shadow: 0 0 16px rgba(201, 167, 97, 0.25);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #0D1010;
+  }
+
+  .eeat-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .eeat-name {
