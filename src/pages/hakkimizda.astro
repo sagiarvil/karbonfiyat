@@ -1,0 +1,95 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { seoPages } from "../data/seo";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  url: "https://karbonfiyat.com/hakkimizda",
+  name: "KarbonFiyat Hakkımızda",
+  mainEntity: {
+    "@type": "Organization",
+    name: "KarbonFiyat",
+    url: "https://karbonfiyat.com",
+    logo: "https://karbonfiyat.com/logo/karbonfiyat-logo.png",
+    founder: {
+      "@type": "Person",
+      name: "Barış Bağırlar",
+      sameAs: ["https://www.linkedin.com/in/barisbagirlar/"]
+    },
+    email: "analiz@karbonfiyat.com",
+    knowsAbout: ["CBAM", "EU ETS", "Türkiye ETS", "Karbon maliyeti", "Karbon finansal etkisi"]
+  }
+};
+---
+<Layout
+  title={seoPages.hakkimizda.title}
+  description={seoPages.hakkimizda.description}
+  canonical={seoPages.hakkimizda.canonical}
+  schema={schema}
+>
+  <section class="container trust-page">
+    <span class="eyebrow">YAYINCI KİMLİĞİ</span>
+    <h1>Karbon fiyatını finansal karara çevirmek için kuruldu.</h1>
+    <p class="lead">
+      KarbonFiyat; CBAM, EU ETS ve Türkiye ETS verilerini ürün maliyeti, brüt marj,
+      müşteri kârlılığı ve fiyatlama kararına bağlayan hesaplama ve karar destek platformudur.
+    </p>
+
+    <div class="trust-grid">
+      <article class="card trust-card">
+        <h2>Ne yapıyoruz?</h2>
+        <p>
+          Resmî veri, piyasa verisi ve kullanıcı senaryosunu birbirinden ayırır;
+          aynı girdilerle aynı sonucu üreten deterministik hesaplama motorları sunarız.
+        </p>
+      </article>
+      <article class="card trust-card">
+        <h2>Metodoloji sorumluluğu</h2>
+        <p>
+          Metodoloji mimarisi Barış Bağırlar tarafından yönetilir. Kullanılan kaynak,
+          dönem, katsayı ve hesaplama mantığı mümkün olan her yerde görünür tutulur.
+        </p>
+        <a href="/metodoloji">Metodolojiyi inceleyin</a>
+      </article>
+      <article class="card trust-card">
+        <h2>İletişim</h2>
+        <p>Ön analiz, veri veya metodoloji soruları için kurumsal iletişim kanalı:</p>
+        <a href="mailto:analiz@karbonfiyat.com">analiz@karbonfiyat.com</a>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .trust-page { padding: 88px 0 36px; }
+  .trust-page h1 {
+    max-width: 860px;
+    margin: 18px 0 16px;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.06;
+    color: var(--text-primary);
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .trust-card { padding: 28px; }
+  .trust-card h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    color: var(--text-primary);
+  }
+  .trust-card p {
+    margin: 0 0 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .trust-card a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 860px) {
+    .trust-page { padding-top: 56px; }
+    .trust-grid { grid-template-columns: 1fr; }
+  }
+</style>

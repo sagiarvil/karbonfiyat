@@ -44,5 +44,20 @@ export const seoPages: Record<string, SeoMeta> = {
     title: "Metodoloji | KarbonFiyat Veri ve Hesaplama Standardı",
     description: "Her sonuç yeniden üretilebilir olmalı. KarbonFiyat kaynak ayrımı, versiyonlama ve denetlenebilirlik ilkeleri.",
     canonical: "/metodoloji"
+  },
+  hakkimizda: {
+    title: "Hakkımızda | KarbonFiyat",
+    description: "KarbonFiyat’ın amacı, metodoloji yaklaşımı ve karbon maliyetini finansal karara dönüştüren yayıncı kimliği hakkında bilgi.",
+    canonical: "/hakkimizda"
+  },
+  iletisim: {
+    title: "İletişim | KarbonFiyat",
+    description: "KarbonFiyat ön analiz, veri ve metodoloji soruları için kurumsal iletişim kanalları.",
+    canonical: "/iletisim"
+  },
+  gizlilik: {
+    title: "Gizlilik ve Veri İşleme | KarbonFiyat",
+    description: "KarbonFiyat hesaplama araçları ve başvuru formunda hangi verilerin işlendiğini ve hangi amaçlarla kullanıldığını açıklayan gizlilik sayfası.",
+    canonical: "/gizlilik"
   }
 };

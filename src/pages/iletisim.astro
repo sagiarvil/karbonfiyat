@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { seoPages } from "../data/seo";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  url: "https://karbonfiyat.com/iletisim",
+  name: "KarbonFiyat İletişim",
+  mainEntity: {
+    "@type": "Organization",
+    name: "KarbonFiyat",
+    url: "https://karbonfiyat.com",
+    email: "analiz@karbonfiyat.com"
+  }
+};
+---
+<Layout
+  title={seoPages.iletisim.title}
+  description={seoPages.iletisim.description}
+  canonical={seoPages.iletisim.canonical}
+  schema={schema}
+>
+  <section class="container contact-page">
+    <span class="eyebrow">İLETİŞİM</span>
+    <h1>KarbonFiyat ile iletişime geçin.</h1>
+    <p class="lead">
+      Ön analiz, veri kaynağı, hesaplama metodolojisi veya teknik kullanım soruları için
+      doğrudan kurumsal e-posta kanalını kullanabilirsiniz.
+    </p>
+
+    <div class="contact-grid">
+      <article class="card contact-card">
+        <span class="eyebrow">KURUMSAL E-POSTA</span>
+        <h2><a href="mailto:analiz@karbonfiyat.com">analiz@karbonfiyat.com</a></h2>
+        <p>Başvurunuzun konusu ve şirket adını e-postada belirtmeniz değerlendirmeyi hızlandırır.</p>
+      </article>
+
+      <article class="card contact-card">
+        <span class="eyebrow">ÖN ANALİZ</span>
+        <h2>Başvuru formu</h2>
+        <p>4.900 TL + KDV Ön Analiz talebi için ana sayfadaki güvenli başvuru formunu kullanın.</p>
+        <a class="btn btn-primary" href="/#basvuru">Başvuru formuna git</a>
+      </article>
+
+      <article class="card contact-card">
+        <span class="eyebrow">ŞEFFAFLIK</span>
+        <h2>Metodoloji ve gizlilik</h2>
+        <p>Veri sınıflandırması, hesaplama yaklaşımı ve başvuru verilerinin işlenmesi hakkında bilgi alın.</p>
+        <div class="links">
+          <a href="/metodoloji">Metodoloji</a>
+          <a href="/gizlilik">Gizlilik</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact-page { padding: 88px 0 36px; }
+  .contact-page h1 {
+    margin: 18px 0 16px;
+    font-size: clamp(36px, 5vw, 58px);
+    color: var(--text-primary);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .contact-card { padding: 28px; }
+  .contact-card h2 { color: var(--text-primary); margin: 12px 0; font-size: 20px; }
+  .contact-card p { color: var(--text-secondary); line-height: 1.65; }
+  .contact-card a:not(.btn) { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+  .links { display: flex; gap: 14px; flex-wrap: wrap; }
+  @media (max-width: 860px) {
+    .contact-page { padding-top: 56px; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

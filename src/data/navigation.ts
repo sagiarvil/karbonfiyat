@@ -39,10 +39,13 @@ export const footerColumns = [
   {
     title: "Güvence",
     links: [
+      { label: "Hakkımızda", href: "/hakkimizda" },
+      { label: "İletişim", href: "/iletisim" },
+      { label: "Gizlilik", href: "/gizlilik" },
       { label: "Metodoloji", href: "/metodoloji" },
       { label: "Kaynaklar", href: "/metodoloji#kaynaklar" },
       { label: "Veri Politikası", href: "/metodoloji#veri-politikasi" },
-      { label: "Yasal Bilgilendirme", href: "/metodoloji#yasal" }
+      { label: "Yasal Bilgilendirme", href: "/gizlilik" }
     ]
   }
 ];

@@ -33,10 +33,10 @@ const sampleRows = [
               <tr data-pf-row>
                 <td><input type="text" value={row.client} data-field="client" aria-label={"Müşteri " + (index + 1)} /></td>
                 <td><input type="text" value={row.country} data-field="country" aria-label={"Ülke " + (index + 1)} /></td>
-                <td><input type="number" value={row.volume} min="0" step="100" data-field="volume" /></td>
-                <td><input type="number" value={row.sales} min="0" step="1" data-field="sales" /></td>
-                <td><input type="number" value={row.cost} min="0" step="1" data-field="cost" /></td>
-                <td><input type="number" value={row.emission} min="0" step="0.01" data-field="emission" /></td>
+                <td><input type="number" value={row.volume} min="0" step="100" data-field="volume" aria-label={"Tonaj " + (index + 1)} /></td>
+                <td><input type="number" value={row.sales} min="0" step="1" data-field="sales" aria-label={"Satış fiyatı " + (index + 1)} /></td>
+                <td><input type="number" value={row.cost} min="0" step="1" data-field="cost" aria-label={"Üretim maliyeti " + (index + 1)} /></td>
+                <td><input type="number" value={row.emission} min="0" step="0.01" data-field="emission" aria-label={"Emisyon yoğunluğu " + (index + 1)} /></td>
                 <td class="metric" data-result="carbon">—</td>
                 <td class="metric" data-result="margin">—</td>
                 <td class="metric" data-result="revision">—</td>
@@ -101,10 +101,10 @@ const sampleRows = [
       tr.innerHTML =
         '<td><input type="text" data-field="client" aria-label="Müşteri" /></td>' +
         '<td><input type="text" data-field="country" aria-label="Ülke" /></td>' +
-        '<td><input type="number" min="0" step="100" data-field="volume" /></td>' +
-        '<td><input type="number" min="0" step="1" data-field="sales" /></td>' +
-        '<td><input type="number" min="0" step="1" data-field="cost" /></td>' +
-        '<td><input type="number" min="0" step="0.01" data-field="emission" /></td>' +
+        '<td><input type="number" min="0" step="100" data-field="volume" aria-label="Tonaj" /></td>' +
+        '<td><input type="number" min="0" step="1" data-field="sales" aria-label="Satış fiyatı" /></td>' +
+        '<td><input type="number" min="0" step="1" data-field="cost" aria-label="Üretim maliyeti" /></td>' +
+        '<td><input type="number" min="0" step="0.01" data-field="emission" aria-label="Emisyon yoğunluğu" /></td>' +
         '<td class="metric" data-result="carbon">—</td>' +
         '<td class="metric" data-result="margin">—</td>' +
         '<td class="metric" data-result="revision">—</td>' +
