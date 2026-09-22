@@ -1,0 +1,29 @@
+# KarbonFiyat
+> KarbonFiyat, karbon fiyatını ürün maliyeti, brüt marj, müşteri kârlılığı ve fiyatlama kararına bağlayan Carbon Financial Intelligence platformudur.
+
+## Kapsam
+KarbonFiyat aşağıdaki üç veri/rejim sınıfını birbirinden ayırır:
+1. CBAM sertifika fiyatı ve CBAM maliyet mantığı.
+2. EU ETS EUA piyasa görünümü.
+3. Türkiye ETS resmî statüsü ve kullanıcı senaryoları.
+
+## Karar motorları
+- Karbon maliyet hesaplama
+- Carbon P&L
+- Müşteri kârlılığı ve karbon marj analizi
+- Carbon Monitor
+- Finansal workspace
+
+## Kaynak ve metodoloji
+- https://karbonfiyat.com/metodoloji
+- https://karbonfiyat.com/karbon-fiyati
+- https://karbonfiyat.com/cbam-fiyati
+- https://karbonfiyat.com/turkiye-ets
+
+## Kurumsal sayfalar
+- https://karbonfiyat.com/hakkimizda
+- https://karbonfiyat.com/iletisim
+- https://karbonfiyat.com/gizlilik
+
+## İletişim
+- analiz@karbonfiyat.com
