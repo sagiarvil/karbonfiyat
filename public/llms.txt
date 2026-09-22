@@ -1,13 +1,19 @@
 # KarbonFiyat
-
-KarbonFiyat, karbon fiyatını şirket maliyeti, marj, müşteri kârlılığı ve fiyatlama kararına çeviren finansal karar platformudur.
+> KarbonFiyat, CBAM, EU ETS ve Türkiye ETS verilerini şirket maliyeti, marj, müşteri kârlılığı ve fiyatlama kararına çeviren finansal karar platformudur.
 
 ## Ana sayfalar
-- https://karbonfiyat.com/karbon-fiyati
-- https://karbonfiyat.com/cbam-fiyati
-- https://karbonfiyat.com/turkiye-ets
-- https://karbonfiyat.com/karbon-maliyet-hesaplama
-- https://karbonfiyat.com/metodoloji
+- [Karbon fiyatı](https://karbonfiyat.com/karbon-fiyati): CBAM, EUA ve Türkiye ETS fiyat/statü ayrımı.
+- [CBAM fiyatı](https://karbonfiyat.com/cbam-fiyati): Resmî CBAM fiyatını ürün maliyetine çeviren hesaplama yüzeyi.
+- [Türkiye ETS](https://karbonfiyat.com/turkiye-ets): Türkiye ETS statüsü ve bütçe senaryoları.
+- [Karbon maliyet hesaplama](https://karbonfiyat.com/karbon-maliyet-hesaplama): Karbon maliyeti ve marj etkisi hesaplama aracı.
+- [Metodoloji](https://karbonfiyat.com/metodoloji): Kaynak, veri sınıflandırması ve hesaplama ilkeleri.
+- [Hakkımızda](https://karbonfiyat.com/hakkimizda): Yayıncı kimliği ve metodoloji sorumluluğu.
+- [İletişim](https://karbonfiyat.com/iletisim): Kurumsal iletişim kanalı.
+- [Gizlilik](https://karbonfiyat.com/gizlilik): Veri işleme ve gizlilik açıklaması.
 
 ## Veri yaklaşımı
-Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri ayrı etiketlenir. Hesaplama motoru deterministiktir; kaynak ve dönem bilgisi korunur.
+Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri birbirinden ayrı etiketlenir. Hesaplama motorları deterministik kurallarla çalışır; kaynak ve dönem bilgisi korunur.
+
+## Makine-okunabilir alternatif
+- [Markdown site özeti](https://karbonfiyat.com/index.md)
+- [Genişletilmiş site özeti](https://karbonfiyat.com/llms-full.txt)
