@@ -25,6 +25,12 @@ try {
     cwd: root
   });
 
+  execSync("node scripts/production-check.cjs", {
+    stdio: "inherit",
+    env: process.env,
+    cwd: root
+  });
+
   removeIfExists(backup);
 } catch (error) {
   console.error("\nBUILD FAILED — restoring last known-good dist/ so a failed build cannot wipe production assets.\n");
