@@ -4,7 +4,10 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col brand-col">
-      <a class="footer-brand" href="/" aria-label="KarbonFiyat ana sayfa">karbonfiyat</a>
+      <a class="footer-brand" href="/" aria-label="KarbonFiyat ana sayfa">
+        <img src="/tulip-logo.png" alt="KarbonFiyat Logo" class="footer-logo-img" width="24" height="34" />
+        <span>karbonfiyat</span>
+      </a>
       <p class="brand-desc">Karbon fiyatını finansal karara çeviren bağımsız karar katmanı.</p>
     </div>
 
@@ -58,10 +61,19 @@ const year = new Date().getFullYear();
     gap: 12px;
   }
   .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--text-primary);
     font-size: 20px;
     font-weight: 750;
     letter-spacing: -0.035em;
+  }
+  .footer-logo-img {
+    height: 30px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(216, 61, 42, 0.20));
   }
   .brand-desc {
     color: var(--text-secondary);

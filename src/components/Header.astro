@@ -12,12 +12,7 @@ const navItems = [
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="KarbonFiyat ana sayfa">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-          <rect width="28" height="28" rx="6" fill="#0E1010" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
-          <rect x="7" y="8" width="14" height="2.2" rx="1.1" fill="#F4F5F4"/>
-          <rect x="7" y="13" width="9.5" height="2.2" rx="1.1" fill="#F4F5F4" fill-opacity="0.75"/>
-          <rect x="7" y="18" width="14" height="2.2" rx="1.1" fill="#F4F5F4"/>
-        </svg>
+        <img src="/tulip-logo.png" alt="KarbonFiyat Logo" class="brand-logo-img" width="26" height="37" />
       </span>
       <span class="brand-text">karbonfiyat</span>
     </a>
@@ -106,6 +101,16 @@ const navItems = [
     align-items: center;
     justify-content: center;
     line-height: 0;
+  }
+  .brand-logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 2px 10px rgba(216, 61, 42, 0.22));
+    transition: transform 180ms cubic-bezier(.2,.8,.2,1);
+  }
+  .brand:hover .brand-logo-img {
+    transform: scale(1.05);
   }
   .brand-text {
     color: var(--text-primary);
