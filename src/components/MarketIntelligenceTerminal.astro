@@ -3,6 +3,7 @@ const cbamPrice = 75.28;
 const cbamPeriod = "2026 Q2";
 const cbamPublished = "6 Temmuz 2026";
 const cbamNext = "5 Ekim 2026";
+const carbonCreditsWidgetHtml = `<div id="carbon-prices"><script type="text/javascript" src="https://carboncredits.com/live-carbon-prices/index.js.php" async></script></div>`;
 ---
 
 <section class="market-terminal" id="canli-karbon-fiyatlari">
@@ -66,7 +67,7 @@ const cbamNext = "5 Ekim 2026";
         </div>
 
         <div class="live-widget-shell carboncredits-shell">
-          <div id="carbon-prices" data-carboncredits-widget></div>
+          <div class="carboncredits-embed" set:html={carbonCreditsWidgetHtml}></div>
           <noscript>
             <p class="widget-fallback">Canlı karbon piyasası görünümü için JavaScript etkin olmalıdır.</p>
           </noscript>
@@ -236,18 +237,6 @@ const cbamNext = "5 Ekim 2026";
 </section>
 
 <script is:inline>
-  (() => {
-    const widgetHost = document.querySelector("[data-carboncredits-widget]");
-    if (widgetHost && !widgetHost.dataset.loaded) {
-      widgetHost.dataset.loaded = "true";
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "https://carboncredits.com/live-carbon-prices/index.js.php";
-      script.async = true;
-      widgetHost.appendChild(script);
-    }
-  })();
-
   (() => {
     const root = document.querySelector("[data-carbon-engine]");
     if (!root) return;
@@ -545,7 +534,8 @@ const cbamNext = "5 Ekim 2026";
     background: #0c0f10;
   }
 
-  .carboncredits-shell #carbon-prices {
+  .carboncredits-embed,
+  .carboncredits-embed #carbon-prices {
     width: 100%;
     min-height: 256px;
   }
