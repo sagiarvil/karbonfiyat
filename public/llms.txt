@@ -1,0 +1,13 @@
+# KarbonFiyat
+
+KarbonFiyat, karbon fiyatını şirket maliyeti, marj, müşteri kârlılığı ve fiyatlama kararına çeviren finansal karar platformudur.
+
+## Ana sayfalar
+- https://karbonfiyat.com/karbon-fiyati
+- https://karbonfiyat.com/cbam-fiyati
+- https://karbonfiyat.com/turkiye-ets
+- https://karbonfiyat.com/karbon-maliyet-hesaplama
+- https://karbonfiyat.com/metodoloji
+
+## Veri yaklaşımı
+Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri ayrı etiketlenir. Hesaplama motoru deterministiktir; kaynak ve dönem bilgisi korunur.

@@ -1,0 +1,31 @@
+<section class="decision-wrap">
+  <div class="decision-copy">
+    <span class="eyebrow">Finansal karar katmanı</span>
+    <h2 class="section-title">Emisyonu değil, marj kaybını görün.</h2>
+    <p class="lead">KarbonFiyat; karbon fiyatını ürün, müşteri ve fiyatlama kararına bağlar. Hedef rapor üretmek değil, hangi satışın hangi karbon fiyatında kârlılığını kaybettiğini göstermek.</p>
+  </div>
+
+  <div class="terminal card">
+    <div class="terminal-head"><span>CARBON P&amp;L / DEMO</span><span>12M</span></div>
+    <div class="metric hero-metric"><span>Carbon Cost at Risk</span><strong>€428.000</strong><em>senaryo</em></div>
+    <div class="terminal-grid">
+      <div class="metric"><span>Marj etkisi</span><strong>−2,8 puan</strong></div>
+      <div class="metric"><span>Fiyat revizyonu</span><strong>+%5,6</strong></div>
+      <div class="metric"><span>Riskli ürün</span><strong>7208</strong></div>
+      <div class="metric"><span>Break-even</span><strong>€134/t</strong></div>
+    </div>
+    <div class="signal"><span></span><p>ABC GmbH · mevcut fiyat karbon sonrası hedef marjın altında.</p></div>
+  </div>
+</section>
+
+<style>
+  .decision-wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:110px 0 30px}
+  .terminal{padding:18px;background:linear-gradient(180deg,#101b19,#0b1413)}
+  .terminal-head{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.12em;color:var(--muted-2);padding:3px 4px 14px;border-bottom:1px solid var(--line)}
+  .metric{padding:18px}.metric span{color:var(--muted);font-size:12px;display:block;margin-bottom:8px}.metric strong{font-size:24px;letter-spacing:-.04em}.metric em{font-style:normal;font-size:10px;color:var(--muted-2);margin-left:8px}
+  .hero-metric{padding:28px 18px}.hero-metric strong{font-size:44px}
+  .terminal-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .terminal-grid .metric:nth-child(odd){border-right:1px solid var(--line)}.terminal-grid .metric:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .signal{display:flex;gap:10px;align-items:flex-start;padding:16px 18px}.signal span{width:8px;height:8px;margin-top:5px;border-radius:50%;background:var(--warning)}.signal p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+  @media(max-width:900px){.decision-wrap{grid-template-columns:1fr;gap:32px;padding-top:78px}}
+</style>

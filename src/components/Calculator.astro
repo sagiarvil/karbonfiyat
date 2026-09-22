@@ -1,0 +1,72 @@
+<section class="calculator card" id="hesapla">
+  <div class="calc-copy">
+    <span class="eyebrow">Carbon P&amp;L</span>
+    <h2>Karbon fiyatını doğrudan ürün maliyetine çevirin.</h2>
+    <p>İhracat miktarı, gömülü emisyon ve karbon fiyatını girin. Sistem brüt karbon maruziyetini ve ton başına etkisini deterministik olarak hesaplar.</p>
+    <div class="trust-row">
+      <span>Tarayıcı içinde hesaplanır</span>
+      <span>Veri gönderilmez</span>
+      <span>Finansal çıktı</span>
+    </div>
+  </div>
+
+  <form class="calc-form" id="carbon-calc">
+    <label>
+      <span>AB ihracatı</span>
+      <div class="input-wrap"><input id="volume" type="number" min="0" step="100" value="10000" /><b>ton</b></div>
+    </label>
+    <label>
+      <span>Gömülü emisyon</span>
+      <div class="input-wrap"><input id="emission" type="number" min="0" step="0.01" value="1.84" /><b>tCO₂e/t</b></div>
+    </label>
+    <label>
+      <span>Karbon fiyatı</span>
+      <div class="input-wrap"><input id="price" type="number" min="0" step="0.01" value="75.28" /><b>€/tCO₂e</b></div>
+    </label>
+
+    <div class="calc-result">
+      <div><span>Brüt karbon maruziyeti</span><strong id="exposure">—</strong></div>
+      <div><span>Ürün tonu başına</span><strong id="per-ton">—</strong></div>
+    </div>
+    <p class="calc-note">Bu araç hızlı finansal senaryo içindir; ücretsiz tahsisat, mahsup, doğrulama ve ürün bazlı mevzuat düzeltmeleri ayrıca uygulanır.</p>
+    <a class="btn btn-primary" href="https://degerlet.com" rel="noopener">Detaylı şirket değerlemesi</a>
+  </form>
+</section>
+
+<script is:inline>
+  const fmt = new Intl.NumberFormat('tr-TR', { style:'currency', currency:'EUR', maximumFractionDigits:0 });
+  const fmt2 = new Intl.NumberFormat('tr-TR', { style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2 });
+  const volume = document.getElementById('volume');
+  const emission = document.getElementById('emission');
+  const price = document.getElementById('price');
+  const exposure = document.getElementById('exposure');
+  const perTon = document.getElementById('per-ton');
+  const calculate = () => {
+    const v = Math.max(0, Number(volume?.value || 0));
+    const e = Math.max(0, Number(emission?.value || 0));
+    const p = Math.max(0, Number(price?.value || 0));
+    exposure.textContent = fmt.format(v * e * p);
+    perTon.textContent = fmt2.format(e * p);
+  };
+  [volume, emission, price].forEach(el => el?.addEventListener('input', calculate));
+  calculate();
+</script>
+
+<style>
+  .calculator{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;padding:42px;margin-top:28px}
+  .calc-copy h2{font-size:42px;line-height:1.03;margin:18px 0 16px}
+  .calc-copy p{color:var(--muted);font-size:17px;line-height:1.65;max-width:560px}
+  .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+  .trust-row span{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 9px}
+  .calc-form{background:#0a1312;border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px}
+  .calc-form label>span{font-size:12px;color:var(--muted);display:block;margin-bottom:8px}
+  .input-wrap{display:flex;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .input-wrap input{width:100%;background:transparent;color:var(--text);border:0;outline:0;padding:14px 15px;font-size:17px}
+  .input-wrap b{padding:0 14px;color:var(--muted);font-size:12px;white-space:nowrap}
+  .calc-result{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  .calc-result>div{padding:16px;background:rgba(167,243,208,.05);border:1px solid rgba(167,243,208,.12);border-radius:12px}
+  .calc-result span{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.calc-result strong{font-size:20px}
+  .calc-note{font-size:11px;color:var(--muted-2);line-height:1.5;margin:0}
+  @media(max-width:900px){.calculator{grid-template-columns:1fr;padding:24px}.calc-copy h2{font-size:34px}}
+  @media(max-width:520px){.calc-result{grid-template-columns:1fr}}
+</style>

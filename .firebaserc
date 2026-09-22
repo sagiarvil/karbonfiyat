@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "studio-7658156126-ffb8e"
+  },
+  "targets": {
+    "studio-7658156126-ffb8e": {
+      "hosting": {
+        "karbonfiyat": [
+          "karbonfiyat"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

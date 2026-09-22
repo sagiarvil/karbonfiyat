@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "target": "karbonfiyat",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

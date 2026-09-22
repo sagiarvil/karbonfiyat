@@ -1,0 +1,31 @@
+---
+const cards = [
+  {label:'CBAM', value:'€75,28', meta:'Resmî · 2026 Q2', tone:'official'},
+  {label:'EU ETS', value:'Bağlantı bekleniyor', meta:'Piyasa verisi', tone:'market'},
+  {label:'TR ETS', value:'Henüz fiyat oluşmadı', meta:'Pilot dönem', tone:'pending'}
+];
+---
+<section class="price-strip" aria-label="Karbon fiyat göstergeleri">
+  {cards.map(card => (
+    <article class="price-card card">
+      <div class="price-top">
+        <span>{card.label}</span>
+        <span class:list={['status', card.tone]}>{card.meta.split(' · ')[0]}</span>
+      </div>
+      <strong>{card.value}</strong>
+      <small>{card.meta}</small>
+    </article>
+  ))}
+</section>
+
+<style>
+  .price-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+  .price-card{padding:22px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+  .price-top{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px}
+  .price-card strong{font-size:28px;letter-spacing:-.04em;font-weight:720}
+  .price-card small{color:var(--muted-2)}
+  .status{font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding:5px 7px;border-radius:999px;border:1px solid var(--line)}
+  .status.official{color:var(--accent);border-color:rgba(167,243,208,.25)}
+  .status.pending{color:var(--warning)}
+  @media(max-width:760px){.price-strip{grid-template-columns:1fr}.price-card{min-height:130px}}
+</style>

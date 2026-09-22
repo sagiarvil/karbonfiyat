@@ -1,0 +1,40 @@
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="footer-brand" href="/">karbonfiyat</a>
+      <p>Karbon fiyatını finansal karara çeviren bağımsız karar katmanı.</p>
+    </div>
+    <div>
+      <strong>Veri</strong>
+      <a href="/karbon-fiyati">Karbon fiyatı</a>
+      <a href="/cbam-fiyati">CBAM</a>
+      <a href="/turkiye-ets">Türkiye ETS</a>
+    </div>
+    <div>
+      <strong>Araçlar</strong>
+      <a href="/karbon-maliyet-hesaplama">Maliyet hesaplama</a>
+      <a href="/metodoloji">Metodoloji</a>
+      <a href="https://degerlet.com" rel="noopener">Uzman değerleme</a>
+    </div>
+    <div>
+      <strong>Not</strong>
+      <p>Fiyatlar kaynak, dönem ve durum etiketiyle yayımlanır. Resmî, piyasa ve senaryo verileri birbirinden ayrılır.</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {new Date().getFullYear()} KarbonFiyat</span>
+    <span>Carbon Financial Intelligence</span>
+  </div>
+</footer>
+
+<style>
+  .footer{border-top:1px solid var(--line);margin-top:120px;padding:56px 0 26px;background:rgba(255,255,255,.01)}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:38px}
+  .footer-grid>div{display:flex;flex-direction:column;gap:10px}
+  .footer-grid p,.footer-grid a{color:var(--muted);font-size:14px;line-height:1.6}
+  .footer-grid a:hover{color:var(--text)}
+  .footer-brand{color:var(--text)!important;font-size:22px!important;font-weight:800;letter-spacing:-.04em}
+  .footer-bottom{display:flex;justify-content:space-between;gap:20px;color:var(--muted-2);font-size:12px;padding-top:36px;margin-top:36px;border-top:1px solid var(--line)}
+  @media(max-width:850px){.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column}}
+  @media(max-width:520px){.footer-grid{grid-template-columns:1fr}}
+</style>

@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PriceStrip from '../components/PriceStrip.astro';
+---
+<Layout title="Karbon Fiyatı 2026 | CBAM, EU ETS ve Türkiye ETS | KarbonFiyat" description="Karbon fiyatını tek ekranda izleyin. CBAM resmî fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS durumunu kaynak ve dönem bilgisiyle görün." canonical="/karbon-fiyati">
+  <section class="container subhero"><span class="eyebrow">Piyasa ekranı</span><h1 class="section-title">Karbon fiyatı: tek sayı değil, üç farklı piyasa gerçeği.</h1><p class="lead">CBAM sertifika fiyatı, EU ETS piyasa fiyatı ve Türkiye ETS aynı şey değildir. KarbonFiyat bu verileri kaynak ve statü etiketiyle ayrı tutar.</p><PriceStrip /></section>
+  <section class="container content-grid"><article class="card"><h2>Resmî fiyat</h2><p>CBAM sertifika fiyatı, Avrupa Komisyonu tarafından yayımlanan resmî dönem fiyatıdır. Finansal hesaplamada dönem etiketiyle saklanır.</p></article><article class="card"><h2>Piyasa fiyatı</h2><p>EU ETS fiyatı piyasa verisidir. Lisanslı veri kaynağına bağlandığında güncel veya gecikmeli statü açıkça gösterilir.</p></article><article class="card"><h2>Türkiye ETS</h2><p>Türkiye ETS fiyatı piyasa fiilen oluşmadan üretilmez. Senaryo fiyatları yalnızca senaryo olarak etiketlenir.</p></article></section>
+</Layout>
+<style>.subhero{padding:90px 0 36px}.subhero h1{margin:18px 0}.content-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:30px}.content-grid article{padding:24px}.content-grid h2{font-size:24px}.content-grid p{color:var(--muted);line-height:1.7}@media(max-width:760px){.content-grid{grid-template-columns:1fr}}</style>

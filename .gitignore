@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# temporary and backups
+*.zip
+*.backup-*
+karbonfiyat-premium/
+tasty-luminosity/
+.master-suite-v2-contract.json

@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Calculator from '../components/Calculator.astro';
+---
+<Layout title="CBAM Fiyatı ve Karbon Maliyeti Hesaplama | KarbonFiyat" description="CBAM sertifika fiyatını şirketinizin ihracat tonajı ve gömülü emisyonuyla birleştirerek brüt karbon maruziyetini hesaplayın." canonical="/cbam-fiyati">
+  <section class="container subhero"><span class="eyebrow">CBAM</span><h1 class="section-title">CBAM fiyatını şirket maliyetine çevirin.</h1><p class="lead">Sadece €/tCO₂e fiyatını görmek yetmez. Asıl soru bu fiyatın ürün tonu, müşteri ve yıllık ihracat bütçesine ne yaptığıdır.</p></section>
+  <section class="container"><Calculator /></section>
+</Layout>
+<style>.subhero{padding:90px 0 12px}.subhero h1{margin:18px 0}</style>

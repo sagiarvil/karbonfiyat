@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Metodoloji | KarbonFiyat Veri ve Hesaplama Standardı" description="KarbonFiyat veri kaynakları, fiyat statüleri, hesaplama prensipleri, versiyonlama ve audit trail yaklaşımı." canonical="/metodoloji">
+  <section class="container subhero"><span class="eyebrow">Metodoloji</span><h1 class="section-title">Her sonucun yeniden üretilebilir olması gerekir.</h1><p class="lead">KarbonFiyat fiyat, emisyon ve mevzuat parametrelerini kaynak, yürürlük tarihi, dönem, sürüm ve doğrulama statüsüyle saklayacak şekilde tasarlanır.</p></section>
+  <section class="container methods">
+    <article class="card"><span>01</span><h2>Kaynak ayrımı</h2><p>Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri aynı etikette gösterilmez.</p></article>
+    <article class="card"><span>02</span><h2>Effective-date versioning</h2><p>Bir katsayının hangi tarihte geçerli olduğu saklanır; eski hesap yeniden üretilebilir.</p></article>
+    <article class="card"><span>03</span><h2>Deterministik hesap</h2><p>Finansal sonuç motoru kurallı hesap yapar. AI yalnızca sonucu açıklayabilir.</p></article>
+    <article class="card"><span>04</span><h2>Audit trail</h2><p>Kaynak, giriş, katsayı ve çıktı zinciri kaydedilir; sonucu oluşturan parametreler izlenebilir.</p></article>
+  </section>
+</Layout>
+<style>.subhero{padding:90px 0 32px}.subhero h1{margin:18px 0}.methods{display:grid;grid-template-columns:1fr 1fr;gap:14px}.methods article{padding:26px}.methods span{color:var(--accent);font-size:11px}.methods h2{font-size:24px;margin:34px 0 10px}.methods p{color:var(--muted);line-height:1.7}@media(max-width:700px){.methods{grid-template-columns:1fr}}</style>
