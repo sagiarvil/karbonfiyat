@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" fill="none">
+  <!-- Modern Flat Lale (Tulip) Logosu - 2D Minimalist Kurumsal -->
+  <g fill="#D83D2A">
+    <!-- Sol Taç Yaprağı -->
+    <path d="M22 34 C 18 64 38 90 48 95 C 36 84 30 62 32 34 C 28 34 24 34 22 34 Z"/>
+    
+    <!-- Orta Ana Taç Yaprağı -->
+    <path d="M50 14 C 41 40 41 72 50 91 C 59 72 59 40 50 14 Z"/>
+    
+    <!-- Sağ Taç Yaprağı -->
+    <path d="M78 34 C 82 64 62 90 52 95 C 64 84 70 62 68 34 C 72 34 76 34 78 34 Z"/>
+    
+    <!-- Lale Kadeh Tabanı -->
+    <path d="M38 84 C 44 94 56 94 62 84 C 58 89 42 89 38 84 Z"/>
+
+    <!-- Minimalist Düz Sap -->
+    <path d="M48 95 H52 V122 H48 Z" rx="2"/>
+  </g>
+</svg>

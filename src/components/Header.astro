@@ -7,7 +7,7 @@ const navItems = navLinks;
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="KarbonFiyat ana sayfa">
       <span class="brand-mark" aria-hidden="true">
-        <img src="/tulip-logo.png" alt="KarbonFiyat Logo" class="brand-logo-img" width="31" height="44" />
+        <img src="/tulip-logo.svg" alt="KarbonFiyat Logo" class="brand-logo-img" width="30" height="39" />
       </span>
       <span class="brand-text">karbonfiyat</span>
     </a>
@@ -110,16 +110,16 @@ const navItems = navLinks;
     line-height: 0;
   }
   .brand-logo-img {
-    height: 44px;
+    height: 36px;
     width: auto;
     display: block;
     object-fit: contain;
-    filter: drop-shadow(0 2px 12px rgba(216, 61, 42, 0.25));
-    transition: transform 180ms cubic-bezier(.2,.8,.2,1), filter 180ms cubic-bezier(.2,.8,.2,1);
+    filter: none;
+    transition: opacity 150ms ease, transform 150ms ease;
   }
   .brand:hover .brand-logo-img {
-    transform: translateY(-1px) scale(1.04);
-    filter: drop-shadow(0 4px 18px rgba(216, 61, 42, 0.38));
+    transform: scale(1.03);
+    opacity: 0.9;
   }
   .brand-text {
     color: var(--text-primary);
