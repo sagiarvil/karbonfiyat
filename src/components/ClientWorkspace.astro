@@ -1,0 +1,603 @@
+---
+const defaultCbamPrice = 75.28;
+---
+
+<section class="workspace-shell" id="workspace">
+  <div class="container">
+    <div class="workspace-head">
+      <div>
+        <span class="eyebrow">CARBON FINANCIAL WORKSPACE</span>
+        <h1>Şirket verinizi finansal karara çevirin.</h1>
+        <p>
+          Ürün bazlı karbon maliyeti, marj erimesi, koruyucu satış fiyatı ve break-even karbon fiyatını
+          tek çalışma alanında hesaplayın. Veriler varsayılan olarak yalnızca bu tarayıcıda saklanır.
+        </p>
+      </div>
+      <div class="workspace-status">
+        <span class="status-dot"></span>
+        <div>
+          <strong>DETERMİNİSTİK MOTOR</strong>
+          <small>Sunucuya veri göndermeden çalışır</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="workspace-grid">
+      <section class="workspace-panel input-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="panel-kicker">01 · GİRDİLER</span>
+            <h2>Şirket & ürün profili</h2>
+          </div>
+          <button class="mini-btn" type="button" data-reset-workspace>Sıfırla</button>
+        </div>
+
+        <div class="field-grid">
+          <label class="field wide">
+            <span>Şirket unvanı</span>
+            <input type="text" data-kf="company" placeholder="Örn. ABC Metal Sanayi A.Ş." />
+          </label>
+
+          <label class="field">
+            <span>Ürün / GTİP</span>
+            <input type="text" data-kf="product" placeholder="Örn. 7208 sıcak haddelenmiş yassı" />
+          </label>
+
+          <label class="field">
+            <span>Yıllık AB ihracatı</span>
+            <div class="unit-input">
+              <input type="number" min="0" step="1" value="1000" data-kf="volume" />
+              <em>ton</em>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Gömülü emisyon yoğunluğu</span>
+            <div class="unit-input">
+              <input type="number" min="0" step="0.01" value="1.80" data-kf="intensity" />
+              <em>tCO₂/ton</em>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Satış fiyatı</span>
+            <div class="unit-input">
+              <input type="number" min="0" step="1" value="850" data-kf="salesPrice" />
+              <em>€/ton</em>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Üretim maliyeti</span>
+            <div class="unit-input">
+              <input type="number" min="0" step="1" value="620" data-kf="productionCost" />
+              <em>€/ton</em>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Karbon fiyatı</span>
+            <div class="unit-input">
+              <input type="number" min="0" step="0.01" value={defaultCbamPrice} data-kf="carbonPrice" />
+              <em>€/tCO₂</em>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Hedef brüt marj</span>
+            <div class="unit-input">
+              <input type="number" min="0" max="95" step="0.1" value="20" data-kf="targetMargin" />
+              <em>%</em>
+            </div>
+          </label>
+        </div>
+
+        <div class="preset-strip">
+          <button type="button" data-carbon-preset="75.28">CBAM Q2 · €75,28</button>
+          <button type="button" data-carbon-preset="90">Senaryo · €90</button>
+          <button type="button" data-carbon-preset="110">Stres · €110</button>
+          <button type="button" data-carbon-preset="150">Yüksek stres · €150</button>
+        </div>
+      </section>
+
+      <section class="workspace-panel results-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="panel-kicker">02 · CARBON P&L</span>
+            <h2>Finansal etki</h2>
+          </div>
+          <span class="calc-badge">ANLIK</span>
+        </div>
+
+        <div class="hero-result">
+          <span>Yıllık karbon maliyeti</span>
+          <strong data-out="carbonCost">€0</strong>
+          <small data-out="carbonCostPerTon">€0 / ton</small>
+        </div>
+
+        <div class="result-grid">
+          <article>
+            <span>Mevcut brüt marj</span>
+            <strong data-out="marginBefore">%0,00</strong>
+          </article>
+          <article class="risk-result">
+            <span>Karbon sonrası marj</span>
+            <strong data-out="marginAfter">%0,00</strong>
+          </article>
+          <article>
+            <span>Marj kaybı</span>
+            <strong data-out="marginDelta">0,00 puan</strong>
+          </article>
+          <article>
+            <span>Koruyucu satış fiyatı</span>
+            <strong data-out="protectivePrice">€0 / ton</strong>
+          </article>
+          <article>
+            <span>Hedef marj fiyatı</span>
+            <strong data-out="targetPrice">€0 / ton</strong>
+          </article>
+          <article>
+            <span>Break-even karbon fiyatı</span>
+            <strong data-out="breakEven">€0 / tCO₂</strong>
+          </article>
+        </div>
+
+        <div class="decision-box" data-risk-level="normal">
+          <span class="decision-label">YÖNETİM KARARI</span>
+          <strong data-out="decision">Verileri girin.</strong>
+          <p data-out="decisionDetail">Karbon maliyetinin marj etkisi burada yorumlanır.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="workspace-panel evidence-panel">
+      <div class="panel-title-row">
+        <div>
+          <span class="panel-kicker">03 · KANIT & ÇIKTI</span>
+          <h2>Kaydedilebilir yönetim paketi</h2>
+        </div>
+        <span class="storage-badge">LOCAL-FIRST</span>
+      </div>
+
+      <div class="evidence-grid">
+        <div class="evidence-item">
+          <span>FORMÜL</span>
+          <code>tonaj × tCO₂/ton × €/tCO₂ = yıllık karbon maliyeti</code>
+        </div>
+        <div class="evidence-item">
+          <span>FİYAT KAYNAĞI</span>
+          <strong data-out="priceSource">CBAM 2026 Q2 / kullanıcı senaryosu</strong>
+        </div>
+        <div class="evidence-item">
+          <span>VERİ YERİ</span>
+          <strong>Bu cihaz / tarayıcı</strong>
+        </div>
+        <div class="evidence-item">
+          <span>HESAP MOTORU</span>
+          <strong>Deterministik, AI kullanılmaz</strong>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" type="button" data-save-workspace>Çalışmayı Kaydet</button>
+        <button class="btn btn-secondary" type="button" data-export-json>JSON Dışa Aktar</button>
+        <button class="btn btn-secondary" type="button" data-export-csv>CSV Dışa Aktar</button>
+        <button class="btn btn-secondary" type="button" data-print-report>PDF / Yazdır</button>
+      </div>
+
+      <div class="workspace-message" data-workspace-message aria-live="polite"></div>
+    </section>
+
+    <section class="saved-section">
+      <div class="saved-head">
+        <div>
+          <span class="eyebrow">ÇALIŞMA GEÇMİŞİ</span>
+          <h2>Kaydedilmiş senaryolar</h2>
+        </div>
+        <button class="mini-btn danger-mini" type="button" data-clear-history>Geçmişi temizle</button>
+      </div>
+      <div class="saved-list" data-saved-list>
+        <div class="empty-state">Henüz kaydedilmiş senaryo yok.</div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = "karbonfiyat_workspace_v1";
+    const HISTORY_KEY = "karbonfiyat_workspace_history_v1";
+    const root = document.querySelector("#workspace");
+    if (!root) return;
+
+    const fields = {};
+    root.querySelectorAll("[data-kf]").forEach((el) => {
+      fields[el.dataset.kf] = el;
+    });
+
+    const outputs = {};
+    root.querySelectorAll("[data-out]").forEach((el) => {
+      outputs[el.dataset.out] = el;
+    });
+
+    const message = root.querySelector("[data-workspace-message]");
+    const savedList = root.querySelector("[data-saved-list]");
+    const decisionBox = root.querySelector(".decision-box");
+
+    const nf0 = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 });
+    const nf2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const eur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const eur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const num = (key) => {
+      const value = Number.parseFloat(fields[key]?.value || "0");
+      return Number.isFinite(value) ? Math.max(0, value) : 0;
+    };
+
+    const calculate = () => {
+      const volume = num("volume");
+      const intensity = num("intensity");
+      const salesPrice = num("salesPrice");
+      const productionCost = num("productionCost");
+      const carbonPrice = num("carbonPrice");
+      const targetMargin = Math.min(95, num("targetMargin")) / 100;
+
+      const emissions = volume * intensity;
+      const carbonCostPerTon = intensity * carbonPrice;
+      const carbonCost = emissions * carbonPrice;
+      const baseUnitProfit = salesPrice - productionCost;
+      const afterUnitProfit = salesPrice - productionCost - carbonCostPerTon;
+      const marginBefore = salesPrice > 0 ? (baseUnitProfit / salesPrice) * 100 : 0;
+      const marginAfter = salesPrice > 0 ? (afterUnitProfit / salesPrice) * 100 : 0;
+      const marginDelta = marginBefore - marginAfter;
+      const protectivePrice = salesPrice + carbonCostPerTon;
+      const targetPrice = targetMargin < 1 ? (productionCost + carbonCostPerTon) / (1 - targetMargin) : 0;
+      const breakEven = intensity > 0 ? Math.max(0, baseUnitProfit / intensity) : 0;
+      const annualRevenue = volume * salesPrice;
+      const annualProfitAfter = volume * afterUnitProfit;
+      const revisionPct = salesPrice > 0 ? (carbonCostPerTon / salesPrice) * 100 : 0;
+
+      if (outputs.carbonCost) outputs.carbonCost.textContent = eur0.format(carbonCost);
+      if (outputs.carbonCostPerTon) outputs.carbonCostPerTon.textContent = eur2.format(carbonCostPerTon) + " / ton";
+      if (outputs.marginBefore) outputs.marginBefore.textContent = "%" + nf2.format(marginBefore);
+      if (outputs.marginAfter) outputs.marginAfter.textContent = "%" + nf2.format(marginAfter);
+      if (outputs.marginDelta) outputs.marginDelta.textContent = nf2.format(marginDelta) + " puan";
+      if (outputs.protectivePrice) outputs.protectivePrice.textContent = eur2.format(protectivePrice) + " / ton";
+      if (outputs.targetPrice) outputs.targetPrice.textContent = eur2.format(targetPrice) + " / ton";
+      if (outputs.breakEven) outputs.breakEven.textContent = eur2.format(breakEven) + " / tCO₂";
+
+      let level = "normal";
+      let decision = "Marj korunabilir.";
+      let detail = "Karbon maliyeti mevcut brüt marj içinde absorbe edilebiliyor; sözleşme bazında geçişkenlik yine kontrol edilmeli.";
+
+      if (afterUnitProfit < 0 || marginAfter < 0) {
+        level = "critical";
+        decision = "Zarar bölgesi: fiyat revizyonu zorunlu.";
+        detail = "Mevcut satış fiyatında karbon maliyeti ürünü brüt zarara taşıyor. En az " + eur2.format(protectivePrice) + "/ton koruyucu fiyat seviyesi test edilmeli.";
+      } else if (marginAfter < 8 || revisionPct > 10) {
+        level = "elevated";
+        decision = "Marj baskısı yüksek: sözleşme revizyonu gerekli.";
+        detail = "Karbon yükü satış fiyatının yaklaşık %" + nf2.format(revisionPct) + " seviyesinde. Müşteri bazlı fiyat geçiş planı oluşturulmalı.";
+      }
+
+      if (decisionBox) decisionBox.dataset.riskLevel = level;
+      if (outputs.decision) outputs.decision.textContent = decision;
+      if (outputs.decisionDetail) outputs.decisionDetail.textContent = detail;
+
+      return {
+        version: 1,
+        company: fields.company?.value?.trim() || "",
+        product: fields.product?.value?.trim() || "",
+        volume,
+        intensity,
+        salesPrice,
+        productionCost,
+        carbonPrice,
+        targetMarginPct: targetMargin * 100,
+        emissions,
+        carbonCostPerTon,
+        carbonCost,
+        annualRevenue,
+        annualProfitAfter,
+        marginBefore,
+        marginAfter,
+        marginDelta,
+        protectivePrice,
+        targetPrice,
+        breakEven,
+        revisionPct,
+        decision,
+        riskLevel: level,
+        calculatedAt: new Date().toISOString()
+      };
+    };
+
+    const apply = (data) => {
+      if (!data) return;
+      ["company", "product", "volume", "intensity", "salesPrice", "productionCost", "carbonPrice", "targetMargin"].forEach((key) => {
+        const sourceKey = key === "targetMargin" ? "targetMarginPct" : key;
+        if (fields[key] && data[sourceKey] !== undefined && data[sourceKey] !== null) {
+          fields[key].value = String(data[sourceKey]);
+        }
+      });
+      calculate();
+    };
+
+    const setMessage = (text, type = "ok") => {
+      if (!message) return;
+      message.textContent = text;
+      message.dataset.type = type;
+      window.setTimeout(() => {
+        if (message.textContent === text) message.textContent = "";
+      }, 5000);
+    };
+
+    const getHistory = () => {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const renderHistory = () => {
+      if (!savedList) return;
+      const history = getHistory();
+      if (!history.length) {
+        savedList.innerHTML = '<div class="empty-state">Henüz kaydedilmiş senaryo yok.</div>';
+        return;
+      }
+
+      savedList.innerHTML = history.slice().reverse().map((item) => {
+        const company = item.company || "İsimsiz şirket";
+        const product = item.product || "Ürün belirtilmedi";
+        const date = new Date(item.savedAt || item.calculatedAt).toLocaleString("tr-TR");
+        return '<button class="saved-row" type="button" data-history-id="' + item.id + '">' +
+          '<span><strong>' + escapeHtml(company) + '</strong><small>' + escapeHtml(product) + '</small></span>' +
+          '<span><strong>' + eur0.format(item.carbonCost || 0) + '</strong><small>' + escapeHtml(date) + '</small></span>' +
+          '<span class="saved-arrow">→</span>' +
+        '</button>';
+      }).join("");
+
+      savedList.querySelectorAll("[data-history-id]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const record = getHistory().find((item) => item.id === button.dataset.historyId);
+          if (record) {
+            apply(record);
+            setMessage("Kaydedilmiş senaryo çalışma alanına yüklendi.");
+            window.scrollTo({ top: root.offsetTop - 80, behavior: "smooth" });
+          }
+        });
+      });
+    };
+
+    const escapeHtml = (value) => String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+    const download = (filename, type, content) => {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    root.querySelectorAll("[data-kf]").forEach((el) => el.addEventListener("input", calculate));
+
+    root.querySelectorAll("[data-carbon-preset]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (fields.carbonPrice) fields.carbonPrice.value = button.dataset.carbonPreset || "75.28";
+        calculate();
+      });
+    });
+
+    root.querySelector("[data-save-workspace]")?.addEventListener("click", () => {
+      const data = calculate();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+      const history = getHistory();
+      history.push({ ...data, id: "KF-" + Date.now().toString(36).toUpperCase(), savedAt: new Date().toISOString() });
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-25)));
+      renderHistory();
+      setMessage("Çalışma bu cihazda kaydedildi. Sunucuya veri gönderilmedi.");
+    });
+
+    root.querySelector("[data-export-json]")?.addEventListener("click", () => {
+      const data = calculate();
+      const slug = (data.company || "karbonfiyat").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      download((slug || "karbonfiyat") + "-carbon-pnl.json", "application/json;charset=utf-8", JSON.stringify(data, null, 2));
+      setMessage("JSON yönetim paketi indirildi.");
+    });
+
+    root.querySelector("[data-export-csv]")?.addEventListener("click", () => {
+      const d = calculate();
+      const rows = [
+        ["Alan", "Değer"],
+        ["Şirket", d.company],
+        ["Ürün", d.product],
+        ["Yıllık AB ihracatı (ton)", d.volume],
+        ["Emisyon yoğunluğu (tCO2/ton)", d.intensity],
+        ["Karbon fiyatı (EUR/tCO2)", d.carbonPrice],
+        ["Yıllık karbon maliyeti (EUR)", d.carbonCost],
+        ["Karbon maliyeti / ton (EUR)", d.carbonCostPerTon],
+        ["Mevcut brüt marj (%)", d.marginBefore],
+        ["Karbon sonrası marj (%)", d.marginAfter],
+        ["Koruyucu satış fiyatı (EUR/ton)", d.protectivePrice],
+        ["Hedef marj satış fiyatı (EUR/ton)", d.targetPrice],
+        ["Break-even karbon fiyatı (EUR/tCO2)", d.breakEven],
+        ["Karar", d.decision],
+        ["Hesap zamanı", d.calculatedAt]
+      ];
+      const csv = rows.map((row) => row.map((cell) => '"' + String(cell ?? "").replaceAll('"', '""') + '"').join(";")).join("\n");
+      download("karbonfiyat-carbon-pnl.csv", "text/csv;charset=utf-8", "\ufeff" + csv);
+      setMessage("CSV çıktısı indirildi.");
+    });
+
+    root.querySelector("[data-print-report]")?.addEventListener("click", () => {
+      calculate();
+      document.body.classList.add("workspace-print-mode");
+      window.print();
+      window.setTimeout(() => document.body.classList.remove("workspace-print-mode"), 500);
+    });
+
+    root.querySelector("[data-reset-workspace]")?.addEventListener("click", () => {
+      apply({
+        company: "",
+        product: "",
+        volume: 1000,
+        intensity: 1.8,
+        salesPrice: 850,
+        productionCost: 620,
+        carbonPrice: 75.28,
+        targetMarginPct: 20
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      setMessage("Çalışma alanı varsayılan değerlere döndürüldü.");
+    });
+
+    root.querySelector("[data-clear-history]")?.addEventListener("click", () => {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
+      setMessage("Kaydedilmiş senaryo geçmişi temizlendi.");
+    });
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved) apply(saved);
+      else calculate();
+    } catch {
+      calculate();
+    }
+
+    renderHistory();
+  })();
+</script>
+
+<style>
+  .workspace-shell { padding: 88px 0 100px; background: #070909; }
+  .workspace-head { display:flex; justify-content:space-between; align-items:flex-end; gap:32px; margin-bottom:30px; }
+  .workspace-head > div:first-child { max-width:860px; }
+  .workspace-head h1 { margin:14px 0; color:#fff; font-size:clamp(42px,6vw,72px); line-height:.98; letter-spacing:-.05em; }
+  .workspace-head p { margin:0; color:var(--text-secondary); line-height:1.7; max-width:780px; }
+  .workspace-status { display:flex; gap:10px; align-items:center; min-width:220px; padding:14px; border:1px solid var(--border-soft); border-radius:14px; background:rgba(255,255,255,.015); }
+  .status-dot { width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 0 5px rgba(255,255,255,.06); }
+  .workspace-status strong,.workspace-status small { display:block; }
+  .workspace-status strong { color:#fff; font-size:10px; letter-spacing:.08em; }
+  .workspace-status small { color:var(--text-muted); font-size:10px; margin-top:3px; }
+
+  .workspace-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .workspace-panel { border:1px solid var(--border-soft); border-radius:22px; background:linear-gradient(180deg,rgba(255,255,255,.022),transparent 30%),#111414; padding:24px; }
+  .panel-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px; }
+  .panel-kicker { color:var(--text-muted); font-size:9px; font-weight:750; letter-spacing:.12em; }
+  .panel-title-row h2 { margin:6px 0 0; color:var(--text-primary); font-size:24px; }
+  .mini-btn { border:1px solid var(--border-soft); background:transparent; color:var(--text-secondary); border-radius:999px; min-height:32px; padding:0 12px; font-size:10px; cursor:pointer; }
+  .mini-btn:hover { color:#fff; border-color:var(--border-medium); }
+
+  .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+  .field.wide { grid-column:1/-1; }
+  .field > span { display:block; margin-bottom:7px; color:var(--text-muted); font-size:10px; }
+  .field input { width:100%; min-height:48px; border:1px solid var(--border-soft); border-radius:10px; background:#0a0d0e; color:#fff; padding:0 12px; outline:0; }
+  .field input:focus { border-color:var(--border-strong); }
+  .unit-input { display:flex; align-items:center; min-height:48px; border:1px solid var(--border-soft); border-radius:10px; background:#0a0d0e; padding-right:12px; }
+  .unit-input:focus-within { border-color:var(--border-strong); }
+  .unit-input input { border:0; background:transparent; min-width:0; }
+  .unit-input em { color:var(--text-muted); font-style:normal; font-size:10px; white-space:nowrap; }
+
+  .preset-strip { display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-soft); }
+  .preset-strip button { border:1px solid var(--border-soft); background:transparent; color:var(--text-muted); min-height:31px; padding:0 10px; border-radius:999px; font-size:9px; cursor:pointer; }
+  .preset-strip button:hover { color:#fff; border-color:var(--border-medium); }
+
+  .calc-badge,.storage-badge { color:#fff; border:1px solid var(--border-medium); border-radius:999px; padding:6px 9px; font-size:8px; font-weight:800; letter-spacing:.1em; }
+  .hero-result { padding:24px 0 22px; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+  .hero-result span,.hero-result small,.hero-result strong { display:block; }
+  .hero-result span { color:var(--text-muted); font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+  .hero-result strong { color:#fff; font-size:clamp(42px,5vw,60px); line-height:1; letter-spacing:-.055em; margin-top:10px; }
+  .hero-result small { color:var(--text-secondary); margin-top:8px; }
+
+  .result-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; margin-top:16px; }
+  .result-grid article { min-height:92px; padding:14px; border:1px solid var(--border-soft); border-radius:12px; background:rgba(255,255,255,.012); }
+  .result-grid span,.result-grid strong { display:block; }
+  .result-grid span { color:var(--text-muted); font-size:9px; text-transform:uppercase; letter-spacing:.04em; }
+  .result-grid strong { color:#fff; margin-top:12px; font-size:17px; }
+
+  .decision-box { margin-top:14px; padding:16px; border:1px solid var(--border-soft); border-radius:12px; background:#0b0e0f; }
+  .decision-box[data-risk-level="elevated"] { border-color:rgba(217,119,6,.38); }
+  .decision-box[data-risk-level="critical"] { border-color:rgba(220,38,38,.5); }
+  .decision-label { display:block; color:var(--text-muted); font-size:8px; letter-spacing:.12em; }
+  .decision-box strong { display:block; color:#fff; margin-top:9px; }
+  .decision-box p { margin:6px 0 0; color:var(--text-secondary); font-size:11px; line-height:1.55; }
+
+  .evidence-panel { margin-top:16px; }
+  .evidence-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
+  .evidence-item { padding:14px; border:1px solid var(--border-soft); border-radius:11px; background:rgba(255,255,255,.012); }
+  .evidence-item span,.evidence-item strong,.evidence-item code { display:block; }
+  .evidence-item span { color:var(--text-muted); font-size:8px; letter-spacing:.1em; margin-bottom:8px; }
+  .evidence-item strong,.evidence-item code { color:var(--text-secondary); font-size:10px; line-height:1.5; white-space:normal; }
+
+  .action-row { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
+  .action-row .btn { min-height:42px; font-size:11px; }
+  .workspace-message { min-height:20px; margin-top:12px; color:var(--text-secondary); font-size:11px; }
+  .workspace-message[data-type="error"] { color:var(--state-danger); }
+
+  .saved-section { margin-top:36px; }
+  .saved-head { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:14px; }
+  .saved-head h2 { margin:8px 0 0; color:#fff; font-size:28px; }
+  .danger-mini:hover { color:#fff; border-color:rgba(220,38,38,.4); }
+  .saved-list { display:grid; gap:8px; }
+  .saved-row { width:100%; display:grid; grid-template-columns:1fr 1fr auto; gap:18px; align-items:center; text-align:left; padding:14px 16px; border:1px solid var(--border-soft); border-radius:12px; background:#0d1011; cursor:pointer; }
+  .saved-row:hover { border-color:var(--border-medium); }
+  .saved-row span:first-child strong,.saved-row span:nth-child(2) strong { color:var(--text-primary); }
+  .saved-row strong,.saved-row small { display:block; }
+  .saved-row small { margin-top:3px; color:var(--text-muted); font-size:10px; }
+  .saved-arrow { color:var(--text-muted); }
+  .empty-state { padding:20px; border:1px dashed var(--border-soft); border-radius:12px; color:var(--text-muted); font-size:12px; }
+
+  @media (max-width:960px) {
+    .workspace-head { align-items:flex-start; flex-direction:column; }
+    .workspace-status { width:100%; }
+    .workspace-grid { grid-template-columns:1fr; }
+    .evidence-grid { grid-template-columns:repeat(2,1fr); }
+  }
+
+  @media (max-width:600px) {
+    .workspace-shell { padding:60px 0 72px; }
+    .field-grid,.result-grid,.evidence-grid { grid-template-columns:1fr; }
+    .field.wide { grid-column:auto; }
+    .saved-row { grid-template-columns:1fr auto; }
+    .saved-row span:nth-child(2) { display:none; }
+    .action-row .btn { width:100%; }
+  }
+
+  @media print {
+    body.workspace-print-mode header,
+    body.workspace-print-mode footer,
+    body.workspace-print-mode .workspace-head,
+    body.workspace-print-mode .input-panel,
+    body.workspace-print-mode .saved-section,
+    body.workspace-print-mode .action-row,
+    body.workspace-print-mode .workspace-message {
+      display:none !important;
+    }
+    body.workspace-print-mode .workspace-shell { padding:0; background:#fff; color:#111; }
+    body.workspace-print-mode .workspace-grid { display:block; }
+    body.workspace-print-mode .results-panel,
+    body.workspace-print-mode .evidence-panel {
+      margin:0 0 16px;
+      background:#fff;
+      color:#111;
+      border:1px solid #bbb;
+      break-inside:avoid;
+    }
+    body.workspace-print-mode .results-panel *,
+    body.workspace-print-mode .evidence-panel * { color:#111 !important; }
+  }
+</style>
