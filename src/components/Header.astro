@@ -7,16 +7,15 @@ const navItems = navLinks;
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="KarbonFiyat ana sayfa">
       <span class="brand-mark" aria-hidden="true">
-  <img
-    src="/logo/karbonfiyat-logo.png"
-    alt=""
-    class="brand-logo-img"
-    width="44"
-    height="44"
-    loading="eager"
-    decoding="async"
-  />
-</span>
+        <img
+          src="/logo/karbonfiyat-logo.png"
+          alt=""
+          class="brand-logo-img"
+          width="44"
+          height="44"
+          loading="eager"
+          decoding="async"
+        />
       </span>
       <span class="brand-text">karbonfiyat</span>
     </a>
@@ -106,33 +105,36 @@ const navItems = navLinks;
   .brand {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 12px;
     font-weight: 750;
     font-size: 20px;
     letter-spacing: -0.035em;
     color: var(--text-primary);
+    text-decoration: none;
+    min-width: 0;
   }
   .brand-mark {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
     line-height: 0;
   }
   .brand-logo-img {
-    height: 36px;
-    width: auto;
     display: block;
+    width: auto;
+    height: 42px;
+    max-width: 48px;
     object-fit: contain;
+    flex: 0 0 auto;
     filter: none;
-    transition: opacity 150ms ease, transform 150ms ease;
-  }
-  .brand:hover .brand-logo-img {
-    transform: scale(1.03);
-    opacity: 0.9;
   }
   .brand-text {
     color: var(--text-primary);
     line-height: 1;
+    white-space: nowrap;
   }
   .desktop-nav {
     display: flex;
@@ -227,7 +229,24 @@ const navItems = navLinks;
     .header-actions .btn-secondary { display: none; }
     .mobile-toggle { display: flex; }
   }
+
   @media (max-width: 520px) {
     .header-actions .btn-primary { display: none; }
+
+    .brand {
+      gap: 10px;
+      font-size: 18px;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      flex-basis: 36px;
+    }
+
+    .brand-logo-img {
+      height: 36px;
+      max-width: 40px;
+    }
   }
 </style>
