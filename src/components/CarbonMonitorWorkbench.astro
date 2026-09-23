@@ -79,15 +79,17 @@ const defaultBasePrice = 75.28;
   </div>
 </section>
 
-<script is:inline>
-  (() => {
-    const root = document.querySelector("#carbon-monitor");
-    if (!root) return;
+<script>
+  import { computeMonitorCore } from "../lib/financial-core.mjs";
 
+  const root = document.querySelector("#carbon-monitor");
+
+  if (root) {
     const fields = {};
-    root.querySelectorAll("[data-mon]").forEach((el) => fields[el.dataset.mon] = el);
+    root.querySelectorAll("[data-mon]").forEach((el) => { fields[el.dataset.mon] = el; });
     const outputs = {};
-    root.querySelectorAll("[data-out]").forEach((el) => outputs[el.dataset.out] = el);
+    root.querySelectorAll("[data-out]").forEach((el) => { outputs[el.dataset.out] = el; });
+
     const alertCard = root.querySelector(".alert-card");
     const historyBody = root.querySelector("[data-monitor-history]");
     const messageEl = root.querySelector("[data-monitor-message]");
@@ -97,64 +99,74 @@ const defaultBasePrice = 75.28;
     const eur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const pct2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    const n = (key) => {
-      const parsed = Number.parseFloat(fields[key]?.value || "0");
-      return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+    const value = (key) => Number.parseFloat(fields[key]?.value ?? "");
+
+    const messageFor = (result) => {
+      if (result.levelKey === "critical") {
+        return "Karbon fiyat değişimi kritik bütçe sapması yaratıyor. Açık teklifler ve müşteri fiyat geçişleri öncelikli olarak gözden geçirilmeli.";
+      }
+      if (result.levelKey === "elevated") {
+        return "Karbon maliyeti alarm eşiğine ulaştı. Bütçe rezervi ve teklif fiyatı güncellemesi değerlendirilmelidir.";
+      }
+      return "Fiyat deltası tanımlanan yıllık bütçe toleransı içinde.";
     };
 
-    const calculate = () => {
-      const base = n("base");
-      const current = n("current");
-      const volume = Math.max(1, n("volume"));
-      const factor = Math.max(0, n("factor"));
-      const revenue = Math.max(1, n("revenue"));
-      const threshold = n("threshold") || 50000;
+    const say = (text) => {
+      if (!messageEl) return;
+      messageEl.textContent = text;
+      setTimeout(() => {
+        if (messageEl.textContent === text) messageEl.textContent = "";
+      }, 4500);
+    };
 
-      const priceDelta = current - base;
-      const pricePct = base > 0 ? (priceDelta / base) * 100 : 0;
-      const baseCost = volume * factor * base;
-      const currentCost = volume * factor * current;
-      const annualDelta = currentCost - baseCost;
-      const monthlyDelta = annualDelta / 12;
-      const weeklyDelta = annualDelta / 52;
-      const marginErosion = (annualDelta / revenue) * 100;
-      const surcharge = factor * priceDelta;
+    const calculate = ({ quiet = false } = {}) => {
+      try {
+        const result = computeMonitorCore({
+          base: value("base"),
+          current: value("current"),
+          volume: value("volume"),
+          factor: value("factor"),
+          revenue: value("revenue"),
+          threshold: value("threshold")
+        });
 
-      let level = "NORMAL";
-      let levelKey = "normal";
-      let message = "Fiyat deltası tanımlanan yıllık bütçe toleransı içinde.";
-      if (annualDelta > threshold * 2 || pricePct > 25) {
-        level = "KRİTİK";
-        levelKey = "critical";
-        message = "Karbon fiyat değişimi kritik bütçe sapması yaratıyor. Açık teklifler ve müşteri fiyat geçişleri öncelikli olarak gözden geçirilmeli.";
-      } else if (annualDelta >= threshold || pricePct > 10) {
-        level = "YÜKSEK";
-        levelKey = "elevated";
-        message = "Karbon maliyeti alarm eşiğine ulaştı. Bütçe rezervi ve teklif fiyatı güncellemesi değerlendirilmelidir.";
+        outputs.level.textContent = result.level;
+        outputs.annualDelta.textContent = eur0.format(result.annualDelta);
+        outputs.message.textContent = messageFor(result);
+        outputs.priceDelta.textContent = eur2.format(result.priceDelta);
+        outputs.pricePct.textContent = "%" + pct2.format(result.pricePct);
+        outputs.monthlyDelta.textContent = eur0.format(result.monthlyDelta);
+        outputs.weeklyDelta.textContent = eur0.format(result.weeklyDelta);
+        outputs.marginErosion.textContent = pct2.format(result.marginErosion) + " puan";
+        outputs.surcharge.textContent = eur2.format(result.surcharge) + " / ton";
+        if (alertCard) alertCard.dataset.alertLevel = result.levelKey;
+
+        return {
+          ...result,
+          message: messageFor(result),
+          createdAt: new Date().toISOString()
+        };
+      } catch (error) {
+        if (!quiet) say("Monitor hesaplaması reddedildi: " + (error?.message || "Geçersiz veri."));
+        if (alertCard) alertCard.dataset.alertLevel = "invalid";
+        if (outputs.level) outputs.level.textContent = "GEÇERSİZ";
+        if (outputs.message) outputs.message.textContent = "Motor hatalı veya eksik girdiyi sessizce düzeltmez.";
+        return null;
       }
-
-      outputs.level.textContent = level;
-      outputs.annualDelta.textContent = eur0.format(annualDelta);
-      outputs.message.textContent = message;
-      outputs.priceDelta.textContent = eur2.format(priceDelta);
-      outputs.pricePct.textContent = "%" + pct2.format(pricePct);
-      outputs.monthlyDelta.textContent = eur0.format(monthlyDelta);
-      outputs.weeklyDelta.textContent = eur0.format(weeklyDelta);
-      outputs.marginErosion.textContent = pct2.format(marginErosion) + " puan";
-      outputs.surcharge.textContent = eur2.format(surcharge) + " / ton";
-      if (alertCard) alertCard.dataset.alertLevel = levelKey;
-
-      return { base, current, volume, factor, revenue, threshold, priceDelta, pricePct, baseCost, currentCost, annualDelta, monthlyDelta, weeklyDelta, marginErosion, surcharge, level, levelKey, message, createdAt: new Date().toISOString() };
     };
 
     const history = () => {
       try {
         const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         return Array.isArray(parsed) ? parsed : [];
-      } catch { return []; }
+      } catch {
+        return [];
+      }
     };
 
-    const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    const escapeHtml = (input) => String(input ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 
     const render = () => {
       const items = history().slice().reverse();
@@ -162,6 +174,7 @@ const defaultBasePrice = 75.28;
         historyBody.innerHTML = '<tr><td colspan="6" class="empty-row">Henüz snapshot yok.</td></tr>';
         return;
       }
+
       historyBody.innerHTML = items.map((item) => '<tr>' +
         '<td>' + escapeHtml(new Date(item.createdAt).toLocaleString("tr-TR")) + '</td>' +
         '<td>' + escapeHtml(eur2.format(item.current)) + '</td>' +
@@ -172,13 +185,8 @@ const defaultBasePrice = 75.28;
       '</tr>').join("");
     };
 
-    const say = (text) => {
-      if (!messageEl) return;
-      messageEl.textContent = text;
-      setTimeout(() => { if (messageEl.textContent === text) messageEl.textContent = ""; }, 4500);
-    };
+    root.querySelectorAll("[data-mon]").forEach((el) => el.addEventListener("input", () => calculate({ quiet: true })));
 
-    root.querySelectorAll("[data-mon]").forEach((el) => el.addEventListener("input", calculate));
     root.querySelectorAll("[data-mon-preset]").forEach((button) => button.addEventListener("click", () => {
       fields.current.value = button.dataset.monPreset;
       calculate();
@@ -186,6 +194,7 @@ const defaultBasePrice = 75.28;
 
     root.querySelector("[data-save-snapshot]")?.addEventListener("click", () => {
       const item = calculate();
+      if (!item) return;
       const items = history();
       items.push(item);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items.slice(-50)));
@@ -200,22 +209,32 @@ const defaultBasePrice = 75.28;
     });
 
     root.querySelector("[data-export-monitor]")?.addEventListener("click", () => {
+      const current = calculate();
+      if (!current) return;
+
       const items = history();
       const rows = [["Zaman","Baz fiyat","Güncel fiyat","Yıllık maliyet","Yıllık delta","Aylık delta","Haftalık delta","Marj erimesi","Risk"]];
-      (items.length ? items : [calculate()]).forEach((item) => rows.push([item.createdAt,item.base,item.current,item.currentCost,item.annualDelta,item.monthlyDelta,item.weeklyDelta,item.marginErosion,item.level]));
+      (items.length ? items : [current]).forEach((item) => rows.push([
+        item.createdAt, item.base, item.current, item.currentCost, item.annualDelta,
+        item.monthlyDelta, item.weeklyDelta, item.marginErosion, item.level
+      ]));
+
       const csv = rows.map((row) => row.map((cell) => '"' + String(cell ?? "").replaceAll('"','""') + '"').join(";")).join("\n");
       const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "karbonfiyat-carbon-monitor.csv";
-      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
       say("Monitor geçmişi CSV olarak indirildi.");
     });
 
-    calculate();
+    calculate({ quiet: true });
     render();
-  })();
+  }
 </script>
 
 <style>
