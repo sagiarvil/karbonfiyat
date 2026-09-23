@@ -6,8 +6,18 @@ const year = new Date().getFullYear();
   <div class="container footer-grid">
     <div class="footer-col brand-col">
       <a class="footer-brand" href="/" aria-label="KarbonFiyat ana sayfa">
-        <img src="/tulip-logo.png" alt="KarbonFiyat Logo" class="footer-logo-img" width="26" height="37" />
-        <span>KarbonFiyat</span>
+        <span class="footer-brand-mark" aria-hidden="true">
+          <img
+            src="/logo/karbonfiyat-logo.png"
+            alt=""
+            class="footer-logo-img"
+            width="38"
+            height="38"
+            loading="lazy"
+            decoding="async"
+          />
+        </span>
+        <span class="footer-brand-text">karbonfiyat</span>
       </a>
       <p class="brand-desc">
         Karbon fiyatını finansal karara çeviren Carbon Financial Intelligence platformu.
@@ -65,20 +75,39 @@ const year = new Date().getFullYear();
     align-items: center;
     gap: 12px;
     color: var(--text-primary);
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 750;
     letter-spacing: -0.035em;
+    text-decoration: none;
+  }
+  .footer-brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    transition: border-color 180ms ease, background 180ms ease, transform 180ms cubic-bezier(.2,.8,.2,1);
   }
   .footer-logo-img {
-    height: 38px;
-    width: auto;
+    height: 32px;
+    width: 32px;
     display: block;
     object-fit: contain;
     filter: none;
-    transition: transform 180ms cubic-bezier(.2,.8,.2,1);
   }
-  .footer-brand:hover .footer-logo-img {
-    transform: translateY(-1px) scale(1.04);
+  .footer-brand-text {
+    color: #F3F4F6;
+    letter-spacing: -0.035em;
+    font-size: 19px;
+  }
+  .footer-brand:hover .footer-brand-mark {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
   }
   .brand-desc {
     color: var(--text-secondary);
