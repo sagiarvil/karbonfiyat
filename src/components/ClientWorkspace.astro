@@ -208,126 +208,29 @@ const defaultCbamPrice = 75.28;
   </div>
 </section>
 
-<script is:inline>
-  (() => {
-    const STORAGE_KEY = "karbonfiyat_workspace_v1";
-    const HISTORY_KEY = "karbonfiyat_workspace_history_v1";
-    const root = document.querySelector("#workspace");
-    if (!root) return;
+<script>
+  import { computeCarbonPnlCore } from "../lib/financial-core.mjs";
 
+  const STORAGE_KEY = "karbonfiyat_workspace_v1";
+  const HISTORY_KEY = "karbonfiyat_workspace_history_v1";
+  const root = document.querySelector("#workspace");
+
+  if (root) {
     const fields = {};
-    root.querySelectorAll("[data-kf]").forEach((el) => {
-      fields[el.dataset.kf] = el;
-    });
+    root.querySelectorAll("[data-kf]").forEach((el) => { fields[el.dataset.kf] = el; });
 
     const outputs = {};
-    root.querySelectorAll("[data-out]").forEach((el) => {
-      outputs[el.dataset.out] = el;
-    });
+    root.querySelectorAll("[data-out]").forEach((el) => { outputs[el.dataset.out] = el; });
 
     const message = root.querySelector("[data-workspace-message]");
     const savedList = root.querySelector("[data-saved-list]");
     const decisionBox = root.querySelector(".decision-box");
 
-    const nf0 = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 });
     const nf2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const eur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const eur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    const num = (key) => {
-      const value = Number.parseFloat(fields[key]?.value || "0");
-      return Number.isFinite(value) ? Math.max(0, value) : 0;
-    };
-
-    const calculate = () => {
-      const volume = num("volume");
-      const intensity = num("intensity");
-      const salesPrice = num("salesPrice");
-      const productionCost = num("productionCost");
-      const carbonPrice = num("carbonPrice");
-      const targetMargin = Math.min(95, num("targetMargin")) / 100;
-
-      const emissions = volume * intensity;
-      const carbonCostPerTon = intensity * carbonPrice;
-      const carbonCost = emissions * carbonPrice;
-      const baseUnitProfit = salesPrice - productionCost;
-      const afterUnitProfit = salesPrice - productionCost - carbonCostPerTon;
-      const marginBefore = salesPrice > 0 ? (baseUnitProfit / salesPrice) * 100 : 0;
-      const marginAfter = salesPrice > 0 ? (afterUnitProfit / salesPrice) * 100 : 0;
-      const marginDelta = marginBefore - marginAfter;
-      const protectivePrice = salesPrice + carbonCostPerTon;
-      const targetPrice = targetMargin < 1 ? (productionCost + carbonCostPerTon) / (1 - targetMargin) : 0;
-      const breakEven = intensity > 0 ? Math.max(0, baseUnitProfit / intensity) : 0;
-      const annualRevenue = volume * salesPrice;
-      const annualProfitAfter = volume * afterUnitProfit;
-      const revisionPct = salesPrice > 0 ? (carbonCostPerTon / salesPrice) * 100 : 0;
-
-      if (outputs.carbonCost) outputs.carbonCost.textContent = eur0.format(carbonCost);
-      if (outputs.carbonCostPerTon) outputs.carbonCostPerTon.textContent = eur2.format(carbonCostPerTon) + " / ton";
-      if (outputs.marginBefore) outputs.marginBefore.textContent = "%" + nf2.format(marginBefore);
-      if (outputs.marginAfter) outputs.marginAfter.textContent = "%" + nf2.format(marginAfter);
-      if (outputs.marginDelta) outputs.marginDelta.textContent = nf2.format(marginDelta) + " puan";
-      if (outputs.protectivePrice) outputs.protectivePrice.textContent = eur2.format(protectivePrice) + " / ton";
-      if (outputs.targetPrice) outputs.targetPrice.textContent = eur2.format(targetPrice) + " / ton";
-      if (outputs.breakEven) outputs.breakEven.textContent = eur2.format(breakEven) + " / tCO₂";
-
-      let level = "normal";
-      let decision = "Marj korunabilir.";
-      let detail = "Karbon maliyeti mevcut brüt marj içinde absorbe edilebiliyor; sözleşme bazında geçişkenlik yine kontrol edilmeli.";
-
-      if (afterUnitProfit < 0 || marginAfter < 0) {
-        level = "critical";
-        decision = "Zarar bölgesi: fiyat revizyonu zorunlu.";
-        detail = "Mevcut satış fiyatında karbon maliyeti ürünü brüt zarara taşıyor. En az " + eur2.format(protectivePrice) + "/ton koruyucu fiyat seviyesi test edilmeli.";
-      } else if (marginAfter < 8 || revisionPct > 10) {
-        level = "elevated";
-        decision = "Marj baskısı yüksek: sözleşme revizyonu gerekli.";
-        detail = "Karbon yükü satış fiyatının yaklaşık %" + nf2.format(revisionPct) + " seviyesinde. Müşteri bazlı fiyat geçiş planı oluşturulmalı.";
-      }
-
-      if (decisionBox) decisionBox.dataset.riskLevel = level;
-      if (outputs.decision) outputs.decision.textContent = decision;
-      if (outputs.decisionDetail) outputs.decisionDetail.textContent = detail;
-
-      return {
-        version: 1,
-        company: fields.company?.value?.trim() || "",
-        facility: fields.facility?.value?.trim() || "",
-        product: fields.product?.value?.trim() || "",
-        volume,
-        intensity,
-        salesPrice,
-        productionCost,
-        carbonPrice,
-        targetMarginPct: targetMargin * 100,
-        emissions,
-        carbonCostPerTon,
-        carbonCost,
-        annualRevenue,
-        annualProfitAfter,
-        marginBefore,
-        marginAfter,
-        marginDelta,
-        protectivePrice,
-        targetPrice,
-        breakEven,
-        revisionPct,
-        decision,
-        riskLevel: level,
-        calculatedAt: new Date().toISOString()
-      };
-    };
-
-    const apply = (data) => {
-      if (!data) return;
-      ["company", "facility", "product", "volume", "intensity", "salesPrice", "productionCost", "carbonPrice", "targetMargin"].forEach((key) => {
-        const sourceKey = key === "targetMargin" ? "targetMarginPct" : key;
-        if (fields[key] && data[sourceKey] !== undefined && data[sourceKey] !== null) {
-          fields[key].value = String(data[sourceKey]);
-        }
-      });
-      calculate();
-    };
+    const rawNumber = (key) => Number.parseFloat(fields[key]?.value ?? "");
 
     const setMessage = (text, type = "ok") => {
       if (!message) return;
@@ -336,6 +239,68 @@ const defaultCbamPrice = 75.28;
       window.setTimeout(() => {
         if (message.textContent === text) message.textContent = "";
       }, 5000);
+    };
+
+    const detailFor = (result) => {
+      if (result.riskLevel === "critical") {
+        return "Mevcut satış fiyatında karbon maliyeti ürünü brüt zarara taşıyor. En az " +
+          eur2.format(result.protectivePrice) + "/ton koruyucu fiyat seviyesi test edilmeli.";
+      }
+      if (result.riskLevel === "elevated") {
+        return "Karbon yükü satış fiyatının yaklaşık %" + nf2.format(result.revisionPct) +
+          " seviyesinde. Müşteri bazlı fiyat geçiş planı oluşturulmalı.";
+      }
+      return "Karbon maliyeti mevcut brüt marj içinde absorbe edilebiliyor; sözleşme bazında geçişkenlik yine kontrol edilmeli.";
+    };
+
+    const calculate = ({ quiet = false } = {}) => {
+      try {
+        const result = computeCarbonPnlCore({
+          volume: rawNumber("volume"),
+          intensity: rawNumber("intensity"),
+          salesPrice: rawNumber("salesPrice"),
+          productionCost: rawNumber("productionCost"),
+          carbonPrice: rawNumber("carbonPrice"),
+          targetMarginPct: rawNumber("targetMargin")
+        });
+
+        outputs.carbonCost.textContent = eur0.format(result.carbonCost);
+        outputs.carbonCostPerTon.textContent = eur2.format(result.carbonCostPerTon) + " / ton";
+        outputs.marginBefore.textContent = "%" + nf2.format(result.marginBefore);
+        outputs.marginAfter.textContent = "%" + nf2.format(result.marginAfter);
+        outputs.marginDelta.textContent = nf2.format(result.marginDelta) + " puan";
+        outputs.protectivePrice.textContent = eur2.format(result.protectivePrice) + " / ton";
+        outputs.targetPrice.textContent = eur2.format(result.targetPrice) + " / ton";
+        outputs.breakEven.textContent = eur2.format(result.breakEven) + " / tCO₂";
+        outputs.decision.textContent = result.decision;
+        outputs.decisionDetail.textContent = detailFor(result);
+        if (outputs.priceSource) outputs.priceSource.textContent = "CBAM 2026 Q2 / kullanıcı senaryosu";
+        if (decisionBox) decisionBox.dataset.riskLevel = result.riskLevel;
+
+        return {
+          version: 2,
+          company: fields.company?.value?.trim() || "",
+          facility: fields.facility?.value?.trim() || "",
+          product: fields.product?.value?.trim() || "",
+          ...result,
+          calculatedAt: new Date().toISOString()
+        };
+      } catch (error) {
+        if (!quiet) setMessage("Hesaplama reddedildi: " + (error?.message || "Geçersiz veri."), "error");
+        if (decisionBox) decisionBox.dataset.riskLevel = "invalid";
+        if (outputs.decision) outputs.decision.textContent = "Geçersiz veri";
+        if (outputs.decisionDetail) outputs.decisionDetail.textContent = "Motor hatalı veya eksik girdiyi sessizce düzeltmez. Geçerli pozitif tonaj ve satış fiyatı girin.";
+        return null;
+      }
+    };
+
+    const apply = (data) => {
+      if (!data) return;
+      ["company", "facility", "product", "volume", "intensity", "salesPrice", "productionCost", "carbonPrice", "targetMargin"].forEach((key) => {
+        const sourceKey = key === "targetMargin" ? "targetMarginPct" : key;
+        if (fields[key] && data[sourceKey] !== undefined && data[sourceKey] !== null) fields[key].value = String(data[sourceKey]);
+      });
+      calculate({ quiet: true });
     };
 
     const getHistory = () => {
@@ -347,6 +312,10 @@ const defaultCbamPrice = 75.28;
       }
     };
 
+    const escapeHtml = (value) => String(value ?? "")
+      .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+
     const renderHistory = () => {
       if (!savedList) return;
       const history = getHistory();
@@ -354,36 +323,25 @@ const defaultCbamPrice = 75.28;
         savedList.innerHTML = '<div class="empty-state">Henüz kaydedilmiş senaryo yok.</div>';
         return;
       }
-
       savedList.innerHTML = history.slice().reverse().map((item) => {
-        const company = item.company || "İsimsiz şirket";
-        const product = item.product || "Ürün belirtilmedi";
         const date = new Date(item.savedAt || item.calculatedAt).toLocaleString("tr-TR");
         return '<button class="saved-row" type="button" data-history-id="' + item.id + '">' +
-          '<span><strong>' + escapeHtml(company) + '</strong><small>' + escapeHtml(product) + '</small></span>' +
+          '<span><strong>' + escapeHtml(item.company || "İsimsiz şirket") + '</strong><small>' +
+          escapeHtml(item.product || "Ürün belirtilmedi") + '</small></span>' +
           '<span><strong>' + eur0.format(item.carbonCost || 0) + '</strong><small>' + escapeHtml(date) + '</small></span>' +
-          '<span class="saved-arrow">→</span>' +
-        '</button>';
+          '<span class="saved-arrow">→</span></button>';
       }).join("");
 
       savedList.querySelectorAll("[data-history-id]").forEach((button) => {
         button.addEventListener("click", () => {
           const record = getHistory().find((item) => item.id === button.dataset.historyId);
-          if (record) {
-            apply(record);
-            setMessage("Kaydedilmiş senaryo çalışma alanına yüklendi.");
-            window.scrollTo({ top: root.offsetTop - 80, behavior: "smooth" });
-          }
+          if (!record) return;
+          apply(record);
+          setMessage("Kaydedilmiş senaryo çalışma alanına yüklendi.");
+          window.scrollTo({ top: root.offsetTop - 80, behavior: "smooth" });
         });
       });
     };
-
-    const escapeHtml = (value) => String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
 
     const download = (filename, type, content) => {
       const blob = new Blob([content], { type });
@@ -397,7 +355,7 @@ const defaultCbamPrice = 75.28;
       URL.revokeObjectURL(url);
     };
 
-    root.querySelectorAll("[data-kf]").forEach((el) => el.addEventListener("input", calculate));
+    root.querySelectorAll("[data-kf]").forEach((el) => el.addEventListener("input", () => calculate({ quiet: true })));
 
     root.querySelectorAll("[data-carbon-preset]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -408,8 +366,8 @@ const defaultCbamPrice = 75.28;
 
     root.querySelector("[data-save-workspace]")?.addEventListener("click", () => {
       const data = calculate();
+      if (!data) return;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-
       const history = getHistory();
       history.push({ ...data, id: "KF-" + Date.now().toString(36).toUpperCase(), savedAt: new Date().toISOString() });
       localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-25)));
@@ -419,6 +377,7 @@ const defaultCbamPrice = 75.28;
 
     root.querySelector("[data-export-json]")?.addEventListener("click", () => {
       const data = calculate();
+      if (!data) return;
       const slug = (data.company || "karbonfiyat").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       download((slug || "karbonfiyat") + "-carbon-pnl.json", "application/json;charset=utf-8", JSON.stringify(data, null, 2));
       setMessage("JSON yönetim paketi indirildi.");
@@ -426,23 +385,15 @@ const defaultCbamPrice = 75.28;
 
     root.querySelector("[data-export-csv]")?.addEventListener("click", () => {
       const d = calculate();
+      if (!d) return;
       const rows = [
-        ["Alan", "Değer"],
-        ["Şirket", d.company],
-        ["Tesis / lokasyon", d.facility],
-        ["Ürün", d.product],
-        ["Yıllık AB ihracatı (ton)", d.volume],
-        ["Emisyon yoğunluğu (tCO2/ton)", d.intensity],
-        ["Karbon fiyatı (EUR/tCO2)", d.carbonPrice],
-        ["Yıllık karbon maliyeti (EUR)", d.carbonCost],
-        ["Karbon maliyeti / ton (EUR)", d.carbonCostPerTon],
-        ["Mevcut brüt marj (%)", d.marginBefore],
-        ["Karbon sonrası marj (%)", d.marginAfter],
-        ["Koruyucu satış fiyatı (EUR/ton)", d.protectivePrice],
-        ["Hedef marj satış fiyatı (EUR/ton)", d.targetPrice],
-        ["Break-even karbon fiyatı (EUR/tCO2)", d.breakEven],
-        ["Karar", d.decision],
-        ["Hesap zamanı", d.calculatedAt]
+        ["Alan", "Değer"], ["Şirket", d.company], ["Tesis / lokasyon", d.facility], ["Ürün", d.product],
+        ["Yıllık AB ihracatı (ton)", d.volume], ["Emisyon yoğunluğu (tCO2/ton)", d.intensity],
+        ["Karbon fiyatı (EUR/tCO2)", d.carbonPrice], ["Yıllık karbon maliyeti (EUR)", d.carbonCost],
+        ["Karbon maliyeti / ton (EUR)", d.carbonCostPerTon], ["Mevcut brüt marj (%)", d.marginBefore],
+        ["Karbon sonrası marj (%)", d.marginAfter], ["Koruyucu satış fiyatı (EUR/ton)", d.protectivePrice],
+        ["Hedef marj satış fiyatı (EUR/ton)", d.targetPrice], ["Break-even karbon fiyatı (EUR/tCO2)", d.breakEven],
+        ["Karar", d.decision], ["Hesap zamanı", d.calculatedAt]
       ];
       const csv = rows.map((row) => row.map((cell) => '"' + String(cell ?? "").replaceAll('"', '""') + '"').join(";")).join("\n");
       download("karbonfiyat-carbon-pnl.csv", "text/csv;charset=utf-8", "\ufeff" + csv);
@@ -450,24 +401,14 @@ const defaultCbamPrice = 75.28;
     });
 
     root.querySelector("[data-print-report]")?.addEventListener("click", () => {
-      calculate();
+      if (!calculate()) return;
       document.body.classList.add("workspace-print-mode");
       window.print();
       window.setTimeout(() => document.body.classList.remove("workspace-print-mode"), 500);
     });
 
     root.querySelector("[data-reset-workspace]")?.addEventListener("click", () => {
-      apply({
-        company: "",
-        facility: "",
-        product: "",
-        volume: 1000,
-        intensity: 1.8,
-        salesPrice: 850,
-        productionCost: 620,
-        carbonPrice: 75.28,
-        targetMarginPct: 20
-      });
+      apply({ company: "", facility: "", product: "", volume: 1000, intensity: 1.8, salesPrice: 850, productionCost: 620, carbonPrice: 75.28, targetMarginPct: 20 });
       localStorage.removeItem(STORAGE_KEY);
       setMessage("Çalışma alanı varsayılan değerlere döndürüldü.");
     });
@@ -481,13 +422,13 @@ const defaultCbamPrice = 75.28;
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
       if (saved) apply(saved);
-      else calculate();
+      else calculate({ quiet: true });
     } catch {
-      calculate();
+      calculate({ quiet: true });
     }
 
     renderHistory();
-  })();
+  }
 </script>
 
 <style>
