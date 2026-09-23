@@ -120,6 +120,29 @@ export function computeMonitorCore(input) {
   return { volume, factor, base, current, revenue, threshold, priceDelta, pricePct, baseCost, currentCost, annualDelta, monthlyDelta, weeklyDelta, marginErosion, surcharge, level, levelKey };
 }
 
+
+export function computeTrEtsScenarioCore(input) {
+  const carbonPriceTry = assertFinite(Number(input.carbonPriceTry), "carbonPriceTry", { min: 0 });
+  const annualEmission = assertFinite(Number(input.annualEmission), "annualEmission", { min: 0 });
+  const freeAllocationPct = assertFinite(Number(input.freeAllocationPct), "freeAllocationPct", { min: 0, max: 100 });
+  const annualProductionTon = assertFinite(Number(input.annualProductionTon), "annualProductionTon", { min: 0, minExclusive: true });
+
+  const exposedEmission = annualEmission * (1 - freeAllocationPct / 100);
+  const netCostTry = exposedEmission * carbonPriceTry;
+  const costPerProductionTonTry = netCostTry / annualProductionTon;
+
+  return {
+    carbonPriceTry,
+    annualEmission,
+    freeAllocationPct,
+    annualProductionTon,
+    exposedEmission,
+    netCostTry,
+    costPerProductionTonTry,
+    modelStatus: "scenario_only"
+  };
+}
+
 export function computePortfolioCore(customers, carbonPrice, offsetPct = 0) {
   if (!Array.isArray(customers) || customers.length === 0) throw new RangeError("customers must not be empty.");
   const price = assertFinite(Number(carbonPrice), "carbonPrice", { min: 0 });
