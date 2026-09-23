@@ -31,6 +31,10 @@ jobs:
         working-directory: functions
         run: npm run lint
 
+      - name: Test Firebase market adapters
+        working-directory: functions
+        run: npm test
+
       - name: Build
         run: npm run build
 
