@@ -111,7 +111,8 @@ const engineBoundFiles = [
   "src/components/CustomerPortfolioWorkbench.astro",
   "src/components/CarbonMonitorWorkbench.astro",
   "src/components/MarketIntelligenceTerminal.astro",
-  "src/components/InteractiveEngineConsole.astro"
+  "src/components/InteractiveEngineConsole.astro",
+  "src/components/ScenarioPanel.astro"
 ];
 
 for (const file of engineBoundFiles) {
