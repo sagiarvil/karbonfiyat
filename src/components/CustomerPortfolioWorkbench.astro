@@ -70,11 +70,12 @@ const sampleRows = [
   </div>
 </section>
 
-<script is:inline>
-  (() => {
-    const root = document.querySelector("#musteri-portfoyu");
-    if (!root) return;
+<script>
+  import { computePortfolioCore } from "../lib/financial-core.mjs";
 
+  const root = document.querySelector("#musteri-portfoyu");
+
+  if (root) {
     const body = root.querySelector("[data-pf-body]");
     const priceInput = root.querySelector("[data-pf-price]");
     const offsetInput = root.querySelector("[data-pf-offset]");
@@ -84,15 +85,12 @@ const sampleRows = [
     const eur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const pct1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-    const n = (value) => {
-      const parsed = Number.parseFloat(String(value ?? "0"));
-      return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
-    };
-
     const setMessage = (text) => {
       if (!message) return;
       message.textContent = text;
-      setTimeout(() => { if (message.textContent === text) message.textContent = ""; }, 4500);
+      setTimeout(() => {
+        if (message.textContent === text) message.textContent = "";
+      }, 4500);
     };
 
     const makeRow = (data = {}) => {
@@ -101,10 +99,10 @@ const sampleRows = [
       tr.innerHTML =
         '<td><input type="text" data-field="client" aria-label="Müşteri" /></td>' +
         '<td><input type="text" data-field="country" aria-label="Ülke" /></td>' +
-        '<td><input type="number" min="0" step="100" data-field="volume" aria-label="Tonaj" /></td>' +
-        '<td><input type="number" min="0" step="1" data-field="sales" aria-label="Satış fiyatı" /></td>' +
-        '<td><input type="number" min="0" step="1" data-field="cost" aria-label="Üretim maliyeti" /></td>' +
-        '<td><input type="number" min="0" step="0.01" data-field="emission" aria-label="Emisyon yoğunluğu" /></td>' +
+        '<td><input type="number" min="0.01" step="100" data-field="volume" /></td>' +
+        '<td><input type="number" min="0.01" step="1" data-field="sales" /></td>' +
+        '<td><input type="number" min="0" step="1" data-field="cost" /></td>' +
+        '<td><input type="number" min="0" step="0.01" data-field="emission" /></td>' +
         '<td class="metric" data-result="carbon">—</td>' +
         '<td class="metric" data-result="margin">—</td>' +
         '<td class="metric" data-result="revision">—</td>' +
@@ -124,92 +122,79 @@ const sampleRows = [
         id: "C" + (index + 1),
         client: String(get("client")).trim() || "İsimsiz müşteri",
         country: String(get("country")).trim(),
-        volume: n(get("volume")),
-        sales: n(get("sales")),
-        cost: n(get("cost")),
-        emission: n(get("emission"))
+        volume: Number.parseFloat(get("volume")),
+        sales: Number.parseFloat(get("sales")),
+        cost: Number.parseFloat(get("cost")),
+        emission: Number.parseFloat(get("emission"))
       };
     });
 
-    const calculate = () => {
-      const carbonPrice = n(priceInput?.value);
-      const offsetPct = Math.min(100, n(offsetInput?.value));
-      const offset = offsetPct / 100;
-      let totalRevenue = 0;
-      let totalBaseProfit = 0;
-      let totalNetCarbon = 0;
-      let critical = 0;
+    const calculate = ({ quiet = false } = {}) => {
+      try {
+        const carbonPrice = Number.parseFloat(priceInput?.value ?? "");
+        const offsetPct = Number.parseFloat(offsetInput?.value ?? "");
+        const customers = rowsData();
+        const result = computePortfolioCore(customers, carbonPrice, offsetPct);
 
-      Array.from(body.querySelectorAll("[data-pf-row]")).forEach((row) => {
-        const get = (key) => row.querySelector('[data-field="' + key + '"]')?.value ?? "";
-        const volume = n(get("volume"));
-        const sales = n(get("sales"));
-        const cost = n(get("cost"));
-        const emission = n(get("emission"));
+        result.evaluations.forEach((evaluation, index) => {
+          const row = body.querySelectorAll("[data-pf-row]")[index];
+          if (!row) return;
+          const carbonOut = row.querySelector('[data-result="carbon"]');
+          const marginOut = row.querySelector('[data-result="margin"]');
+          const revisionOut = row.querySelector('[data-result="revision"]');
+          const riskOut = row.querySelector('[data-result="risk"]');
 
-        const revenue = volume * sales;
-        const baseProfit = volume * (sales - cost);
-        const grossCarbon = volume * emission * carbonPrice;
-        const netCarbon = grossCarbon * (1 - offset);
-        const profitAfter = baseProfit - netCarbon;
-        const marginAfter = revenue > 0 ? (profitAfter / revenue) * 100 : 0;
-        const revisionPct = revenue > 0 ? (netCarbon / revenue) * 100 : 0;
+          if (carbonOut) carbonOut.textContent = eur0.format(evaluation.netCarbon);
+          if (marginOut) marginOut.textContent = "%" + pct1.format(evaluation.marginAfter);
+          if (revisionOut) revisionOut.textContent = "%" + pct1.format(evaluation.revisionPct);
+          if (riskOut) {
+            const mapping = {
+              CRITICAL: ["KRİTİK", "critical"],
+              REVISION: ["REVİZYON", "warning"],
+              HEALTHY: ["KORUNABİLİR", "healthy"]
+            };
+            const [label, level] = mapping[evaluation.risk] || [evaluation.risk, "healthy"];
+            riskOut.textContent = label;
+            riskOut.dataset.level = level;
+          }
+        });
 
-        totalRevenue += revenue;
-        totalBaseProfit += baseProfit;
-        totalNetCarbon += netCarbon;
+        const total = (key) => root.querySelector('[data-pf-total="' + key + '"]');
+        if (total("revenue")) total("revenue").textContent = eur0.format(result.totalRevenue);
+        if (total("carbon")) total("carbon").textContent = eur0.format(result.totalNetCarbon);
+        if (total("before")) total("before").textContent = "%" + pct1.format(result.marginBefore);
+        if (total("after")) total("after").textContent = "%" + pct1.format(result.marginAfter);
+        if (total("critical")) total("critical").textContent = String(result.criticalCount);
 
-        let label = "KORUNABİLİR";
-        let level = "healthy";
-        if (marginAfter < 5) {
-          label = "KRİTİK";
-          level = "critical";
-          critical += 1;
-        } else if (marginAfter < 14) {
-          label = "REVİZYON";
-          level = "warning";
+        const takeaway = root.querySelector("[data-pf-takeaway]");
+        if (takeaway) {
+          takeaway.textContent = result.criticalCount > 0
+            ? customers.length + " müşteriden " + result.criticalCount + " tanesi karbon sonrası kritik marj bölgesinde. Bu sözleşmeler için fiyat revizyonu veya hacim kararı önceliklendirilmeli."
+            : "Portföyde kritik zarar bölgesinde müşteri yok. Karbon sonrası ortalama portföy marjı %" + pct1.format(result.marginAfter) + ".";
         }
 
-        const carbonOut = row.querySelector('[data-result="carbon"]');
-        const marginOut = row.querySelector('[data-result="margin"]');
-        const revisionOut = row.querySelector('[data-result="revision"]');
-        const riskOut = row.querySelector('[data-result="risk"]');
-
-        if (carbonOut) carbonOut.textContent = eur0.format(netCarbon);
-        if (marginOut) marginOut.textContent = "%" + pct1.format(marginAfter);
-        if (revisionOut) revisionOut.textContent = "%" + pct1.format(revisionPct);
-        if (riskOut) {
-          riskOut.textContent = label;
-          riskOut.dataset.level = level;
-        }
-      });
-
-      const before = totalRevenue > 0 ? (totalBaseProfit / totalRevenue) * 100 : 0;
-      const after = totalRevenue > 0 ? ((totalBaseProfit - totalNetCarbon) / totalRevenue) * 100 : 0;
-      const rowCount = body.querySelectorAll("[data-pf-row]").length;
-
-      const total = (key) => root.querySelector('[data-pf-total="' + key + '"]');
-      if (total("revenue")) total("revenue").textContent = eur0.format(totalRevenue);
-      if (total("carbon")) total("carbon").textContent = eur0.format(totalNetCarbon);
-      if (total("before")) total("before").textContent = "%" + pct1.format(before);
-      if (total("after")) total("after").textContent = "%" + pct1.format(after);
-      if (total("critical")) total("critical").textContent = String(critical);
-
-      const takeaway = root.querySelector("[data-pf-takeaway]");
-      if (takeaway) {
-        takeaway.textContent = critical > 0
-          ? rowCount + " müşteriden " + critical + " tanesi karbon sonrası kritik marj bölgesinde. Bu sözleşmeler için fiyat revizyonu veya hacim kararı önceliklendirilmeli."
-          : "Portföyde kritik zarar bölgesinde müşteri yok. Karbon sonrası ortalama portföy marjı %" + pct1.format(after) + ".";
+        return {
+          carbonPrice: result.carbonPrice,
+          offsetPct: result.offsetPct,
+          totalRevenue: result.totalRevenue,
+          totalNetCarbon: result.totalNetCarbon,
+          marginBefore: result.marginBefore,
+          marginAfter: result.marginAfter,
+          criticalCount: result.criticalCount,
+          customers,
+          savedAt: new Date().toISOString()
+        };
+      } catch (error) {
+        if (!quiet) setMessage("Portföy hesaplaması reddedildi: " + (error?.message || "Geçersiz veri."));
+        return null;
       }
-
-      return { carbonPrice, offsetPct, totalRevenue, totalNetCarbon, marginBefore: before, marginAfter: after, criticalCount: critical, customers: rowsData(), savedAt: new Date().toISOString() };
     };
 
     const bind = () => {
       body.querySelectorAll("input").forEach((input) => {
         if (!input.dataset.bound) {
           input.dataset.bound = "1";
-          input.addEventListener("input", calculate);
+          input.addEventListener("input", () => calculate({ quiet: true }));
         }
       });
       body.querySelectorAll("[data-remove-row]").forEach((button) => {
@@ -218,7 +203,7 @@ const sampleRows = [
           button.addEventListener("click", () => {
             if (body.querySelectorAll("[data-pf-row]").length <= 1) return;
             button.closest("[data-pf-row]")?.remove();
-            calculate();
+            calculate({ quiet: true });
           });
         }
       });
@@ -227,13 +212,14 @@ const sampleRows = [
     root.querySelector("[data-add-row]")?.addEventListener("click", () => {
       body.appendChild(makeRow({ volume: 1000, sales: 850, cost: 620, emission: 1.84 }));
       bind();
-      calculate();
+      calculate({ quiet: true });
     });
 
-    [priceInput, offsetInput].forEach((input) => input?.addEventListener("input", calculate));
+    [priceInput, offsetInput].forEach((input) => input?.addEventListener("input", () => calculate({ quiet: true })));
 
     root.querySelector("[data-save-portfolio]")?.addEventListener("click", () => {
       const data = calculate();
+      if (!data) return;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       setMessage("Portföy bu cihazda kaydedildi. Sunucuya veri gönderilmedi.");
     });
@@ -295,7 +281,7 @@ const sampleRows = [
         });
 
         bind();
-        calculate();
+        if (!calculate()) throw new Error("CSV verilerinden en az biri geçersiz.");
         setMessage(dataRows.length + " müşteri CSV'den içe aktarıldı.");
       } catch (error) {
         setMessage("CSV içe aktarılamadı: " + (error?.message || "format hatası"));
@@ -306,6 +292,7 @@ const sampleRows = [
 
     root.querySelector("[data-export-portfolio]")?.addEventListener("click", () => {
       const data = calculate();
+      if (!data) return;
       const rows = [["Müşteri", "Ülke", "Hacim ton", "Satış €/ton", "Maliyet €/ton", "Emisyon tCO2/ton"]];
       data.customers.forEach((customer) => rows.push([customer.client, customer.country, customer.volume, customer.sales, customer.cost, customer.emission]));
       rows.push([]);
@@ -341,8 +328,8 @@ const sampleRows = [
     } catch {}
 
     bind();
-    calculate();
-  })();
+    calculate({ quiet: true });
+  }
 </script>
 
 <style>
