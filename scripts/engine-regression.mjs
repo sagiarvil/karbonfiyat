@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { computeCarbonPnlCore, computeExposureCore, computeMonitorCore, computePortfolioCore } from "../src/lib/financial-core.mjs";
+import { computeCarbonPnlCore, computeExposureCore, computeMonitorCore, computePortfolioCore, computeTrEtsScenarioCore } from "../src/lib/financial-core.mjs";
 
 const approx = (actual, expected, eps = 1e-8) => assert.ok(Math.abs(actual - expected) <= eps, actual + " != " + expected);
 
@@ -50,6 +50,17 @@ assert.throws(() => computeExposureCore({ tonnes: 1000, intensity: 1.8, annualSa
 }
 
 assert.throws(() => computeMonitorCore({ volume: 0, factor: 1, base: 1, current: 1, revenue: 1, threshold: 1 }), RangeError);
+
+{
+  const r = computeTrEtsScenarioCore({ carbonPriceTry: 850, annualEmission: 50000, freeAllocationPct: 60, annualProductionTon: 70000 });
+  approx(r.exposedEmission, 20000);
+  approx(r.netCostTry, 17000000);
+  approx(r.costPerProductionTonTry, 17000000 / 70000);
+  assert.equal(r.modelStatus, "scenario_only");
+}
+
+assert.throws(() => computeTrEtsScenarioCore({ carbonPriceTry: 850, annualEmission: 50000, freeAllocationPct: 101, annualProductionTon: 70000 }), RangeError);
+assert.throws(() => computeTrEtsScenarioCore({ carbonPriceTry: 850, annualEmission: 50000, freeAllocationPct: 60, annualProductionTon: 0 }), RangeError);
 
 {
   const r = computePortfolioCore([
