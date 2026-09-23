@@ -235,9 +235,9 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
             <!-- Sol: Piyasa Simülasyonu -->
             <div class="pane-box monitor-controls">
               <span class="eyebrow">DİNAMİK KOTASYON SİMÜLATÖRÜ</span>
-              <h3 class="box-title">AB CBAM Haftalık Borsa Fiyatı Hareketi</h3>
+              <h3 class="box-title">Karbon Fiyatı Senaryo Hareketi</h3>
               <p class="box-desc">
-                Resmî baz gösterge €75,28/t'dur. AB borsa kotasyonları arttığında veya haftalık ihalelerde fiyat yükseldiğinde yıllık bütçenizdeki ve haftalık nakit akışınızdaki sapmayı canlı test edin.
+                Baz karbon fiyatı €75,28/tCO₂ olarak alınır. Farklı fiyat senaryolarının yıllık bütçe, aylık/haftalık nakit akışı ve teklif fiyatına etkisini test edin.
               </p>
 
               <div class="interactive-slider-group">
@@ -316,274 +316,209 @@ import { DEFAULT_SAMPLE_PORTFOLIO } from "../lib/portfolio-decision-engine";
   </div>
 </section>
 
-<script is:inline>
-  (function() {
-    // 1. SEKME GEÇİŞİ (TABS)
-    const tabBtns = document.querySelectorAll(".tab-btn");
-    const tabPanes = document.querySelectorAll(".engine-tab-pane");
+<script>
+  import { computeCarbonPnlCore, computePortfolioCore, computeMonitorCore } from "../lib/financial-core.mjs";
 
-    tabBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        tabBtns.forEach(b => b.classList.remove("active"));
-        tabPanes.forEach(p => p.classList.remove("active"));
-        btn.classList.add("active");
-        const targetId = "pane-" + btn.getAttribute("data-tab");
-        const targetPane = document.getElementById(targetId);
-        if (targetPane) targetPane.classList.add("active");
-      });
-    });
+  const root = document.querySelector("#motorlar");
 
+  if (root) {
     const fmtEur = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const fmtEurDec = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-    // 2. MOTOR 02: ÖN ANALİZ RAPOR MOTORU HESAPLAMASI
-    const m2Company = document.getElementById("m2-company");
-    const m2Gtip = document.getElementById("m2-gtip");
-    const m2Vol = document.getElementById("m2-volume");
-    const m2Sales = document.getElementById("m2-sales-price");
-    const m2Cost = document.getElementById("m2-cost");
-    const m2CbamPrice = document.getElementById("m2-cbam-price");
-    const m2S1 = document.getElementById("m2-scope1");
-    const m2S2 = document.getElementById("m2-scope2");
-
-    const repCompany = document.getElementById("rep-company-title");
-    const outExp = document.getElementById("m2-out-exposure");
-    const outPerTon = document.getElementById("m2-out-per-ton");
-    const outEmission = document.getElementById("m2-out-emission");
-    const outCurMargin = document.getElementById("m2-out-cur-margin");
-    const outAdjMargin = document.getElementById("m2-out-adj-margin");
-    const outMarginLoss = document.getElementById("m2-out-margin-loss");
-    const outReqPrice = document.getElementById("m2-out-req-price");
-    const outBreakeven = document.getElementById("m2-out-breakeven");
-
-    function calcMotor2() {
-      const comp = m2Company ? m2Company.value || "İhracatçı Firma" : "İhracatçı Firma";
-      if (repCompany) repCompany.textContent = comp;
-
-      const vol = Math.max(1, parseFloat(m2Vol?.value) || 10000);
-      const sales = Math.max(1, parseFloat(m2Sales?.value) || 850);
-      const cost = Math.max(0, parseFloat(m2Cost?.value) || 606);
-      const cbamP = Math.max(0, parseFloat(m2CbamPrice?.value) || 75.28);
-      const s1 = Math.max(0, parseFloat(m2S1?.value) || 1.45);
-      const s2 = Math.max(0, parseFloat(m2S2?.value) || 0.39);
-
-      const totalEmission = s1 + s2;
-      const perTonCarbon = totalEmission * cbamP;
-      const totalExposure = vol * perTonCarbon;
-
-      const rev = vol * sales;
-      const curProfit = rev - (vol * cost);
-      const curMargin = (curProfit / rev) * 100;
-
-      const newCost = cost + perTonCarbon;
-      const adjProfit = rev - (vol * newCost);
-      const adjMargin = (adjProfit / rev) * 100;
-      const marginLoss = curMargin - adjMargin;
-      const profitErosion = curProfit > 0 ? ((curProfit - adjProfit) / curProfit) * 100 : 100;
-
-      const reqPrice = sales + perTonCarbon;
-      const reqRevPct = (perTonCarbon / sales) * 100;
-      const breakeven = totalEmission > 0 ? (sales - cost) / totalEmission : 0;
-
-      if (outExp) outExp.textContent = fmtEur.format(totalExposure);
-      if (outPerTon) outPerTon.textContent = "Ton başına ek maliyet: " + fmtEurDec.format(perTonCarbon) + "/t";
-      if (outEmission) outEmission.textContent = fmtPct.format(totalEmission) + " tCO₂e / ton";
-      if (outCurMargin) outCurMargin.textContent = "%" + fmtPct.format(curMargin);
-      if (outAdjMargin) outAdjMargin.textContent = "%" + fmtPct.format(adjMargin);
-      if (outMarginLoss) outMarginLoss.textContent = "−" + fmtPct.format(marginLoss) + " Puan (%" + fmtPct.format(profitErosion) + " Kâr Kaybı)";
-      if (outReqPrice) outReqPrice.textContent = fmtEurDec.format(reqPrice) + "/t (+%" + fmtPct.format(reqRevPct) + ")";
-      if (outBreakeven) outBreakeven.textContent = fmtEurDec.format(breakeven) + " / tCO₂";
-    }
-
-    if (m2Gtip) {
-      m2Gtip.addEventListener("change", () => {
-        const opt = m2Gtip.options[m2Gtip.selectedIndex];
-        if (opt) {
-          if (m2S1) m2S1.value = opt.getAttribute("data-s1");
-          if (m2S2) m2S2.value = opt.getAttribute("data-s2");
-          calcMotor2();
-        }
+    root.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        root.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+        root.querySelectorAll(".engine-tab-pane").forEach((pane) => pane.classList.remove("active"));
+        btn.classList.add("active");
+        root.querySelector("#pane-" + btn.getAttribute("data-tab"))?.classList.add("active");
       });
-    }
-
-    [m2Company, m2Vol, m2Sales, m2Cost, m2CbamPrice, m2S1, m2S2].forEach(el => {
-      if (el) {
-        el.addEventListener("input", calcMotor2);
-        el.addEventListener("change", calcMotor2);
-      }
     });
 
-    // 3. MOTOR 03: MÜŞTERİ PORTFÖY & MAHSUP KARAR MOTORU HESAPLAMASI
-    const sampleContracts = [
-      { id: "c1", client: "ABC Stahl GmbH", country: "Almanya", vol: 5000, price: 860, cost: 620, factor: 1.84 },
-      { id: "c2", client: "DEF Metalli SpA", country: "İtalya", vol: 3500, price: 830, cost: 610, factor: 1.84 },
-      { id: "c3", client: "XYZ Construct BV", country: "Hollanda", vol: 1500, price: 790, cost: 640, factor: 1.84 }
+    const m2 = {
+      company: root.querySelector("#m2-company"),
+      gtip: root.querySelector("#m2-gtip"),
+      volume: root.querySelector("#m2-volume"),
+      sales: root.querySelector("#m2-sales-price"),
+      cost: root.querySelector("#m2-cost"),
+      price: root.querySelector("#m2-cbam-price"),
+      s1: root.querySelector("#m2-scope1"),
+      s2: root.querySelector("#m2-scope2"),
+      companyOut: root.querySelector("#rep-company-title"),
+      exposure: root.querySelector("#m2-out-exposure"),
+      perTon: root.querySelector("#m2-out-per-ton"),
+      emission: root.querySelector("#m2-out-emission"),
+      curMargin: root.querySelector("#m2-out-cur-margin"),
+      adjMargin: root.querySelector("#m2-out-adj-margin"),
+      marginLoss: root.querySelector("#m2-out-margin-loss"),
+      reqPrice: root.querySelector("#m2-out-req-price"),
+      breakeven: root.querySelector("#m2-out-breakeven")
+    };
+
+    const calcMotor2 = () => {
+      try {
+        const intensity = Number.parseFloat(m2.s1?.value ?? "") + Number.parseFloat(m2.s2?.value ?? "");
+        const result = computeCarbonPnlCore({
+          volume: Number.parseFloat(m2.volume?.value ?? ""),
+          intensity,
+          salesPrice: Number.parseFloat(m2.sales?.value ?? ""),
+          productionCost: Number.parseFloat(m2.cost?.value ?? ""),
+          carbonPrice: Number.parseFloat(m2.price?.value ?? ""),
+          targetMarginPct: 20
+        });
+
+        if (m2.companyOut) m2.companyOut.textContent = m2.company?.value?.trim() || "İhracatçı Firma";
+        if (m2.exposure) m2.exposure.textContent = fmtEur.format(result.carbonCost);
+        if (m2.perTon) m2.perTon.textContent = "Ton başına ek maliyet: " + fmtEurDec.format(result.carbonCostPerTon) + "/t";
+        if (m2.emission) m2.emission.textContent = fmtPct.format(result.intensity) + " tCO₂e / ton";
+        if (m2.curMargin) m2.curMargin.textContent = "%" + fmtPct.format(result.marginBefore);
+        if (m2.adjMargin) m2.adjMargin.textContent = "%" + fmtPct.format(result.marginAfter);
+        if (m2.marginLoss) m2.marginLoss.textContent = "−" + fmtPct.format(result.marginDelta) + " Puan";
+        if (m2.reqPrice) m2.reqPrice.textContent = fmtEurDec.format(result.protectivePrice) + " / ton (+" + fmtPct.format(result.revisionPct) + "%)";
+        if (m2.breakeven) m2.breakeven.textContent = fmtEurDec.format(result.breakEven) + " / tCO₂";
+      } catch {
+        [m2.exposure, m2.perTon, m2.emission, m2.curMargin, m2.adjMargin, m2.marginLoss, m2.reqPrice, m2.breakeven]
+          .forEach((el) => { if (el) el.textContent = "Geçersiz veri"; });
+      }
+    };
+
+    m2.gtip?.addEventListener("change", () => {
+      const option = m2.gtip.selectedOptions?.[0];
+      if (!option) return;
+      if (m2.s1) m2.s1.value = option.dataset.s1 || "";
+      if (m2.s2) m2.s2.value = option.dataset.s2 || "";
+      if (m2.price && option.dataset.bench) m2.price.value = option.dataset.bench;
+      calcMotor2();
+    });
+
+    [m2.company, m2.volume, m2.sales, m2.cost, m2.price, m2.s1, m2.s2]
+      .forEach((el) => el?.addEventListener("input", calcMotor2));
+
+    const samplePortfolio = [
+      { client: "ABC Stahl GmbH", country: "Almanya", volume: 5000, sales: 860, cost: 620, emission: 1.84 },
+      { client: "DEF Metalli SpA", country: "İtalya", volume: 3500, sales: 830, cost: 610, emission: 1.84 },
+      { client: "XYZ Construct BV", country: "Hollanda", volume: 1500, sales: 790, cost: 640, emission: 1.84 }
     ];
 
-    const offsetSlider = document.getElementById("m3-offset-slider");
-    const offsetValDisplay = document.getElementById("m3-offset-val");
-    const contractsTbody = document.getElementById("m3-contracts-tbody");
-    const m3TotalRev = document.getElementById("m3-total-rev");
-    const m3TotalCarbon = document.getElementById("m3-total-carbon");
-    const m3TotalMarginLoss = document.getElementById("m3-total-margin-loss");
-    const m3Takeaway = document.getElementById("m3-takeaway-text");
+    const offsetSlider = root.querySelector("#m3-offset-slider");
+    const offsetVal = root.querySelector("#m3-offset-val");
+    const contractsTbody = root.querySelector("#m3-contracts-tbody");
+    const m3TotalRev = root.querySelector("#m3-total-rev");
+    const m3TotalCarbon = root.querySelector("#m3-total-carbon");
+    const m3TotalMarginLoss = root.querySelector("#m3-total-margin-loss");
+    const m3Takeaway = root.querySelector("#m3-takeaway-text");
 
-    function calcMotor3() {
-      const offsetPct = parseFloat(offsetSlider ? offsetSlider.value : "0") || 0;
-      if (offsetValDisplay) offsetValDisplay.textContent = "%" + offsetPct;
-      const validOffset = offsetPct / 100;
-      const cbamPrice = 75.28;
+    const calcMotor3 = () => {
+      try {
+        const offsetPct = Number.parseFloat(offsetSlider?.value ?? "0");
+        const result = computePortfolioCore(samplePortfolio, 75.28, offsetPct);
+        if (offsetVal) offsetVal.textContent = "%" + fmtPct.format(result.offsetPct);
 
-      let totalVol = 0;
-      let totalRev = 0;
-      let totalBaseProfit = 0;
-      let totalNetCarbon = 0;
-      let criticalCount = 0;
+        if (contractsTbody) {
+          contractsTbody.innerHTML = result.evaluations.map((item) => {
+            const badge = item.risk === "CRITICAL"
+              ? ["KRİTİK", "badge-danger"]
+              : item.risk === "REVISION"
+                ? ["REVİZYON", "badge-warn"]
+                : ["KORUNABİLİR", "badge-safe"];
 
-      let html = "";
-      sampleContracts.forEach(c => {
-        const rev = c.vol * c.price;
-        const baseProfit = rev - (c.vol * c.cost);
-        const grossCarbon = c.vol * c.factor * cbamPrice;
-        const netCarbon = grossCarbon * (1 - validOffset);
+            const action = item.risk === "CRITICAL"
+              ? "Fiyat revizyonu veya hacim kararı zorunlu."
+              : item.risk === "REVISION"
+                ? "Yenilemede karbon maliyetini fiyata geçir."
+                : "Sözleşme marjı korunuyor; izlemeye devam et.";
 
-        const marginBefore = (baseProfit / rev) * 100;
-        const profitAfter = baseProfit - netCarbon;
-        const marginAfter = (profitAfter / rev) * 100;
-        const reqRevPct = (netCarbon / rev) * 100;
-
-        let badgeClass = "badge-safe";
-        let statusText = "KORUNABİLİR";
-        let actionText = "Mevcut marj güvenli";
-
-        if (marginAfter < 5) {
-          badgeClass = "badge-danger";
-          statusText = "ZARAR / RİSKLİ";
-          actionText = `Acil revizyon (+%${reqRevPct.toFixed(1)} zam)`;
-          criticalCount++;
-        } else if (marginAfter < 14) {
-          badgeClass = "badge-warn";
-          statusText = "REVİZYON ŞART";
-          actionText = `Yenilemede +€${(netCarbon / c.vol).toFixed(0)}/t fiyat geçişi`;
+            return '<tr>' +
+              '<td><strong>' + item.client + '</strong></td>' +
+              '<td>' + item.country + '<br><small>' + item.volume.toLocaleString("tr-TR") + ' ton</small></td>' +
+              '<td>' + fmtEurDec.format(item.sales) + '/t</td>' +
+              '<td class="danger-bold">' + fmtEur.format(item.netCarbon) + '</td>' +
+              '<td>%' + fmtPct.format(item.marginBefore) + '</td>' +
+              '<td>%' + fmtPct.format(item.marginAfter) + '</td>' +
+              '<td><span class="contract-badge ' + badge[1] + '">' + badge[0] + '</span></td>' +
+              '<td><span class="action-rec">' + action + '</span></td>' +
+            '</tr>';
+          }).join("");
         }
 
-        totalVol += c.vol;
-        totalRev += rev;
-        totalBaseProfit += baseProfit;
-        totalNetCarbon += netCarbon;
-
-        html += `
-          <tr>
-            <td><strong>${c.client}</strong></td>
-            <td>${c.country} · ${c.vol.toLocaleString("tr-TR")} t</td>
-            <td class="mono">€${c.price}/t</td>
-            <td class="mono danger-text">€${Math.round(netCarbon).toLocaleString("tr-TR")}</td>
-            <td class="mono">%${marginBefore.toFixed(1)}</td>
-            <td class="mono ${marginAfter < 5 ? 'danger-bold' : ''}">%${marginAfter.toFixed(1)}</td>
-            <td><span class="contract-badge ${badgeClass}">${statusText}</span></td>
-            <td class="action-rec">${actionText}</td>
-          </tr>
-        `;
-      });
-
-      if (contractsTbody) contractsTbody.innerHTML = html;
-
-      const pMarginBefore = totalRev > 0 ? (totalBaseProfit / totalRev) * 100 : 0;
-      const pMarginAfter = totalRev > 0 ? ((totalBaseProfit - totalNetCarbon) / totalRev) * 100 : 0;
-      const pLossPoints = pMarginBefore - pMarginAfter;
-
-      if (m3TotalRev) m3TotalRev.textContent = fmtEur.format(totalRev);
-      if (m3TotalCarbon) m3TotalCarbon.textContent = fmtEur.format(totalNetCarbon);
-      if (m3TotalMarginLoss) m3TotalMarginLoss.textContent = "−" + fmtPct.format(pLossPoints) + " Puan";
-
-      if (m3Takeaway) {
-        if (criticalCount > 0) {
-          m3Takeaway.innerHTML = `⚠️ <strong>Yönetim Kurulu Aksiyonu:</strong> 3 sözleşmeden ${criticalCount} tanesi kritik zarar bölgesindedir. %${offsetPct} mahsup senaryosunda dahi bu müşteriler kârınızı eritmektedir.`;
-        } else {
-          m3Takeaway.innerHTML = `✓ <strong>Yönetim Kurulu Aksiyonu:</strong> Tüm sözleşmeler pozitif marjda kalmaktadır. Mahsup oranı (%${offsetPct}) net yükümlülüğünüzü €${Math.round(totalNetCarbon).toLocaleString("tr-TR")}'ye düşürmüştür.`;
+        if (m3TotalRev) m3TotalRev.textContent = fmtEur.format(result.totalRevenue);
+        if (m3TotalCarbon) m3TotalCarbon.textContent = fmtEur.format(result.totalNetCarbon);
+        if (m3TotalMarginLoss) m3TotalMarginLoss.textContent = "−" + fmtPct.format(result.marginLoss) + " Puan";
+        if (m3Takeaway) {
+          m3Takeaway.textContent = result.criticalCount > 0
+            ? "Yönetim Kurulu Aksiyonu: " + result.evaluations.length + " sözleşmeden " + result.criticalCount + " tanesi kritik zarar bölgesindedir."
+            : "Yönetim Kurulu Aksiyonu: Tüm sözleşmeler pozitif marjda kalmaktadır.";
         }
+      } catch {
+        if (contractsTbody) contractsTbody.innerHTML = '<tr><td colspan="8">Geçersiz portföy verisi.</td></tr>';
       }
-    }
+    };
 
-    if (offsetSlider) offsetSlider.addEventListener("input", calcMotor3);
+    offsetSlider?.addEventListener("input", calcMotor3);
 
-    // 4. MOTOR 04: AYLIK MONİTÖR & DELTA RİSK MOTORU HESAPLAMASI
-    const m4Slider = document.getElementById("m4-price-slider");
-    const m4PriceDisp = document.getElementById("m4-price-display");
-    const m4Vol = document.getElementById("m4-vol");
-    const m4Factor = document.getElementById("m4-factor");
-    const m4Revenue = document.getElementById("m4-revenue");
+    const m4 = {
+      slider: root.querySelector("#m4-price-slider"),
+      display: root.querySelector("#m4-price-display"),
+      volume: root.querySelector("#m4-vol"),
+      factor: root.querySelector("#m4-factor"),
+      revenue: root.querySelector("#m4-revenue"),
+      card: root.querySelector("#m4-alarm-card"),
+      badge: root.querySelector("#m4-badge"),
+      pct: root.querySelector("#m4-pct-change"),
+      annual: root.querySelector("#m4-annual-delta"),
+      notice: root.querySelector("#m4-notice-text"),
+      weekly: root.querySelector("#m4-weekly-delta"),
+      monthly: root.querySelector("#m4-monthly-delta"),
+      margin: root.querySelector("#m4-margin-delta"),
+      surcharge: root.querySelector("#m4-surcharge")
+    };
 
-    const m4AlarmCard = document.getElementById("m4-alarm-card");
-    const m4Badge = document.getElementById("m4-badge");
-    const m4PctChange = document.getElementById("m4-pct-change");
-    const m4AnnualDelta = document.getElementById("m4-annual-delta");
-    const m4Notice = document.getElementById("m4-notice-text");
+    const calcMotor4 = () => {
+      try {
+        const result = computeMonitorCore({
+          base: 75.28,
+          current: Number.parseFloat(m4.slider?.value ?? ""),
+          volume: Number.parseFloat(m4.volume?.value ?? ""),
+          factor: Number.parseFloat(m4.factor?.value ?? ""),
+          revenue: Number.parseFloat(m4.revenue?.value ?? ""),
+          threshold: 50000
+        });
 
-    const m4Weekly = document.getElementById("m4-weekly-delta");
-    const m4Monthly = document.getElementById("m4-monthly-delta");
-    const m4MarginDelta = document.getElementById("m4-margin-delta");
-    const m4Surcharge = document.getElementById("m4-surcharge");
+        if (m4.display) m4.display.textContent = fmtEurDec.format(result.current) + " / tCO₂";
+        if (m4.annual) m4.annual.textContent = (result.annualDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(result.annualDelta));
+        if (m4.pct) m4.pct.textContent = (result.pricePct >= 0 ? "+" : "") + fmtPct.format(result.pricePct) + "% Fiyat Hareketi";
+        if (m4.weekly) m4.weekly.textContent = (result.weeklyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(result.weeklyDelta)) + " / hafta";
+        if (m4.monthly) m4.monthly.textContent = (result.monthlyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(result.monthlyDelta)) + " / ay";
+        if (m4.margin) m4.margin.textContent = (result.marginErosion >= 0 ? "−" : "+") + fmtPct.format(Math.abs(result.marginErosion)) + " Puan";
+        if (m4.surcharge) m4.surcharge.textContent = (result.surcharge >= 0 ? "+" : "−") + fmtEurDec.format(Math.abs(result.surcharge)) + "/t";
 
-    function calcMotor4() {
-      const basePrice = 75.28;
-      const simPrice = parseFloat(m4Slider ? m4Slider.value : "95") || 95;
-      if (m4PriceDisp) m4PriceDisp.textContent = "€" + simPrice.toFixed(2) + " / tCO₂";
-
-      const vol = Math.max(1, parseFloat(m4Vol?.value) || 10000);
-      const factor = Math.max(0.1, parseFloat(m4Factor?.value) || 1.84);
-      const rev = Math.max(1, parseFloat(m4Revenue?.value) || 8500000);
-
-      const deltaPrice = simPrice - basePrice;
-      const deltaPricePct = (deltaPrice / basePrice) * 100;
-
-      const annualBaseCost = vol * factor * basePrice;
-      const annualSimCost = vol * factor * simPrice;
-      const annualDelta = annualSimCost - annualBaseCost;
-
-      const weeklyDelta = annualDelta / 52;
-      const monthlyDelta = annualDelta / 12;
-      const marginErosion = (annualDelta / rev) * 100;
-      const surcharge = factor * deltaPrice;
-
-      const sign = deltaPrice >= 0 ? "+" : "−";
-      const signPct = deltaPricePct >= 0 ? "+" : "";
-
-      if (m4AnnualDelta) m4AnnualDelta.textContent = (annualDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(annualDelta));
-      if (m4PctChange) m4PctChange.textContent = signPct + fmtPct.format(deltaPricePct) + "% Borsa Hareketi";
-      if (m4Weekly) m4Weekly.textContent = (weeklyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(weeklyDelta)) + " / hafta";
-      if (m4Monthly) m4Monthly.textContent = (monthlyDelta >= 0 ? "+" : "−") + fmtEur.format(Math.abs(monthlyDelta)) + " / ay";
-      if (m4MarginDelta) m4MarginDelta.textContent = (marginErosion >= 0 ? "−" : "+") + fmtPct.format(Math.abs(marginErosion)) + " Puan";
-      if (m4Surcharge) m4Surcharge.textContent = (surcharge >= 0 ? "+" : "−") + fmtEurDec.format(Math.abs(surcharge)) + "/t";
-
-      if (m4AlarmCard && m4Badge && m4Notice) {
-        if (annualDelta > 150000 || deltaPricePct > 20) {
-          m4AlarmCard.className = "delta-hero-card critical-alert";
-          m4Badge.textContent = "KRİTİK RİSK ALARMI: BÜTÇE EŞİĞİ AŞILDI";
-          m4Notice.textContent = `Fiyatın €${basePrice} seviyesinden €${simPrice.toFixed(2)}'ye yükselmesi, şirketin operasyonel brüt kârını yıllık ${fmtEur.format(annualDelta)} eritmektedir. Açık tekliflerinize derhal +${fmtEurDec.format(surcharge)}/t dinamik karbon zammı uygulayın!`;
-        } else if (annualDelta > 40000) {
-          m4AlarmCard.className = "delta-hero-card elevated-alert";
-          m4Badge.textContent = "DİKKAT: RİSK EŞİĞİ AŞILDI";
-          m4Notice.textContent = `Fiyat artışı maruziyet bütçenizi ${fmtEur.format(annualDelta)} artırdı. Haftalık nakit rezervinizi ${fmtEur.format(weeklyDelta)} yükseltmeniz önerilir.`;
-        } else {
-          m4AlarmCard.className = "delta-hero-card normal-alert";
-          m4Badge.textContent = "BÜTÇE TOLERANSI İÇİNDE";
-          m4Notice.textContent = `Kotasyon hareketi bütçe sapma limitleriniz dahilindedir. Ek aksiyon gerekmemektedir.`;
+        if (m4.card && m4.badge && m4.notice) {
+          if (result.levelKey === "critical") {
+            m4.card.className = "delta-hero-card critical-alert";
+            m4.badge.textContent = "KRİTİK RİSK ALARMI";
+            m4.notice.textContent = "Karbon fiyat değişimi yıllık bütçede " + fmtEur.format(result.annualDelta) + " ek sapma yaratıyor. Açık tekliflerde karbon geçiş payı değerlendirilmelidir.";
+          } else if (result.levelKey === "elevated") {
+            m4.card.className = "delta-hero-card elevated-alert";
+            m4.badge.textContent = "DİKKAT: RİSK EŞİĞİ AŞILDI";
+            m4.notice.textContent = "Karbon maliyeti tanımlı risk eşiğini aştı. Bütçe rezervi ve teklif fiyatı yeniden değerlendirilmelidir.";
+          } else {
+            m4.card.className = "delta-hero-card normal-alert";
+            m4.badge.textContent = "BÜTÇE TOLERANSI İÇİNDE";
+            m4.notice.textContent = "Fiyat hareketi tanımlı bütçe toleransı içinde.";
+          }
         }
+      } catch {
+        if (m4.badge) m4.badge.textContent = "GEÇERSİZ VERİ";
+        if (m4.notice) m4.notice.textContent = "Motor hatalı girdiyi sessizce düzeltmez.";
       }
-    }
+    };
 
-    if (m4Slider) m4Slider.addEventListener("input", calcMotor4);
-    [m4Vol, m4Factor, m4Revenue].forEach(el => {
-      if (el) el.addEventListener("input", calcMotor4);
-    });
+    [m4.slider, m4.volume, m4.factor, m4.revenue].forEach((el) => el?.addEventListener("input", calcMotor4));
 
-    // İlk Çalıştırma
     calcMotor2();
     calcMotor3();
     calcMotor4();
-  })();
+  }
 </script>
 
 <style>
