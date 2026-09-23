@@ -85,76 +85,75 @@ const {
   </div>
 </section>
 
-<script is:inline>
-  (function() {
-    const vEl = document.getElementById("in-volume");
-    const eEl = document.getElementById("in-emission");
-    const pEl = document.getElementById("in-price");
-    const sEl = document.getElementById("in-sales");
-    const cEl = document.getElementById("in-cost");
-    const btn = document.getElementById("btn-trigger-calc");
+<script>
+  import { computeCarbonPnlCore } from "../lib/financial-core.mjs";
 
-    const expEl = document.getElementById("kpi-exposure");
-    const perTonEl = document.getElementById("kpi-per-ton");
-    const curMarginEl = document.getElementById("kpi-current-margin");
-    const adjMarginEl = document.getElementById("kpi-adjusted-margin");
-    const deltaEl = document.getElementById("kpi-margin-delta");
-    const reqPriceEl = document.getElementById("kpi-required-price");
-    const reqRevEl = document.getElementById("kpi-required-revision");
+  const root = document.querySelector("#hesapla");
+  if (root) {
+    const vEl = root.querySelector("#in-volume");
+    const eEl = root.querySelector("#in-emission");
+    const pEl = root.querySelector("#in-price");
+    const sEl = root.querySelector("#in-sales");
+    const cEl = root.querySelector("#in-cost");
+    const btn = root.querySelector("#btn-trigger-calc");
+
+    const expEl = root.querySelector("#kpi-exposure");
+    const perTonEl = root.querySelector("#kpi-per-ton");
+    const curMarginEl = root.querySelector("#kpi-current-margin");
+    const adjMarginEl = root.querySelector("#kpi-adjusted-margin");
+    const deltaEl = root.querySelector("#kpi-margin-delta");
+    const reqPriceEl = root.querySelector("#kpi-required-price");
+    const reqRevEl = root.querySelector("#kpi-required-revision");
 
     const fmtEur0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const fmtEur2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-    function compute() {
-      const v = Math.max(0, parseFloat(vEl?.value) || 0);
-      const e = Math.max(0, parseFloat(eEl?.value) || 0);
-      const p = Math.max(0, parseFloat(pEl?.value) || 0);
-      const s = Math.max(0, parseFloat(sEl?.value) || 0);
-      const c = Math.max(0, parseFloat(cEl?.value) || 0);
+    const raw = (el) => Number.parseFloat(el?.value ?? "");
 
-      const totalExposure = v * e * p;
-      const carbonPerTon = e * p;
+    const compute = () => {
+      try {
+        const result = computeCarbonPnlCore({
+          volume: raw(vEl),
+          intensity: raw(eEl),
+          carbonPrice: raw(pEl),
+          salesPrice: raw(sEl),
+          productionCost: raw(cEl),
+          targetMarginPct: 20
+        });
 
-      const currentMargin = s > 0 ? ((s - c) / s) * 100 : 0;
-      const totalCostWithCarbon = c + carbonPerTon;
-      const adjustedMargin = s > 0 ? ((s - totalCostWithCarbon) / s) * 100 : 0;
-      const marginDelta = currentMargin - adjustedMargin;
+        if (expEl) expEl.textContent = fmtEur0.format(result.carbonCost);
+        if (perTonEl) perTonEl.textContent = fmtEur2.format(result.carbonCostPerTon);
+        if (curMarginEl) curMarginEl.textContent = "%" + fmtPct1.format(result.marginBefore);
 
-      const requiredPrice = s + carbonPerTon;
-      const requiredRevision = s > 0 ? (carbonPerTon / s) * 100 : 0;
-
-      if (expEl) expEl.textContent = fmtEur0.format(totalExposure);
-      if (perTonEl) perTonEl.textContent = fmtEur2.format(carbonPerTon);
-      if (curMarginEl) curMarginEl.textContent = "%" + fmtPct1.format(currentMargin);
-
-      if (adjMarginEl) {
-        adjMarginEl.textContent = "%" + fmtPct1.format(adjustedMargin);
-        if (adjustedMargin < 0) {
-          adjMarginEl.classList.add("danger-num");
-        } else {
-          adjMarginEl.classList.remove("danger-num");
+        if (adjMarginEl) {
+          adjMarginEl.textContent = "%" + fmtPct1.format(result.marginAfter);
+          adjMarginEl.classList.toggle("danger-num", result.marginAfter < 0);
         }
-      }
 
-      if (deltaEl) deltaEl.textContent = "−" + fmtPct1.format(marginDelta) + " puan";
-      if (reqPriceEl) reqPriceEl.textContent = "€" + Math.round(requiredPrice) + "/t";
-      if (reqRevEl) {
-        const sign = requiredRevision >= 0 ? "+" : "";
-        reqRevEl.textContent = sign + "%" + fmtPct1.format(requiredRevision);
-      }
-    }
+        if (deltaEl) deltaEl.textContent = "−" + fmtPct1.format(result.marginDelta) + " puan";
+        if (reqPriceEl) reqPriceEl.textContent = fmtEur2.format(result.protectivePrice) + "/t";
+        if (reqRevEl) reqRevEl.textContent = "+%" + fmtPct1.format(result.revisionPct);
 
-    [vEl, eEl, pEl, sEl, cEl].forEach(function(input) {
-      if (input) {
-        input.addEventListener("input", compute);
-        input.addEventListener("change", compute);
+        root.dataset.engineState = "valid";
+        return result;
+      } catch {
+        [expEl, perTonEl, curMarginEl, adjMarginEl, deltaEl, reqPriceEl, reqRevEl].forEach((el) => {
+          if (el) el.textContent = "—";
+        });
+        root.dataset.engineState = "invalid";
+        return null;
       }
+    };
+
+    [vEl, eEl, pEl, sEl, cEl].forEach((input) => {
+      input?.addEventListener("input", compute);
+      input?.addEventListener("change", compute);
     });
-    if (btn) btn.addEventListener("click", compute);
+    btn?.addEventListener("click", compute);
 
     compute();
-  })();
+  }
 </script>
 
 <style>
