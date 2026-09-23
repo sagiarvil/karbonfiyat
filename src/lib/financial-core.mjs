@@ -1,5 +1,5 @@
 export const ENGINE_META = Object.freeze({
-  engineVersion: "2026.09.23.2",
+  engineVersion: "2026.09.23.3",
   formulaVersion: "carbon-financial-core-v2",
   releaseDate: "2026-09-23"
 });
@@ -31,10 +31,17 @@ export function computeCarbonPnlCore(input) {
   const marginBefore = (baseUnitProfit / salesPrice) * 100;
   const marginAfter = (afterUnitProfit / salesPrice) * 100;
   const marginDelta = marginBefore - marginAfter;
-  const protectivePrice = salesPrice + carbonCostPerTon;
+  const costPassThroughPrice = salesPrice + carbonCostPerTon;
+  const costPassThroughRevisionPct = (carbonCostPerTon / salesPrice) * 100;
+  const baseMarginFraction = marginBefore / 100;
+  const marginProtectingPrice = baseMarginFraction >= 0 && baseMarginFraction < 1
+    ? (productionCost + carbonCostPerTon) / (1 - baseMarginFraction)
+    : costPassThroughPrice;
+  const marginProtectingRevisionPct = ((marginProtectingPrice - salesPrice) / salesPrice) * 100;
+  const protectivePrice = marginProtectingPrice;
   const targetPrice = (productionCost + carbonCostPerTon) / (1 - targetMargin);
   const breakEven = intensity > 0 ? Math.max(0, baseUnitProfit / intensity) : 0;
-  const revisionPct = (carbonCostPerTon / salesPrice) * 100;
+  const revisionPct = marginProtectingRevisionPct;
 
   let riskLevel = "normal";
   let decision = "Marj korunabilir.";
@@ -63,6 +70,10 @@ export function computeCarbonPnlCore(input) {
     marginBefore,
     marginAfter,
     marginDelta,
+    costPassThroughPrice,
+    costPassThroughRevisionPct,
+    marginProtectingPrice,
+    marginProtectingRevisionPct,
     protectivePrice,
     targetPrice,
     breakEven,
@@ -100,7 +111,7 @@ export function computeExposureCore(input) {
 export function computeMonitorCore(input) {
   const volume = assertFinite(Number(input.volume), "volume", { min: 0, minExclusive: true });
   const factor = assertFinite(Number(input.factor), "factor", { min: 0 });
-  const base = assertFinite(Number(input.base), "base", { min: 0 });
+  const base = assertFinite(Number(input.base), "base", { min: 0, minExclusive: true });
   const current = assertFinite(Number(input.current), "current", { min: 0 });
   const revenue = assertFinite(Number(input.revenue), "revenue", { min: 0, minExclusive: true });
   const threshold = assertFinite(Number(input.threshold ?? 50000), "threshold", { min: 0, minExclusive: true });
