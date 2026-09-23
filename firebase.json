@@ -75,6 +75,15 @@
           }
         ]
       }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/eua-market",
+        "function": {
+          "functionId": "euaMarket",
+          "region": "europe-west1"
+        }
+      }
     ]
   }
 }
