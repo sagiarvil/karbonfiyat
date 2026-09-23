@@ -20,7 +20,7 @@ const cbamNext = "5 Ekim 2026";
         <span class="pulse" aria-hidden="true"></span>
         <div>
           <strong>PİYASA VERİ PANELİ</strong>
-          <small>CBAM referansı: 2026 Q2 · EUA: dış piyasa widget</small>
+          <small>CBAM referansı: 2026 Q2 · EUA: EEX canlı veri mimarisi</small>
         </div>
       </div>
     </div>
@@ -65,33 +65,67 @@ const cbamNext = "5 Ekim 2026";
           <span class="market-type">Canlı EU carbon allowance görünümü</span>
         </div>
 
-        <div class="live-widget-shell purely-shell">
-          <iframe
-            src="https://www.purelyenergy.co.uk/widgets/prices?metrics=eu_ets&columns=1"
-            title="Live EU ETS carbon price by Purely Energy"
-            width="100%"
-            height="340"
-            loading="eager"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
+        <div class="eua-live-terminal" data-eua-live>
+          <div class="eua-live-head">
+            <div>
+              <span class="feed-kicker">EEX GROUP DATASOURCE · REST API V2</span>
+              <div class="feed-state" data-eua-state="connecting">
+                <span class="feed-dot" aria-hidden="true"></span>
+                <strong data-eua-state-label>BAĞLANIYOR</strong>
+              </div>
+            </div>
+            <span class="feed-age" data-eua-age>—</span>
+          </div>
+
+          <div class="eua-price-row">
+            <div>
+              <span class="quote-label">EUA</span>
+              <strong class="eua-price" data-eua-price>—</strong>
+              <span class="quote-unit">EUR / tCO₂</span>
+            </div>
+            <div class="eua-change" data-eua-change-state="flat">
+              <span data-eua-change>—</span>
+              <small>oturum içi</small>
+            </div>
+          </div>
+
+          <svg class="eua-sparkline" viewBox="0 0 420 86" role="img" aria-label="Son EUA fiyat hareketi">
+            <polyline data-eua-line points="" fill="none" vector-effect="non-scaling-stroke"></polyline>
+          </svg>
+
+          <div class="quote-grid">
+            <div><span>BID</span><strong data-eua-bid>—</strong></div>
+            <div><span>ASK</span><strong data-eua-ask>—</strong></div>
+            <div><span>SPREAD</span><strong data-eua-spread>—</strong></div>
+            <div><span>LATENCY</span><strong data-eua-latency>—</strong></div>
+          </div>
+
+          <div class="feed-meta">
+            <div><span>Instrument</span><strong data-eua-instrument>—</strong></div>
+            <div><span>Piyasa zamanı</span><strong data-eua-market-time>—</strong></div>
+            <div><span>Son alım</span><strong data-eua-received-time>—</strong></div>
+            <div><span>Fiyat tipi</span><strong data-eua-price-type>—</strong></div>
+          </div>
+
+          <div class="feed-warning" data-eua-warning hidden></div>
         </div>
 
         <div class="data-note">
           <span class="data-dot" aria-hidden="true"></span>
           <p>
-            EU ETS fiyat paneli <strong>Purely Energy</strong> canlı piyasa akışından gelir ve yaklaşık beş dakikalık
-            yenileme döngüsüyle güncellenir. Bu piyasa göstergesi resmî CBAM sertifika fiyatından ayrı tutulur.
+            Bu panel EEX Group DataSource REST API v2 üzerinden doğrudan piyasa kaynağına bağlanacak şekilde
+            tasarlanmıştır. Arayüz 5 saniyede bir aynı-origin backend endpointini kontrol eder; veri yaşı ölçülür,
+            eski veri <strong>STALE</strong> olarak işaretlenir ve son doğrulanmış kotasyon ile yeni veri birbirine karıştırılmaz.
           </p>
         </div>
 
         <a
           class="source-link market-source"
-          href="https://www.purelyenergy.co.uk/tools/market-data"
+          href="https://www.eex.com/en/market-data/eex-group-datasource/real-time-data"
           target="_blank"
           rel="noopener"
-          data-purely-credit
         >
-          Live UK energy prices by Purely Energy
+          EEX Group DataSource kaynağı ↗
         </a>
       </article>
 
@@ -241,6 +275,156 @@ const cbamNext = "5 Ekim 2026";
 
 <script>
   import { computeExposureCore } from "../lib/financial-core.mjs";
+
+  const liveRoot = document.querySelector("[data-eua-live]");
+
+  if (liveRoot) {
+    const endpoint = "/api/eua-market";
+    const pollMs = 5000;
+    const staleMs = 30000;
+    const points = [];
+    let firstPrice = null;
+    let lastQuote = null;
+    let timer = null;
+    let ageTimer = null;
+
+    const priceEl = liveRoot.querySelector("[data-eua-price]");
+    const bidEl = liveRoot.querySelector("[data-eua-bid]");
+    const askEl = liveRoot.querySelector("[data-eua-ask]");
+    const spreadEl = liveRoot.querySelector("[data-eua-spread]");
+    const latencyEl = liveRoot.querySelector("[data-eua-latency]");
+    const instrumentEl = liveRoot.querySelector("[data-eua-instrument]");
+    const marketTimeEl = liveRoot.querySelector("[data-eua-market-time]");
+    const receivedTimeEl = liveRoot.querySelector("[data-eua-received-time]");
+    const priceTypeEl = liveRoot.querySelector("[data-eua-price-type]");
+    const ageEl = liveRoot.querySelector("[data-eua-age]");
+    const stateLabel = liveRoot.querySelector("[data-eua-state-label]");
+    const changeEl = liveRoot.querySelector("[data-eua-change]");
+    const changeWrap = liveRoot.querySelector(".eua-change");
+    const lineEl = liveRoot.querySelector("[data-eua-line]");
+    const warningEl = liveRoot.querySelector("[data-eua-warning]");
+
+    const fmt = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const pct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const setState = (state, label) => {
+      liveRoot.dataset.euaState = state;
+      if (stateLabel) stateLabel.textContent = label;
+    };
+
+    const renderSparkline = () => {
+      if (!lineEl || points.length < 2) {
+        if (lineEl) lineEl.setAttribute("points", "");
+        return;
+      }
+      const values = points.map((p) => p.price);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const span = Math.max(0.01, max - min);
+      const width = 420;
+      const height = 86;
+      const pad = 5;
+      const coords = points.map((p, index) => {
+        const x = pad + (index / Math.max(1, points.length - 1)) * (width - pad * 2);
+        const y = height - pad - ((p.price - min) / span) * (height - pad * 2);
+        return x.toFixed(1) + "," + y.toFixed(1);
+      }).join(" ");
+      lineEl.setAttribute("points", coords);
+    };
+
+    const renderAge = () => {
+      if (!lastQuote?.marketTimestamp && !lastQuote?.receivedAt) {
+        if (ageEl) ageEl.textContent = "Veri zamanı bekleniyor";
+        return;
+      }
+      const sourceTime = new Date(lastQuote.marketTimestamp || lastQuote.receivedAt).getTime();
+      const ageMs = Math.max(0, Date.now() - sourceTime);
+      const seconds = Math.round(ageMs / 1000);
+      if (ageEl) ageEl.textContent = seconds < 60 ? seconds + " sn önce" : Math.floor(seconds / 60) + " dk önce";
+
+      if (ageMs > staleMs) {
+        setState("stale", "STALE");
+      } else if (lastQuote?.freshness === "stale-fallback") {
+        setState("stale", "YEDEK / ESKİ");
+      } else {
+        setState("live", "CANLI");
+      }
+    };
+
+    const renderQuote = (quote) => {
+      lastQuote = quote;
+      if (firstPrice === null) firstPrice = quote.price;
+
+      if (priceEl) priceEl.textContent = "€" + fmt.format(quote.price);
+      if (bidEl) bidEl.textContent = Number.isFinite(quote.bid) ? "€" + fmt.format(quote.bid) : "—";
+      if (askEl) askEl.textContent = Number.isFinite(quote.ask) ? "€" + fmt.format(quote.ask) : "—";
+      if (spreadEl) spreadEl.textContent = Number.isFinite(quote.spread) ? "€" + fmt.format(quote.spread) : "—";
+      if (latencyEl) latencyEl.textContent = Number.isFinite(quote.upstreamLatencyMs) ? quote.upstreamLatencyMs + " ms" : "—";
+      if (instrumentEl) instrumentEl.textContent = quote.instrument || "EUA";
+      if (marketTimeEl) marketTimeEl.textContent = quote.marketTimestamp ? new Date(quote.marketTimestamp).toLocaleTimeString("tr-TR") : "—";
+      if (receivedTimeEl) receivedTimeEl.textContent = quote.receivedAt ? new Date(quote.receivedAt).toLocaleTimeString("tr-TR") : "—";
+      if (priceTypeEl) priceTypeEl.textContent = quote.priceType === "mid" ? "Bid/Ask Mid" : quote.priceType === "last" ? "Son İşlem" : String(quote.priceType || "—");
+
+      const change = firstPrice > 0 ? ((quote.price - firstPrice) / firstPrice) * 100 : 0;
+      if (changeEl) changeEl.textContent = (change > 0 ? "+" : "") + pct.format(change) + "%";
+      if (changeWrap) changeWrap.dataset.euaChangeState = change > 0 ? "up" : change < 0 ? "down" : "flat";
+
+      points.push({ price: quote.price, at: Date.now() });
+      if (points.length > 60) points.shift();
+      renderSparkline();
+
+      if (warningEl) {
+        if (quote.warning) {
+          warningEl.hidden = false;
+          warningEl.textContent = "Kaynak uyarısı: " + quote.warning;
+        } else {
+          warningEl.hidden = true;
+          warningEl.textContent = "";
+        }
+      }
+
+      renderAge();
+    };
+
+    const poll = async () => {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 4500);
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          cache: "no-store",
+          signal: controller.signal
+        });
+        const payload = await response.json().catch(() => ({}));
+
+        if (!response.ok || !payload.ok || !Number.isFinite(payload.price)) {
+          throw new Error(payload.message || payload.detail || payload.error || "Canlı EUA verisi alınamadı");
+        }
+
+        renderQuote(payload);
+      } catch (error) {
+        if (!lastQuote) setState("offline", "VERİ YOK");
+        else setState("stale", "BAĞLANTI KESİLDİ");
+        if (warningEl) {
+          warningEl.hidden = false;
+          warningEl.textContent = "Canlı kaynak bağlantısı: " + (error?.message || "erişilemiyor");
+        }
+      } finally {
+        window.clearTimeout(timeout);
+        timer = window.setTimeout(poll, pollMs);
+      }
+    };
+
+    setState("connecting", "BAĞLANIYOR");
+    poll();
+    ageTimer = window.setInterval(renderAge, 1000);
+
+    window.addEventListener("pagehide", () => {
+      if (timer) window.clearTimeout(timer);
+      if (ageTimer) window.clearInterval(ageTimer);
+    }, { once: true });
+  }
 
   const root = document.querySelector("[data-carbon-engine]");
 
@@ -513,25 +697,176 @@ const cbamNext = "5 Ekim 2026";
     padding-bottom: 2px;
   }
 
-  .live-widget-shell {
-    min-height: 280px;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #0c0f10;
-  }
-
-  .purely-shell {
+  .eua-live-terminal {
     min-height: 340px;
-    background: #0c0f10;
+    padding: 18px;
     border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,.025), transparent 45%), #0b0e0f;
   }
 
-  .purely-shell iframe {
+  .eua-live-head,
+  .eua-price-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .feed-kicker {
     display: block;
+    color: var(--text-muted);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  .feed-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 7px;
+  }
+
+  .feed-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #9ca3af;
+  }
+
+  .eua-live-terminal[data-eua-state="live"] .feed-dot {
+    background: #22c55e;
+    box-shadow: 0 0 0 5px rgba(34,197,94,.08);
+  }
+
+  .eua-live-terminal[data-eua-state="stale"] .feed-dot {
+    background: #f59e0b;
+    box-shadow: 0 0 0 5px rgba(245,158,11,.08);
+  }
+
+  .eua-live-terminal[data-eua-state="offline"] .feed-dot {
+    background: #ef4444;
+    box-shadow: 0 0 0 5px rgba(239,68,68,.08);
+  }
+
+  .feed-state strong,
+  .feed-age {
+    color: var(--text-secondary);
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
+
+  .eua-price-row {
+    align-items: flex-end;
+    margin-top: 24px;
+  }
+
+  .quote-label,
+  .quote-unit {
+    display: block;
+    color: var(--text-muted);
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
+
+  .eua-price {
+    display: inline-block;
+    margin: 7px 8px 4px 0;
+    color: #fff;
+    font-size: clamp(48px, 5vw, 68px);
+    line-height: .9;
+    letter-spacing: -.055em;
+  }
+
+  .quote-unit { display: inline-block; }
+
+  .eua-change {
+    text-align: right;
+    padding-bottom: 4px;
+  }
+
+  .eua-change span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .eua-change[data-eua-change-state="up"] span { color: #86efac; }
+  .eua-change[data-eua-change-state="down"] span { color: #fca5a5; }
+
+  .eua-change small {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .eua-sparkline {
     width: 100%;
-    min-height: 340px;
-    border: 0;
-    background: #0c0f10;
+    height: 86px;
+    margin: 16px 0 12px;
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .eua-sparkline polyline {
+    stroke: #d1d5db;
+    stroke-width: 1.5;
+  }
+
+  .quote-grid,
+  .feed-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+  }
+
+  .quote-grid > div,
+  .feed-meta > div {
+    padding: 9px;
+    border: 1px solid var(--border-soft);
+    border-radius: 9px;
+    background: rgba(255,255,255,.012);
+  }
+
+  .quote-grid span,
+  .quote-grid strong,
+  .feed-meta span,
+  .feed-meta strong {
+    display: block;
+  }
+
+  .quote-grid span,
+  .feed-meta span {
+    color: var(--text-muted);
+    font-size: 7px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+
+  .quote-grid strong,
+  .feed-meta strong {
+    margin-top: 5px;
+    color: var(--text-primary);
+    font-size: 9px;
+    word-break: break-word;
+  }
+
+  .feed-meta { margin-top: 7px; }
+
+  .feed-warning {
+    margin-top: 10px;
+    padding: 9px 10px;
+    border: 1px solid rgba(245,158,11,.28);
+    border-radius: 9px;
+    color: #fbbf24;
+    background: rgba(245,158,11,.055);
+    font-size: 9px;
+    line-height: 1.5;
   }
 
   .market-source {
@@ -820,6 +1155,8 @@ const cbamNext = "5 Ekim 2026";
     .market-strip { grid-template-columns: 1fr; }
     .live-card { grid-column: auto; grid-row: auto; }
     .market-meta { grid-template-columns: 1fr; }
+    .quote-grid,
+    .feed-meta { grid-template-columns: repeat(2, 1fr); }
     .impact-engine { padding: 20px; }
     .input-grid,
     .results-grid { grid-template-columns: 1fr; }
