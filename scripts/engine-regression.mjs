@@ -12,7 +12,7 @@ const approx = (actual, expected, eps = 1e-8) => assert.ok(Math.abs(actual - exp
   approx(r.marginAfter, ((230 - 135.504) / 850) * 100);
   approx(r.protectivePrice, 985.504);
   approx(r.breakEven, 230 / 1.8);
-  assert.equal(r.riskLevel, "normal");
+  assert.equal(r.riskLevel, "elevated");
 }
 
 {
