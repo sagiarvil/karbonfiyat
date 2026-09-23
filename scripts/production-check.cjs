@@ -105,6 +105,8 @@ for (const relative of htmlFiles) {
 
 
 const engineBoundFiles = [
+  "src/components/LossHeroCalculator.astro",
+  "src/components/CarbonCalculator.astro",
   "src/components/ClientWorkspace.astro",
   "src/components/CustomerPortfolioWorkbench.astro",
   "src/components/CarbonMonitorWorkbench.astro",
