@@ -65,6 +65,30 @@ export function computeCarbonPnlCore(input) {
   };
 }
 
+
+export function computeExposureCore(input) {
+  const tonnes = assertFinite(Number(input.tonnes), "tonnes", { min: 0, minExclusive: true });
+  const intensity = assertFinite(Number(input.intensity), "intensity", { min: 0 });
+  const annualSales = assertFinite(Number(input.annualSales), "annualSales", { min: 0, minExclusive: true });
+  const carbonPrice = assertFinite(Number(input.carbonPrice), "carbonPrice", { min: 0 });
+
+  const emissions = tonnes * intensity;
+  const carbonCost = emissions * carbonPrice;
+  const carbonCostPerTon = carbonCost / tonnes;
+  const salesImpactPct = (carbonCost / annualSales) * 100;
+
+  return {
+    tonnes,
+    intensity,
+    annualSales,
+    carbonPrice,
+    emissions,
+    carbonCost,
+    carbonCostPerTon,
+    salesImpactPct
+  };
+}
+
 export function computeMonitorCore(input) {
   const volume = assertFinite(Number(input.volume), "volume", { min: 0, minExclusive: true });
   const factor = assertFinite(Number(input.factor), "factor", { min: 0 });
