@@ -19,6 +19,12 @@ try {
     fs.cpSync(dist, backup, { recursive: true });
   }
 
+  execSync("node scripts/engine-regression.mjs", {
+    stdio: "inherit",
+    env: process.env,
+    cwd: root
+  });
+
   execSync("npx astro build", {
     stdio: "inherit",
     env: process.env,
