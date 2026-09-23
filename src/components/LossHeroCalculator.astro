@@ -85,9 +85,18 @@ const sectorData = [
           <div class="form-group">
             <label class="input-label" for="price-input">Ortalama Satış Fiyatınız (FOB/CIF)</label>
             <div class="input-with-unit">
-              <input type="number" id="price-input" class="calc-input" min="50" step="10" value={defaultSalesPrice} />
+              <input type="number" id="price-input" class="calc-input" min="0.01" step="10" value={defaultSalesPrice} />
               <span class="unit-tag">€ / ton</span>
             </div>
+          </div>
+
+          <div class="form-group">
+            <label class="input-label" for="margin-input">Mevcut Brüt Marjınız</label>
+            <div class="input-with-unit">
+              <input type="number" id="margin-input" class="calc-input" min="0" max="95" step="0.1" value="25" />
+              <span class="unit-tag">%</span>
+            </div>
+            <span class="input-hint">Break-even ve marj kaybı bu kullanıcı girdisine göre hesaplanır.</span>
           </div>
 
           <div class="calc-meta-info">
@@ -113,7 +122,7 @@ const sectorData = [
       <div class="calc-result-pane">
         <div class="result-badge-row">
           <span class="result-badge">TAHMİNİ BRÜT MARUZİYET</span>
-          <span class="verified-tag">✓ 2026 Regülasyon Kuralı</span>
+          <span class="verified-tag">2026 Q2 Fiyat Referansı</span>
         </div>
 
         <!-- Büyük Parasal Kayıp Kutusu -->
@@ -123,7 +132,7 @@ const sectorData = [
             <span class="exposure-val" id="display-exposure">€1.385.152</span>
           </div>
           <p class="exposure-desc">
-            Bu tutar, ürününüzün AB gümrüğünde beyan edilmemesi veya mahsup edilmemesi durumunda <strong>ithalatçınız tarafından talep edilecek doğrudan brüt maliyettir</strong>.
+            Bu tutar, girilen tonaj × emisyon yoğunluğu × karbon fiyatı üzerinden hesaplanan <strong>basitleştirilmiş brüt finansal maruziyet göstergesidir</strong>. Gerçek CBAM yükümlülüğü doğrulanmış emisyon, ücretsiz tahsis uyarlaması, üçüncü ülke karbon fiyatı mahsubu ve ithalat kapsamına göre değişebilir.
           </p>
         </div>
 
@@ -196,75 +205,86 @@ const sectorData = [
   </div>
 </section>
 
-<script is:inline>
-  (function() {
-    const sectorEl = document.getElementById("sector-select");
-    const volumeEl = document.getElementById("volume-input");
-    const priceEl = document.getElementById("price-input");
-    const hintEl = document.getElementById("sector-hint");
-    const pills = document.querySelectorAll(".pill-btn");
+<script>
+  import { computeCarbonPnlCore } from "../lib/financial-core.mjs";
 
-    const dispExposure = document.getElementById("display-exposure");
-    const dispPerTon = document.getElementById("display-per-ton");
-    const dispMarginLoss = document.getElementById("display-margin-loss");
-    const dispBreakeven = document.getElementById("display-breakeven");
-    const dispPriceRev = document.getElementById("display-price-rev");
+  const root = document.querySelector(".loss-hero-section");
+  if (root) {
+    const sectorEl = root.querySelector("#sector-select");
+    const volumeEl = root.querySelector("#volume-input");
+    const priceEl = root.querySelector("#price-input");
+    const marginEl = root.querySelector("#margin-input");
+    const hintEl = root.querySelector("#sector-hint");
+    const pills = root.querySelectorAll(".pill-btn");
 
-    const cbamPrice = 75.28; // AB Komisyonu resmi gösterge fiyatı
+    const dispExposure = root.querySelector("#display-exposure");
+    const dispPerTon = root.querySelector("#display-per-ton");
+    const dispMarginLoss = root.querySelector("#display-margin-loss");
+    const dispBreakeven = root.querySelector("#display-breakeven");
+    const dispPriceRev = root.querySelector("#display-price-rev");
 
+    const cbamPrice = 75.28;
     const fmtEur = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const fmtEurDec = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtPct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-    function calculate() {
-      const selectedOption = sectorEl ? sectorEl.options[sectorEl.selectedIndex] : null;
-      const factor = selectedOption ? parseFloat(selectedOption.getAttribute("data-factor") || "1.84") : 1.84;
-      const vol = Math.max(1, parseFloat(volumeEl ? volumeEl.value : "10000") || 10000);
-      const salesPrice = Math.max(1, parseFloat(priceEl ? priceEl.value : "850") || 850);
+    const calculate = () => {
+      try {
+        const selectedOption = sectorEl?.options?.[sectorEl.selectedIndex];
+        const intensity = Number.parseFloat(selectedOption?.getAttribute("data-factor") ?? "");
+        const volume = Number.parseFloat(volumeEl?.value ?? "");
+        const salesPrice = Number.parseFloat(priceEl?.value ?? "");
+        const marginPct = Number.parseFloat(marginEl?.value ?? "");
+        const productionCost = salesPrice * (1 - marginPct / 100);
 
-      // Toplam maruziyet = Tonaj * Gömülü Emisyon * CBAM Fiyatı
-      const totalExposure = vol * factor * cbamPrice;
-      const perTonCost = factor * cbamPrice;
+        const result = computeCarbonPnlCore({
+          volume,
+          intensity,
+          carbonPrice: cbamPrice,
+          salesPrice,
+          productionCost,
+          targetMarginPct: marginPct
+        });
 
-      // Varsayılan standart brüt marj %25 üzerinden marj erimesi
-      const marginLossPct = (perTonCost / salesPrice) * 100;
-      const requiredPriceRevision = (perTonCost / salesPrice) * 100;
-      const breakEvenCarbonPrice = (salesPrice * 0.25) / factor; // marjı sıfırlayan karbon fiyatı
+        if (dispExposure) dispExposure.textContent = fmtEur.format(result.carbonCost);
+        if (dispPerTon) dispPerTon.textContent = fmtEurDec.format(result.carbonCostPerTon) + "/t";
+        if (dispMarginLoss) dispMarginLoss.textContent = "−%" + fmtPct.format(result.marginDelta) + " puan";
+        if (dispBreakeven) dispBreakeven.textContent = fmtEurDec.format(result.breakEven) + "/tCO₂";
+        if (dispPriceRev) dispPriceRev.textContent = "+%" + fmtPct.format(result.revisionPct);
 
-      if (dispExposure) dispExposure.textContent = fmtEur.format(totalExposure);
-      if (dispPerTon) dispPerTon.textContent = fmtEurDec.format(perTonCost) + "/t";
-      if (dispMarginLoss) dispMarginLoss.textContent = "−%" + fmtPct.format(marginLossPct) + " puan";
-      if (dispBreakeven) dispBreakeven.textContent = fmtEurDec.format(breakEvenCarbonPrice) + "/t";
-      if (dispPriceRev) dispPriceRev.textContent = "+%" + fmtPct.format(requiredPriceRevision);
-    }
+        root.dataset.engineState = "valid";
+      } catch {
+        [dispExposure, dispPerTon, dispMarginLoss, dispBreakeven, dispPriceRev].forEach((el) => {
+          if (el) el.textContent = "—";
+        });
+        root.dataset.engineState = "invalid";
+      }
+    };
 
-    if (sectorEl) {
-      sectorEl.addEventListener("change", function() {
-        const selectedOption = sectorEl.options[sectorEl.selectedIndex];
-        const factor = selectedOption.getAttribute("data-factor");
-        const defaultP = selectedOption.getAttribute("data-price");
-        if (hintEl) hintEl.textContent = "Ortalama gömülü emisyon: " + factor + " tCO₂e / ton";
-        if (priceEl && defaultP) priceEl.value = defaultP;
-        calculate();
-      });
-    }
+    sectorEl?.addEventListener("change", () => {
+      const selectedOption = sectorEl.options[sectorEl.selectedIndex];
+      const factor = selectedOption.getAttribute("data-factor");
+      const defaultP = selectedOption.getAttribute("data-price");
+      if (hintEl) hintEl.textContent = "Referans gömülü emisyon: " + factor + " tCO₂e / ton";
+      if (priceEl && defaultP) priceEl.value = defaultP;
+      calculate();
+    });
 
-    if (volumeEl) volumeEl.addEventListener("input", calculate);
-    if (priceEl) priceEl.addEventListener("input", calculate);
+    [volumeEl, priceEl, marginEl].forEach((el) => el?.addEventListener("input", calculate));
 
-    pills.forEach(function(pill) {
-      pill.addEventListener("click", function() {
-        pills.forEach(function(p) { p.classList.remove("active"); });
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => p.classList.remove("active"));
         pill.classList.add("active");
         if (volumeEl) {
-          volumeEl.value = pill.getAttribute("data-val") || "10000";
+          volumeEl.value = pill.getAttribute("data-val") || "";
           calculate();
         }
       });
     });
 
     calculate();
-  })();
+  }
 </script>
 
 <style>
