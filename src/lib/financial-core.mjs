@@ -1,3 +1,9 @@
+export const ENGINE_META = Object.freeze({
+  engineVersion: "2026.09.23.2",
+  formulaVersion: "carbon-financial-core-v2",
+  releaseDate: "2026-09-23"
+});
+
 const assertFinite = (value, field, { min = -Infinity, minExclusive = false, max = Infinity } = {}) => {
   if (!Number.isFinite(value)) throw new RangeError(field + " must be finite.");
   if (minExclusive ? value <= min : value < min) throw new RangeError(field + " is below allowed range.");
@@ -41,6 +47,7 @@ export function computeCarbonPnlCore(input) {
   }
 
   return {
+    ...ENGINE_META,
     volume,
     intensity,
     salesPrice,
@@ -78,6 +85,7 @@ export function computeExposureCore(input) {
   const salesImpactPct = (carbonCost / annualSales) * 100;
 
   return {
+    ...ENGINE_META,
     tonnes,
     intensity,
     annualSales,
@@ -117,7 +125,7 @@ export function computeMonitorCore(input) {
     levelKey = "elevated";
   }
 
-  return { volume, factor, base, current, revenue, threshold, priceDelta, pricePct, baseCost, currentCost, annualDelta, monthlyDelta, weeklyDelta, marginErosion, surcharge, level, levelKey };
+  return { ...ENGINE_META, volume, factor, base, current, revenue, threshold, priceDelta, pricePct, baseCost, currentCost, annualDelta, monthlyDelta, weeklyDelta, marginErosion, surcharge, level, levelKey };
 }
 
 
@@ -132,6 +140,7 @@ export function computeTrEtsScenarioCore(input) {
   const costPerProductionTonTry = netCostTry / annualProductionTon;
 
   return {
+    ...ENGINE_META,
     carbonPriceTry,
     annualEmission,
     freeAllocationPct,
@@ -188,5 +197,5 @@ export function computePortfolioCore(customers, carbonPrice, offsetPct = 0) {
   const marginBefore = totalRevenue > 0 ? (totalBaseProfit / totalRevenue) * 100 : 0;
   const marginAfter = totalRevenue > 0 ? ((totalBaseProfit - totalNetCarbon) / totalRevenue) * 100 : 0;
 
-  return { carbonPrice: price, offsetPct: offset * 100, totalRevenue, totalBaseProfit, totalGrossCarbon, totalNetCarbon, marginBefore, marginAfter, marginLoss: marginBefore - marginAfter, criticalCount, evaluations };
+  return { ...ENGINE_META, carbonPrice: price, offsetPct: offset * 100, totalRevenue, totalBaseProfit, totalGrossCarbon, totalNetCarbon, marginBefore, marginAfter, marginLoss: marginBefore - marginAfter, criticalCount, evaluations };
 }
