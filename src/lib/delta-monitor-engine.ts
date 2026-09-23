@@ -37,12 +37,27 @@ export interface DeltaMonitorResult {
 }
 
 export function computeDeltaMonitor(input: MonitorInput): DeltaMonitorResult {
-  const vol = Math.max(1, input.annualVolumeTon);
-  const factor = Math.max(0.1, input.emissionFactor);
-  const basePrice = Math.max(0, input.basePriceEur);
-  const simPrice = Math.max(0, input.simulatedMarketPriceEur);
-  const rev = Math.max(1, input.annualSalesRevenueEur);
-  const threshold = input.alarmThresholdEur || 50000;
+  const positive = (value: number, field: string) => {
+    if (!Number.isFinite(value) || value <= 0) {
+      throw new RangeError(field + " must be a finite number greater than zero.");
+    }
+    return value;
+  };
+  const nonNegative = (value: number, field: string) => {
+    if (!Number.isFinite(value) || value < 0) {
+      throw new RangeError(field + " must be a finite non-negative number.");
+    }
+    return value;
+  };
+
+  const vol = positive(input.annualVolumeTon, "annualVolumeTon");
+  const factor = nonNegative(input.emissionFactor, "emissionFactor");
+  const basePrice = nonNegative(input.basePriceEur, "basePriceEur");
+  const simPrice = nonNegative(input.simulatedMarketPriceEur, "simulatedMarketPriceEur");
+  const rev = positive(input.annualSalesRevenueEur, "annualSalesRevenueEur");
+  const threshold = input.alarmThresholdEur === undefined
+    ? 50000
+    : positive(input.alarmThresholdEur, "alarmThresholdEur");
 
   const deltaPriceEur = simPrice - basePrice;
   const deltaPricePct = basePrice > 0 ? (deltaPriceEur / basePrice) * 100 : 0;
@@ -57,7 +72,7 @@ export function computeDeltaMonitor(input: MonitorInput): DeltaMonitorResult {
   const marginErosionPoints = (annualCostDeltaEur / rev) * 100;
   const protectivePriceSurchargeEurPerTon = factor * deltaPriceEur;
 
-  const isAlarmTriggered = annualCostDeltaEur >= threshold;
+  const isAlarmTriggered = annualCostDeltaEur >= threshold || deltaPricePct > 10;
 
   let alertLevel: DeltaMonitorResult["alertLevel"] = "NORMAL";
   let alertMessage = "Fiyat deltası güvenli bütçe toleransı içinde.";
