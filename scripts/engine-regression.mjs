@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { computeCarbonPnlCore, computeMonitorCore, computePortfolioCore } from "../src/lib/financial-core.mjs";
+import { computeCarbonPnlCore, computeExposureCore, computeMonitorCore, computePortfolioCore } from "../src/lib/financial-core.mjs";
 
 const approx = (actual, expected, eps = 1e-8) => assert.ok(Math.abs(actual - expected) <= eps, actual + " != " + expected);
 
@@ -23,6 +23,17 @@ const approx = (actual, expected, eps = 1e-8) => assert.ok(Math.abs(actual - exp
 
 assert.throws(() => computeCarbonPnlCore({ volume: 0, intensity: 1, salesPrice: 1, productionCost: 0, carbonPrice: 1, targetMarginPct: 0 }), RangeError);
 assert.throws(() => computeCarbonPnlCore({ volume: 1, intensity: -1, salesPrice: 1, productionCost: 0, carbonPrice: 1, targetMarginPct: 0 }), RangeError);
+
+{
+  const r = computeExposureCore({ tonnes: 1000, intensity: 1.8, annualSales: 2500000, carbonPrice: 75.28 });
+  approx(r.emissions, 1800);
+  approx(r.carbonCost, 135504);
+  approx(r.carbonCostPerTon, 135.504);
+  approx(r.salesImpactPct, (135504 / 2500000) * 100);
+}
+
+assert.throws(() => computeExposureCore({ tonnes: 0, intensity: 1.8, annualSales: 2500000, carbonPrice: 75.28 }), RangeError);
+assert.throws(() => computeExposureCore({ tonnes: 1000, intensity: 1.8, annualSales: 0, carbonPrice: 75.28 }), RangeError);
 
 {
   const r = computeMonitorCore({ volume: 10000, factor: 1.84, base: 75.28, current: 90, revenue: 8500000, threshold: 50000 });
