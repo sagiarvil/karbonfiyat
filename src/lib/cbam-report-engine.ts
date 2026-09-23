@@ -70,14 +70,34 @@ export interface ExecutiveReportData {
 }
 
 export function generateExecutiveReport(input: ReportInput): ExecutiveReportData {
-  const gtip = REFERENCE_GTIP_PROFILES.find(g => g.gtipCode === input.gtipCode) || REFERENCE_GTIP_PROFILES[0];
-  const s1 = input.customScope1 !== undefined ? Math.max(0, input.customScope1) : gtip.defaultScope1;
-  const s2 = input.customScope2 !== undefined ? Math.max(0, input.customScope2) : gtip.defaultScope2;
+  const finiteNonNegative = (value: number | undefined, field: string, fallback?: number) => {
+    const resolved = value === undefined ? fallback : value;
+    if (resolved === undefined || !Number.isFinite(resolved) || resolved < 0) {
+      throw new RangeError(field + " must be a finite non-negative number.");
+    }
+    return resolved;
+  };
+
+  const finitePositive = (value: number, field: string) => {
+    if (!Number.isFinite(value) || value <= 0) {
+      throw new RangeError(field + " must be a finite number greater than zero.");
+    }
+    return value;
+  };
+
+  const requestedGtip = String(input.gtipCode || "").trim();
+  const gtip = REFERENCE_GTIP_PROFILES.find(g => g.gtipCode === requestedGtip);
+  if (!gtip) {
+    throw new RangeError("Unsupported GTIP reference profile: " + requestedGtip);
+  }
+
+  const s1 = finiteNonNegative(input.customScope1, "customScope1", gtip.defaultScope1);
+  const s2 = finiteNonNegative(input.customScope2, "customScope2", gtip.defaultScope2);
   const totalSpecificEmission = s1 + s2;
-  const cbamPrice = input.cbamPriceEur || gtip.benchmarkEur;
-  const vol = Math.max(1, input.annualVolumeTon);
-  const salesPrice = Math.max(1, input.salesPriceEur);
-  const prodCost = Math.max(0, input.productionCostEur);
+  const cbamPrice = finiteNonNegative(input.cbamPriceEur, "cbamPriceEur", gtip.benchmarkEur);
+  const vol = finitePositive(input.annualVolumeTon, "annualVolumeTon");
+  const salesPrice = finitePositive(input.salesPriceEur, "salesPriceEur");
+  const prodCost = finiteNonNegative(input.productionCostEur, "productionCostEur");
 
   // Maruziyet hesaplamaları
   const carbonCostPerTonEur = totalSpecificEmission * cbamPrice;
@@ -92,9 +112,9 @@ export function generateExecutiveReport(input: ReportInput): ExecutiveReportData
   const adjustedGrossProfitEur = currentRevenueEur - (vol * totalCostWithCarbonPerTon);
   const adjustedGrossMarginPct = (adjustedGrossProfitEur / currentRevenueEur) * 100;
   const marginLossPointsPct = currentGrossMarginPct - adjustedGrossMarginPct;
-  const profitErosionPct = currentGrossProfitEur > 0 
-    ? ((currentGrossProfitEur - adjustedGrossProfitEur) / currentGrossProfitEur) * 100 
-    : 100;
+  const profitErosionPct = currentGrossProfitEur > 0
+    ? ((currentGrossProfitEur - adjustedGrossProfitEur) / currentGrossProfitEur) * 100
+    : (grossCarbonExposureEur > 0 ? 100 : 0);
 
   // Koruyucu Fiyat Revizyonu
   const protectiveSellingPriceEur = salesPrice + carbonCostPerTonEur;
@@ -130,7 +150,7 @@ export function generateExecutiveReport(input: ReportInput): ExecutiveReportData
     protectiveSellingPriceEur,
     requiredPriceRevisionPct,
     carbonBreakevenPriceEur,
-    regulatoryStatus: "2026 Mali Dönemi Yürürlükte (EU 2023/956)",
-    complianceDeadline: "30 Eylül 2027 (İlk Resmî Yıllık Beyan)"
+    regulatoryStatus: "Finansal modelleme çıktısı — mevzuat uygunluk görüşü değildir.",
+    complianceDeadline: "Güncel resmî CBAM takvimi ayrıca doğrulanmalıdır."
   };
 }
