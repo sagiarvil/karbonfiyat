@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:production": "node scripts/production-check.cjs",
-    "verify:production": "node scripts/verify-production.mjs"
+    "verify:production": "node scripts/verify-production.mjs",
+    "test:engines": "node scripts/engine-regression.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
