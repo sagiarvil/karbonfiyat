@@ -103,6 +103,38 @@ for (const relative of htmlFiles) {
   }
 }
 
+
+const engineBoundFiles = [
+  "src/components/ClientWorkspace.astro",
+  "src/components/CustomerPortfolioWorkbench.astro",
+  "src/components/CarbonMonitorWorkbench.astro",
+  "src/components/MarketIntelligenceTerminal.astro",
+  "src/components/InteractiveEngineConsole.astro"
+];
+
+for (const file of engineBoundFiles) {
+  const full = path.join(root, file);
+  const text = fs.readFileSync(full, "utf8");
+  if (!text.includes("../lib/financial-core.mjs")) {
+    fail("Engine component is not bound to central financial core: " + file);
+  }
+}
+
+const duplicateFormulaTokens = [
+  "const carbonCost = emissions * carbonPrice",
+  "const annualDelta = currentCost - baseCost",
+  "const grossCarbon = volume * emission * carbonPrice"
+];
+
+for (const file of engineBoundFiles) {
+  const text = fs.readFileSync(path.join(root, file), "utf8");
+  for (const token of duplicateFormulaTokens) {
+    if (text.includes(token)) {
+      fail("Duplicate financial formula found outside central core in " + file + ": " + token);
+    }
+  }
+}
+
 const indexHtml = fs.readFileSync(path.join(dist, "index.html"), "utf8");
 if (!indexHtml.includes("karbonfiyat")) fail("Homepage brand marker missing.");
 if (!indexHtml.includes("canli-karbon-fiyatlari")) fail("Market intelligence section missing from homepage.");
