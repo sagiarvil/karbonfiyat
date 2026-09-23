@@ -239,11 +239,12 @@ const cbamNext = "5 Ekim 2026";
   </div>
 </section>
 
-<script is:inline>
-  (() => {
-    const root = document.querySelector("[data-carbon-engine]");
-    if (!root) return;
+<script>
+  import { computeExposureCore } from "../lib/financial-core.mjs";
 
+  const root = document.querySelector("[data-carbon-engine]");
+
+  if (root) {
     const exportInput = root.querySelector("[data-export-tonnes]");
     const intensityInput = root.querySelector("[data-intensity]");
     const salesInput = root.querySelector("[data-sales]");
@@ -254,48 +255,36 @@ const cbamNext = "5 Ekim 2026";
     const perTonOut = root.querySelector("[data-result-per-ton]");
     const impactOut = root.querySelector("[data-result-sales-impact]");
 
-    const euro0 = new Intl.NumberFormat("tr-TR", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0
-    });
+    const euro0 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const euro2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const num0 = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 });
+    const pct2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    const euro2 = new Intl.NumberFormat("tr-TR", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-
-    const num0 = new Intl.NumberFormat("tr-TR", {
-      maximumFractionDigits: 0
-    });
-
-    const pct2 = new Intl.NumberFormat("tr-TR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-
-    const value = (el) => {
-      const parsed = Number.parseFloat(el?.value || "0");
-      return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
-    };
+    const raw = (el) => Number.parseFloat(el?.value ?? "");
 
     const calculate = () => {
-      const tonnes = value(exportInput);
-      const intensity = value(intensityInput);
-      const sales = value(salesInput);
-      const price = value(priceInput);
+      try {
+        const result = computeExposureCore({
+          tonnes: raw(exportInput),
+          intensity: raw(intensityInput),
+          annualSales: raw(salesInput),
+          carbonPrice: raw(priceInput)
+        });
 
-      const emissions = tonnes * intensity;
-      const cost = emissions * price;
-      const perTon = tonnes > 0 ? cost / tonnes : 0;
-      const impact = sales > 0 ? (cost / sales) * 100 : 0;
-
-      if (emissionsOut) emissionsOut.textContent = num0.format(emissions) + " tCO₂";
-      if (costOut) costOut.textContent = euro0.format(cost);
-      if (perTonOut) perTonOut.textContent = euro2.format(perTon);
-      if (impactOut) impactOut.textContent = "%" + pct2.format(impact);
+        if (emissionsOut) emissionsOut.textContent = num0.format(result.emissions) + " tCO₂";
+        if (costOut) costOut.textContent = euro0.format(result.carbonCost);
+        if (perTonOut) perTonOut.textContent = euro2.format(result.carbonCostPerTon);
+        if (impactOut) impactOut.textContent = "%" + pct2.format(result.salesImpactPct);
+        root.dataset.engineState = "valid";
+        return result;
+      } catch {
+        root.dataset.engineState = "invalid";
+        if (emissionsOut) emissionsOut.textContent = "—";
+        if (costOut) costOut.textContent = "—";
+        if (perTonOut) perTonOut.textContent = "—";
+        if (impactOut) impactOut.textContent = "—";
+        return null;
+      }
     };
 
     [exportInput, intensityInput, salesInput, priceInput].forEach((input) => {
@@ -307,7 +296,7 @@ const cbamNext = "5 Ekim 2026";
 
     root.querySelectorAll("[data-price-preset]").forEach((button) => {
       button.addEventListener("click", () => {
-        const preset = Number.parseFloat(button.dataset.pricePreset || "0");
+        const preset = Number.parseFloat(button.dataset.pricePreset || "");
         if (priceInput && Number.isFinite(preset)) priceInput.value = String(preset);
         root.querySelectorAll("[data-price-preset]").forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
@@ -316,7 +305,7 @@ const cbamNext = "5 Ekim 2026";
     });
 
     calculate();
-  })();
+  }
 </script>
 
 <style>
