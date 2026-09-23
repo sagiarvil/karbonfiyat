@@ -10,7 +10,11 @@ const approx = (actual, expected, eps = 1e-8) => assert.ok(Math.abs(actual - exp
   approx(r.carbonCostPerTon, 135.504);
   approx(r.marginBefore, (230 / 850) * 100);
   approx(r.marginAfter, ((230 - 135.504) / 850) * 100);
-  approx(r.protectivePrice, 985.504);
+  approx(r.costPassThroughPrice, 985.504);
+  approx(r.marginProtectingPrice, (620 + 135.504) / (1 - ((230 / 850))));
+  approx(r.protectivePrice, r.marginProtectingPrice);
+  approx((r.marginProtectingPrice - 620 - 135.504) / r.marginProtectingPrice * 100, r.marginBefore);
+  approx(r.revisionPct, ((r.marginProtectingPrice - 850) / 850) * 100);
   approx(r.breakEven, 230 / 1.8);
   assert.equal(r.riskLevel, "elevated");
 }
@@ -50,6 +54,7 @@ assert.throws(() => computeExposureCore({ tonnes: 1000, intensity: 1.8, annualSa
 }
 
 assert.throws(() => computeMonitorCore({ volume: 0, factor: 1, base: 1, current: 1, revenue: 1, threshold: 1 }), RangeError);
+assert.throws(() => computeMonitorCore({ volume: 1, factor: 1, base: 0, current: 1, revenue: 1, threshold: 1 }), RangeError);
 
 {
   const r = computeTrEtsScenarioCore({ carbonPriceTry: 850, annualEmission: 50000, freeAllocationPct: 60, annualProductionTon: 70000 });
