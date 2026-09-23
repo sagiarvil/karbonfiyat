@@ -22,6 +22,11 @@ const targets = [
   { url: "https://karbonfiyat.com/index.md", status: 200, contains: "# KarbonFiyat" },
   { url: "https://karbonfiyat.com/sitemap.xml", status: 200, contains: "/hakkimizda" },
   {
+    url: "https://karbonfiyat.com/api/eua-market",
+    status: 200,
+    contains: "\"provider\":\"EEX\""
+  },
+  {
     url: "https://europe-west1-studio-7658156126-ffb8e.cloudfunctions.net/leadIntake",
     status: 405,
     contains: "method_not_allowed"
