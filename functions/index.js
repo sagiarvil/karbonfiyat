@@ -22,6 +22,17 @@ const text = (value, max = 300) =>
 const emailOk = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 const phoneOk = (value) => /^[0-9+()\s.-]{7,30}$/.test(value);
 
+const applyCors = (req, res) => {
+  const origin = req.get("origin");
+  if (origin && allowedOrigins.has(origin)) {
+    res.set("Access-Control-Allow-Origin", origin);
+    res.set("Vary", "Origin");
+  }
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type, X-Requested-With");
+  res.set("Access-Control-Max-Age", "3600");
+};
+
 const json = (res, status, payload) => {
   res.status(status);
   res.set("Cache-Control", "no-store");
@@ -38,13 +49,19 @@ exports.leadIntake = onRequest(
     maxInstances: 5
   },
   async (req, res) => {
+    applyCors(req, res);
+
     const origin = req.get("origin");
     if (origin && !allowedOrigins.has(origin)) {
       return json(res, 403, { ok: false, error: "origin_not_allowed" });
     }
 
+    if (req.method === "OPTIONS") {
+      return res.status(204).send("");
+    }
+
     if (req.method !== "POST") {
-      res.set("Allow", "POST");
+      res.set("Allow", "POST, OPTIONS");
       return json(res, 405, { ok: false, error: "method_not_allowed" });
     }
 
@@ -62,6 +79,7 @@ exports.leadIntake = onRequest(
       sector: text(body.sector, 100),
       volume: text(body.volume, 80),
       service: text(body.service || "Ön Analiz 4.900 TL + KDV", 140),
+      clientRequestId: text(body.clientRequestId, 96),
       consent: body.consent === true
     };
 
@@ -75,6 +93,16 @@ exports.leadIntake = onRequest(
 
     if (!payload.consent) {
       return json(res, 422, { ok: false, error: "consent_required" });
+    }
+
+    if (!/^KF-LEAD-[A-Z0-9-]{8,80}$/.test(payload.clientRequestId)) {
+      return json(res, 422, { ok: false, error: "invalid_request_id" });
+    }
+
+    const leadRef = db.collection("leads").doc(payload.clientRequestId);
+    const existing = await leadRef.get();
+    if (existing.exists) {
+      return json(res, 200, { ok: true, requestId: payload.clientRequestId, idempotent: true });
     }
 
     const forwarded = req.get("x-forwarded-for") || req.ip || "unknown";
@@ -102,10 +130,10 @@ exports.leadIntake = onRequest(
       return json(res, 500, { ok: false, error: "storage_unavailable" });
     }
 
-    const requestId = "KF-" + Date.now().toString(36).toUpperCase() + "-" + crypto.randomBytes(3).toString("hex").toUpperCase();
+    const requestId = payload.clientRequestId;
 
     try {
-      await db.collection("leads").doc(requestId).set({
+      await leadRef.set({
         ...payload,
         requestId,
         status: "new",
