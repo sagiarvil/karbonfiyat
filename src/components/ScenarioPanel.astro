@@ -5,7 +5,7 @@
     <span class="eyebrow">Simülasyon Motoru</span>
     <h3>TR ETS Senaryosu</h3>
     <p class="scenario-desc">
-      Türkiye ETS kapsamında tesis düzeyinde beklenen emisyon, varsayımsal karbon fiyatı ve ücretsiz tahsisat oranına göre bütçe riskinizi modelleyin.
+      Türkiye ETS için varsayımsal karbon fiyatı ve ücretsiz tahsisat senaryosu girerek tesis bütçe etkisini modelleyin. Bu ekran resmî piyasa fiyatı veya kesin yükümlülük üretmez.
     </p>
   </div>
 
@@ -67,44 +67,54 @@
   </div>
 </section>
 
-<script is:inline>
-  (function() {
-    const pEl = document.getElementById("tr-price");
-    const eEl = document.getElementById("tr-emission");
-    const aEl = document.getElementById("tr-allowance");
-    const vEl = document.getElementById("tr-volume");
+<script>
+  import { computeTrEtsScenarioCore } from "../lib/financial-core.mjs";
 
-    const netEl = document.getElementById("tr-net-cost");
-    const perTonEl = document.getElementById("tr-per-ton");
-    const expTonEl = document.getElementById("tr-exposed-ton");
+  const root = document.querySelector("#senaryo");
+  if (root) {
+    const pEl = root.querySelector("#tr-price");
+    const eEl = root.querySelector("#tr-emission");
+    const aEl = root.querySelector("#tr-allowance");
+    const vEl = root.querySelector("#tr-volume");
+
+    const netEl = root.querySelector("#tr-net-cost");
+    const perTonEl = root.querySelector("#tr-per-ton");
+    const expTonEl = root.querySelector("#tr-exposed-ton");
 
     const fmtTL = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 });
     const fmtTL2 = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtNum = new Intl.NumberFormat("tr-TR");
 
-    function calc() {
-      const price = Math.max(0, parseFloat(pEl?.value) || 0);
-      const emission = Math.max(0, parseFloat(eEl?.value) || 0);
-      const allowanceRate = Math.max(0, Math.min(100, parseFloat(aEl?.value) || 0)) / 100;
-      const volume = Math.max(1, parseFloat(vEl?.value) || 1);
+    const raw = (el) => Number.parseFloat(el?.value ?? "");
 
-      const exposedEmission = emission * (1 - allowanceRate);
-      const netCost = exposedEmission * price;
-      const perTon = netCost / volume;
+    const calc = () => {
+      try {
+        const result = computeTrEtsScenarioCore({
+          carbonPriceTry: raw(pEl),
+          annualEmission: raw(eEl),
+          freeAllocationPct: raw(aEl),
+          annualProductionTon: raw(vEl)
+        });
 
-      if (netEl) netEl.textContent = fmtTL.format(netCost);
-      if (perTonEl) perTonEl.textContent = fmtTL2.format(perTon);
-      if (expTonEl) expTonEl.textContent = fmtNum.format(Math.round(exposedEmission)) + " tCO₂e";
-    }
-
-    [pEl, eEl, aEl, vEl].forEach(function(i) {
-      if (i) {
-        i.addEventListener("input", calc);
-        i.addEventListener("change", calc);
+        if (netEl) netEl.textContent = fmtTL.format(result.netCostTry);
+        if (perTonEl) perTonEl.textContent = fmtTL2.format(result.costPerProductionTonTry);
+        if (expTonEl) expTonEl.textContent = fmtNum.format(Math.round(result.exposedEmission)) + " tCO₂e";
+        root.dataset.engineState = "valid";
+      } catch {
+        if (netEl) netEl.textContent = "—";
+        if (perTonEl) perTonEl.textContent = "—";
+        if (expTonEl) expTonEl.textContent = "—";
+        root.dataset.engineState = "invalid";
       }
+    };
+
+    [pEl, eEl, aEl, vEl].forEach((input) => {
+      input?.addEventListener("input", calc);
+      input?.addEventListener("change", calc);
     });
+
     calc();
-  })();
+  }
 </script>
 
 <style>
