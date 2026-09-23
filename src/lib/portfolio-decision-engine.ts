@@ -55,9 +55,19 @@ export const DEFAULT_SAMPLE_PORTFOLIO: CustomerContract[] = [
 export function evaluatePortfolio(
   contracts: CustomerContract[],
   cbamPriceEur: number = 75.28,
-  offsetPct: number = 0 // TR-ETS mahsup oranı (%0 - %100)
+  offsetPct: number = 0
 ): PortfolioDecisionOutput {
-  const validOffset = Math.min(100, Math.max(0, offsetPct)) / 100;
+  if (!Array.isArray(contracts) || contracts.length === 0) {
+    throw new RangeError("contracts must contain at least one customer contract.");
+  }
+  if (!Number.isFinite(cbamPriceEur) || cbamPriceEur < 0) {
+    throw new RangeError("cbamPriceEur must be a finite non-negative number.");
+  }
+  if (!Number.isFinite(offsetPct) || offsetPct < 0 || offsetPct > 100) {
+    throw new RangeError("offsetPct must be between 0 and 100.");
+  }
+
+  const validOffset = offsetPct / 100;
   let totalVol = 0;
   let totalRev = 0;
   let totalBaseProfit = 0;
@@ -65,18 +75,30 @@ export function evaluatePortfolio(
   let totalNetCarbon = 0;
   let criticalCount = 0;
 
-  const evaluations: CustomerEvaluation[] = contracts.map(c => {
+  const evaluations: CustomerEvaluation[] = contracts.map((c, index) => {
+    const fields: Array<[string, number, boolean]> = [
+      ["volumeTon", c.volumeTon, true],
+      ["contractPriceEurPerTon", c.contractPriceEurPerTon, true],
+      ["costEurPerTon", c.costEurPerTon, false],
+      ["emissionFactor", c.emissionFactor, false]
+    ];
+    for (const [field, value, strictlyPositive] of fields) {
+      if (!Number.isFinite(value) || value < 0 || (strictlyPositive && value === 0)) {
+        throw new RangeError("contracts[" + index + "]." + field + " contains an invalid value.");
+      }
+    }
+
     const rev = c.volumeTon * c.contractPriceEurPerTon;
     const baseProfit = rev - (c.volumeTon * c.costEurPerTon);
     const grossCarbon = c.volumeTon * c.emissionFactor * cbamPriceEur;
     const netCarbon = grossCarbon * (1 - validOffset);
 
-    const marginBefore = (baseProfit / rev) * 100;
+    const marginBefore = rev > 0 ? (baseProfit / rev) * 100 : 0;
     const profitAfter = baseProfit - netCarbon;
-    const marginAfter = (profitAfter / rev) * 100;
+    const marginAfter = rev > 0 ? (profitAfter / rev) * 100 : 0;
     const deltaPoints = marginBefore - marginAfter;
 
-    const reqRevPct = (netCarbon / rev) * 100;
+    const reqRevPct = rev > 0 ? (netCarbon / rev) * 100 : 0;
 
     let riskStatus: CustomerEvaluation["riskStatus"] = "HEALTHY";
     let riskLabel = "KORUNABİLİR";
@@ -90,7 +112,7 @@ export function evaluatePortfolio(
     } else if (marginAfter < 14) {
       riskStatus = "REVISION_REQUIRED";
       riskLabel = "REVİZYON ŞART";
-      actionRecommendation = `Vade yenilemesinde +€${(netCarbon / c.volumeTon).toFixed(0)}/t fiyat geçişi hedeflenmeli.`;
+      actionRecommendation = `Vade yenilemesinde +€${(c.volumeTon > 0 ? netCarbon / c.volumeTon : 0).toFixed(0)}/t fiyat geçişi hedeflenmeli.`;
     }
 
     totalVol += c.volumeTon;
