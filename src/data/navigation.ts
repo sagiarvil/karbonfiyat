@@ -1,8 +1,73 @@
-export interface NavLink {
+export interface NavDropdownItem {
   label: string;
   href: string;
+  badge?: string;
+  desc?: string;
+  external?: boolean;
 }
 
+export interface NavItem {
+  label: string;
+  href?: string;
+  items?: NavDropdownItem[];
+}
+
+export const navItems: NavItem[] = [
+  {
+    label: "Karbon Fiyatı",
+    href: "/karbon-fiyati"
+  },
+  {
+    label: "CBAM",
+    href: "/cbam-fiyati"
+  },
+  {
+    label: "Türkiye ETS",
+    href: "/turkiye-ets"
+  },
+  {
+    label: "Terminaller",
+    items: [
+      {
+        label: "Workspace",
+        href: "/workspace",
+        desc: "Kurumsal portföy analiz ve senaryo motoru"
+      },
+      {
+        label: "Carbon Monitor",
+        href: "/carbon-monitor",
+        desc: "7/24 canlı piyasa ve sınırda karbon izleme"
+      },
+      {
+        label: "Carbon P&L",
+        href: "/carbon-pnl",
+        desc: "Ürün ve emisyon bazlı kârlılık etkisi"
+      },
+      {
+        label: "Müşteri Kârlılığı",
+        href: "/musteri-karliligi",
+        desc: "Müşteri portföy karbon marj analizi"
+      },
+      {
+        label: "Resmî SKDM Raporu ↗",
+        href: "https://skdmhesapla.com/",
+        badge: "Resmî XML",
+        desc: "AB Komisyonu onaylı beyanname motoru",
+        external: true
+      }
+    ]
+  },
+  {
+    label: "Fiyatlandırma",
+    href: "/fiyatlandirma"
+  },
+  {
+    label: "Metodoloji",
+    href: "/metodoloji"
+  }
+];
+
+// Geriye dönük uyumluluk için düz liste
 export const navLinks: NavLink[] = [
   { label: "Karbon Fiyatı", href: "/karbon-fiyati" },
   { label: "CBAM", href: "/cbam-fiyati" },
