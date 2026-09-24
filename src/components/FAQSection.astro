@@ -1,0 +1,142 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  eyebrow?: string;
+  items: FAQItem[];
+}
+
+const {
+  title = "Sıkça Sorulan Sorular",
+  subtitle = "AB CBAM, ton başına karbon maliyeti ve ihracat fiyatlama stratejileri hakkında en kritik yanıtlar.",
+  eyebrow = "SIKÇA SORULAN SORULAR",
+  items = []
+} = Astro.props;
+---
+
+<section class="container faq-section" id="sss">
+  <div class="faq-header">
+    <span class="eyebrow">{eyebrow}</span>
+    <h2 class="faq-title">{title}</h2>
+    <p class="faq-lead">{subtitle}</p>
+  </div>
+
+  <div class="faq-accordion">
+    {items.map((item, index) => (
+      <details class="faq-item" open={index === 0}>
+        <summary class="faq-summary">
+          <span class="faq-question">{item.question}</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-content">
+          <p>{item.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: 72px 0 64px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .faq-header {
+    max-width: 720px;
+    margin-bottom: 40px;
+  }
+
+  .faq-title {
+    font-size: clamp(28px, 3.5vw, 42px);
+    margin: 12px 0 14px;
+    color: var(--text-primary);
+    line-height: 1.25;
+  }
+
+  .faq-lead {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.015);
+    transition: border-color 0.2s ease, background 0.2s ease;
+    overflow: hidden;
+  }
+
+  .faq-item[open] {
+    border-color: rgba(59, 130, 246, 0.35);
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .faq-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 26px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    gap: 16px;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.45;
+  }
+
+  .faq-icon {
+    font-size: 22px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    color: #60a5fa;
+  }
+
+  .faq-content {
+    padding: 0 26px 24px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.7;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    margin-top: 4px;
+    padding-top: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .faq-summary {
+      padding: 18px 20px;
+    }
+    .faq-content {
+      padding: 0 20px 20px;
+    }
+    .faq-question {
+      font-size: 15px;
+    }
+  }
+</style>

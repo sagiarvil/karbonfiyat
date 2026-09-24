@@ -2,13 +2,52 @@
 import Layout from "../layouts/Layout.astro";
 import MarketIntelligenceTerminal from "../components/MarketIntelligenceTerminal.astro";
 import ExpertCTA from "../components/ExpertCTA.astro";
+import FAQSection from "../components/FAQSection.astro";
 import { seoPages } from "../data/seo";
+import { gtipSectors } from "../data/gtipSectors";
+
+const faqItems = [
+  {
+    question: "Ton başına karbon fiyatı kaç TL ve nasıl hesaplanır?",
+    answer: "Ton başına karbon maliyeti; resmî CBAM sertifika fiyatı (veya AB ETS EUA fiyatı) ile ürünün ton başına doğrudan ve dolaylı gömülü sera gazı emisyon yoğunluğunun (tCO₂e / ton) çarpılması ve güncel TCMB Euro kuruyla TL'ye çevrilmesiyle hesaplanır. Örneğin 1 ton çelik için 2.0 tCO₂e emisyon ve 75 € karbon fiyatında; ton başına karbon maliyeti 150 € (yaklaşık 5.500 – 6.000 TL) seviyesine ulaşır."
+  },
+  {
+    question: "2026 AB sınırda karbon vergisi (CBAM) oranları ve takvimi nedir?",
+    answer: "1 Ocak 2026 itibarıyla AB CBAM geçiş dönemi sona ermiş ve doğrudan mali yükümlülük başlamıştır. İthalatçılar artık yalnızca emisyon raporlamakla kalmayıp, ihraç edilen ürünlerin gömülü emisyonları karşılığında Avrupa Komisyonu tarafından çeyreklik yayımlanan resmî CBAM sertifikalarını satın almak ve teslim etmek zorundadır. AB üreticilerine tanınan ücretsiz tahsisatlar kademeli olarak düşürüldükçe ödenecek sertifika tutarı her yıl artacaktır."
+  },
+  {
+    question: "Demir-çelik sektöründe SKDM maliyeti nasıl hesaplanır?",
+    answer: "Demir-çelik ihracatında (Fasıl 72 ve 73) Kapsam 1 (doğrudan kok, kömür, kireç taşı tüketimi) ve Kapsam 2 (tüketilen şebeke elektriği) emisyonları toplanarak spesifik emisyon faktörü belirlenir. Toplam ihraç tonajı bu katsayıyla çarpılarak şirketin brüt CO₂ maruziyeti bulunur; ardından AB benchmark indirimi ve varsa Türkiye'de fiilen ödenen karbon vergisi mahsup edilerek net CBAM sertifika bedeli çıkarılır."
+  },
+  {
+    question: "Resmî CBAM sertifika fiyatı ile EU ETS (EUA) fiyatı arasındaki fark nedir?",
+    answer: "EU ETS (EUA), ICE Endex borsasında işlem gören ve anlık piyasa arz-talep dinamiklerine göre dalgalanan spot ve vadeli piyasa kotasyonudur. Resmî CBAM sertifika fiyatı ise Avrupa Komisyonu tarafından bir önceki çeyreğin açık artırma kapanış fiyatlarının ağırlıklı ortalaması alınarak belirlenen ve ithalatçıların beyannamelerinde kullandığı kanuni referans fiyattır."
+  },
+  {
+    question: "Türkiye'de ödenen karbon vergisi AB CBAM'dan düşülür mü (Mahsup Bedeli)?",
+    answer: "Evet. AB CBAM Tüzüğü Madde 9 uyarınca; ürünün üretildiği menşe ülkede (Türkiye) fiilen ödenmiş bir karbon fiyatı veya emisyon ticaret sistemi bedeli varsa, bu bedel kanıtlanmak koşuluyla AB'de ödenecek CBAM sertifika tutarından tam olarak mahsup edilir. KarbonFiyat motoru bu mahsup tutarını otomatik olarak düşerek net ihracat riskinizi hesaplar."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
 ---
 
 <Layout
   title={seoPages.karbonFiyati.title}
   description={seoPages.karbonFiyati.description}
   canonical={seoPages.karbonFiyati.canonical}
+  schema={faqSchema}
 >
   <section class="container subhero">
     <span class="eyebrow">PİYASA VE REGÜLASYON İZLEME</span>
@@ -60,6 +99,61 @@ import { seoPages } from "../data/seo";
     </div>
   </section>
 
+  <section class="container sector-cluster-section">
+    <div class="sector-cluster-header">
+      <span class="eyebrow">PROGRAMMATIC SEKTÖREL GTİP KÜMELERİ</span>
+      <h2>Sektör bazında 2026 CBAM karbon maliyet parametreleri</h2>
+      <p class="lead">
+        AB Sınırda Karbon Düzenlemesi'ne tabi 6 temel sektörün GTİP kodları, varsayılan gömülü emisyon katsayıları ve doğrudan arama sorguları.
+      </p>
+    </div>
+
+    <div class="sector-grid">
+      {gtipSectors.map((sector) => (
+        <div class="sector-card card">
+          <div class="sector-card-top">
+            <span class={`sector-risk-badge ${sector.riskLevel === 'Kritik' ? 'risk-critical' : 'risk-high'}`}>
+              Risk: {sector.riskLevel}
+            </span>
+            <span class="sector-gtip">{sector.gtipCodes}</span>
+          </div>
+          <h3 class="sector-name">{sector.name}</h3>
+          <p class="sector-desc">{sector.description}</p>
+
+          <div class="sector-meta">
+            <div class="meta-row">
+              <span class="meta-label">Emisyon Yoğunluğu:</span>
+              <strong class="meta-value">{sector.defaultIntensity}</strong>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Birim / Ürün:</span>
+              <span class="meta-value">{sector.unit}</span>
+            </div>
+          </div>
+
+          <div class="sector-queries">
+            <span class="query-title">En Çok Aranan Sorular:</span>
+            <ul>
+              {sector.searchQueries.map((q) => (
+                <li>
+                  <a href="/karbon-maliyet-hesaplama" class="query-link">
+                    “{q}” →
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="sector-action">
+            <a href="/karbon-maliyet-hesaplama" class="btn btn-secondary btn-sm" style="width: 100%; text-align: center;">
+              {sector.name} Maliyetini Hesapla →
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <section class="container decision-section">
     <div class="decision-shell">
       <div>
@@ -79,6 +173,13 @@ import { seoPages } from "../data/seo";
       </div>
     </div>
   </section>
+
+  <FAQSection
+    eyebrow="ARAMA NİYETİ VE EN ÇOK SORULANLAR"
+    title="Karbon Fiyatı ve SKDM Hakkında Sıkça Sorulan Sorular"
+    subtitle="İhracatçıların ton başına karbon fiyatı, CBAM yükümlülükleri ve maliyet hesaplama hakkında en çok arattığı 5 kritik soru."
+    items={faqItems}
+  />
 
   <ExpertCTA />
 </Layout>
@@ -213,12 +314,157 @@ import { seoPages } from "../data/seo";
     line-height: 1.5;
   }
 
+  .sector-cluster-section {
+    padding: 72px 0 54px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .sector-cluster-header {
+    max-width: 800px;
+    margin-bottom: 36px;
+  }
+
+  .sector-cluster-header h2 {
+    font-size: clamp(26px, 3.5vw, 38px);
+    margin: 12px 0 14px;
+    color: var(--text-primary);
+  }
+
+  .sector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .sector-card {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .sector-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sector-risk-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .risk-critical {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .risk-high {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .sector-gtip {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .sector-name {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .sector-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .sector-meta {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .meta-label {
+    color: var(--text-muted);
+  }
+
+  .meta-value {
+    color: var(--text-primary);
+    font-family: ui-monospace, monospace;
+  }
+
+  .sector-queries {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 12px;
+  }
+
+  .query-title {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .sector-queries ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .query-link {
+    font-size: 12px;
+    color: #60a5fa;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.15s ease;
+  }
+
+  .query-link:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+  }
+
+  .sector-action {
+    margin-top: 8px;
+  }
+
   @media (max-width: 860px) {
     .subhero { padding-top: 58px; }
     .compare-grid,
     .decision-shell { grid-template-columns: 1fr; }
     .compare-card,
     .decision-shell { padding: 24px; }
+    .sector-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {

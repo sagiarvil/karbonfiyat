@@ -2,12 +2,47 @@
 import Layout from "../layouts/Layout.astro";
 import CarbonCalculator from "../components/CarbonCalculator.astro";
 import ExpertCTA from "../components/ExpertCTA.astro";
+import FAQSection from "../components/FAQSection.astro";
 import { seoPages } from "../data/seo";
+import { gtipSectors } from "../data/gtipSectors";
+
+const cbamFaqItems = [
+  {
+    question: "AB CBAM sertifika fiyatı 2026 yılında kaç Euro olarak uygulanır?",
+    answer: "CBAM sertifika fiyatı, Avrupa Komisyonu tarafından AB Emisyon Ticaret Sistemi'ndeki (EU ETS) haftalık açık artırma kapanış fiyatlarının ağırlıklı ortalaması alınarak belirlenir ve Euro / ton CO₂e cinsinden ilan edilir. 2026 yılı için ortalama piyasa beklentisi 70 € – 85 € bandındadır."
+  },
+  {
+    question: "Çimento, alüminyum ve demir-çelikte varsayılan (default) emisyon değerleri kullanılabilir mi?",
+    answer: "Geçiş döneminde izin verilen varsayılan küresel emisyon katsayıları 2026 yılından itibaren ciddi oranda sınırlandırılmıştır. Tesisinizin fiili emisyonlarını doğrulanmış akredite raporlarla kanıtlayamadığınız takdirde, AB Komisyonu en yüksek cezalandırıcı emisyon katsayılarını (%10-20 ceza primiyle) uygulayarak çok daha yüksek sertifika maliyeti çıkarır."
+  },
+  {
+    question: "CBAM beyanı kim tarafından ve ne zaman yapılır?",
+    answer: "CBAM beyanı, AB'de yerleşik 'Yetkili CBAM Beyan Sahibi' (Authorized CBAM Declarant) statüsündeki ithalatçı tarafından her yılın 31 Mayıs tarihine kadar bir önceki takvim yılının ithalat tonajı ve gömülü emisyonları üzerinden CBAM Sicili'ne (CBAM Registry) sunulur."
+  },
+  {
+    question: "Ücretsiz tahsisat indirimi (Free Allocation Phase-out) CBAM maliyetini nasıl etkiler?",
+    answer: "AB Komisyonu, AB içindeki üreticilere verdiği ücretsiz tahsisatları 2026'dan itibaren 2034'e kadar kademeli olarak sıfırlamaktadır (2026'da %2.5, 2027'de %5 vb.). Türkiye'den yapılan ihracatta da AB üreticisinin o yıl yararlandığı ücretsiz oran kadar indirim uygulanır; geri kalan tüm gömülü emisyon için sertifika satın alınması zorunludur."
+  }
+];
+
+const cbamFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": cbamFaqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
 ---
 <Layout
   title={seoPages.cbamFiyati.title}
   description={seoPages.cbamFiyati.description}
   canonical={seoPages.cbamFiyati.canonical}
+  schema={cbamFaqSchema}
 >
   <section class="container subhero">
     <span class="eyebrow">CBAM CERTIFICATE PRICING</span>
@@ -50,9 +85,35 @@ import { seoPages } from "../data/seo";
     </div>
   </section>
 
-  <div class="container">
+  <div class="container" id="hesapla">
     <CarbonCalculator defaultPrice={75.28} />
   </div>
+
+  <section class="container sector-preview-section">
+    <div class="sector-preview-card card">
+      <span class="eyebrow">SEKTÖREL REHBER VE GTİP KÜMELERİ</span>
+      <h2>İhracat Yaptığınız Sektörün CBAM Maruziyetini Seçin</h2>
+      <p class="lead">
+        Demir-çelikten alüminyuma, gübreden çimentoya kadar sektörünüzün resmi GTİP kodları ve hesaplama formülleri:
+      </p>
+      <div class="sector-pill-grid">
+        {gtipSectors.map((s) => (
+          <a href="/karbon-fiyati#sss" class="sector-pill-item">
+            <strong>{s.name}</strong>
+            <span class="pill-gtip">{s.gtipCodes}</span>
+            <span class="pill-arrow">İncele →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FAQSection
+    eyebrow="SIKÇA SORULAN SORULAR"
+    title="CBAM ve Sınırda Karbon Vergisi Hakkında Merak Edilenler"
+    subtitle="AB'ye ihracat yapan şirketlerin beyan, maliyet katsayısı ve muafiyetler hakkında en sık arattığı konular."
+    items={cbamFaqItems}
+  />
 
   <ExpertCTA
     headline="CBAM beyan ve maliyet riskinizi kesinleştirin."
@@ -108,10 +169,67 @@ import { seoPages } from "../data/seo";
     line-height: 1.5;
   }
 
+  .sector-preview-section {
+    margin-top: 48px;
+  }
+
+  .sector-preview-card {
+    padding: 38px;
+  }
+
+  .sector-preview-card h2 {
+    font-size: clamp(24px, 3.2vw, 34px);
+    margin: 12px 0 10px;
+    color: var(--text-primary);
+  }
+
+  .sector-pill-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .sector-pill-item {
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, 0.015);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .sector-pill-item:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .sector-pill-item strong {
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+
+  .pill-gtip {
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--text-muted);
+  }
+
+  .pill-arrow {
+    font-size: 12px;
+    color: #60a5fa;
+    margin-top: 4px;
+  }
+
   @media (max-width: 860px) {
     .subhero { padding-top: 56px; }
     .mismatch-pillars { grid-template-columns: 1fr 1fr; }
-    .mismatch-card { padding: 28px; }
+    .sector-pill-grid { grid-template-columns: 1fr; }
+    .mismatch-card, .sector-preview-card { padding: 24px; }
   }
   @media (max-width: 520px) {
     .mismatch-pillars { grid-template-columns: 1fr; }

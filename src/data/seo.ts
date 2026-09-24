@@ -11,13 +11,13 @@ export const seoPages: Record<string, SeoMeta> = {
     canonical: "/"
   },
   karbonFiyati: {
-    title: "Karbon Fiyatı 2026 | CBAM, EU ETS ve Türkiye ETS",
-    description: "Güncel karbon fiyatlarını, CBAM sertifika fiyatını, EU ETS piyasa verisini ve Türkiye ETS gelişmelerini karşılaştırın.",
+    title: "Karbon Fiyatı 2026 | Ton Başına Karbon Maliyeti ve CBAM Fiyatı",
+    description: "Ton başına karbon fiyatı kaç TL? 2026 AB CBAM resmî sertifika fiyatı, EU ETS borsa kotasyonu ve sektör bazlı karbon maliyetini anında hesaplayın.",
     canonical: "/karbon-fiyati"
   },
   cbamFiyati: {
-    title: "CBAM Fiyatı ve Karbon Maliyeti Hesaplama | KarbonFiyat",
-    description: "Resmî CBAM sertifika fiyatını görün ve şirketinizin ürün bazlı karbon maliyetini hesaplayın.",
+    title: "CBAM Fiyatı 2026 ve SKDM Maliyet Hesaplama | KarbonFiyat",
+    description: "2026 AB sınırda karbon vergisi (CBAM) oranları, sertifika fiyatı ve demir-çelik, çimento, alüminyum GTİP bazlı karbon maliyeti hesaplama.",
     canonical: "/cbam-fiyati"
   },
   turkiyeEts: {
