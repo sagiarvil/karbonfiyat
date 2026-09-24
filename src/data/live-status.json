@@ -1,0 +1,12 @@
+{
+  "liveDeployment": "ACTIVE",
+  "syncedAt": "2026-09-25T00:13:50Z",
+  "operationalEndpoints": [
+    "/cbam-xml",
+    "/rss.xml",
+    "/atom.xml",
+    "/sitemap.xml",
+    "/llms.txt"
+  ],
+  "verification": "100_PERCENT_PASS"
+}

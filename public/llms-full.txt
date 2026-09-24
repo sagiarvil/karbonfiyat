@@ -1,29 +1,46 @@
-# KarbonFiyat
-> KarbonFiyat, karbon fiyatını ürün maliyeti, brüt marj, müşteri kârlılığı ve fiyatlama kararına bağlayan Carbon Financial Intelligence platformudur.
+# KarbonFiyat — Kapsamlı Bilgi Tabanı ve Finansal Hesaplama Özeti (llms-full.txt)
 
-## Kapsam
-KarbonFiyat aşağıdaki üç veri/rejim sınıfını birbirinden ayırır:
-1. CBAM sertifika fiyatı ve CBAM maliyet mantığı.
-2. EU ETS EUA piyasa görünümü.
-3. Türkiye ETS resmî statüsü ve kullanıcı senaryoları.
+## 1. Platform Hakkında
+KarbonFiyat (karbonfiyat.com), Avrupa Birliği Sınırda Karbon Düzenleme Mekanizması (SKDM / CBAM), AB Emisyon Ticaret Sistemi (EU ETS) ve Türkiye Ulusal Emisyon Ticaret Sistemi (Türkiye ETS) verilerini doğrudan kurumsal finans, birim ürün maliyeti ve kâr marjı analizine dönüştüren uzmanlaşmış bir bilgi ve karar motorudur.
 
-## Karar motorları
-- Karbon maliyet hesaplama
-- Carbon P&L
-- Müşteri kârlılığı ve karbon marj analizi
-- Carbon Monitor
-- Finansal workspace
+## 2. 2026 CBAM (SKDM) Mali Dönemi
+- 1 Ekim 2023 - 31 Aralık 2025: Geçiş dönemi (yalnızca emisyon beyanı, mali ödeme yok).
+- 1 Ocak 2026 İtibarıyla: Kesin mali uygulama dönemi başlamıştır.
+- Yükümlülük: AB'ye ithal edilen SKDM kapsamındaki mallar için ithalatçılar kayıtlı CBAM beyan sahibi olmak ve her yıl mayıs ayında bir önceki yılın gömülü emisyonları için CBAM sertifikası teslim etmek zorundadır.
+- Sertifika Fiyatı: Avrupa Komisyonu tarafından EU ETS açık artırma platformundaki haftalık ağırlıklı ortalama fiyatlar esas alınarak çeyreklik bazda belirlenir.
+- Ücretsiz Tahsisat Düşüşü: AB'deki yerli üreticilere tanınan ücretsiz tahsisat 2026-2034 arasında kademeli olarak sıfırlanacaktır. Bu nedenle ithalatçıların fiili ödeme oranı her yıl artacaktır.
 
-## Kaynak ve metodoloji
-- https://karbonfiyat.com/metodoloji
-- https://karbonfiyat.com/karbon-fiyati
-- https://karbonfiyat.com/cbam-fiyati
-- https://karbonfiyat.com/turkiye-ets
+## 3. Türkiye ETS (Emisyon Ticaret Sistemi)
+- Türkiye Çevre, Şehircilik ve İklim Değişikliği Bakanlığı ile İklim Değişikliği Başkanlığı tarafından hazırlanan İklim Kanunu ve ETS Yönetmeliği kapsamında kurulmaktadır.
+- Pilot dönemde Kapsam 1 doğrudan emisyonu yıllık 50.000 tCO₂e üzeri olan sanayi tesisleri (enerji yoğun sektörler, çimento, demir-çelik vb.) dahil edilmektedir.
+- Mahsup Mekanizması: AB CBAM Tüzüğü Madde 9 kapsamında, Türkiye'de ödenen karbon fiyatı AB'ye yapılan ihracatta CBAM sertifika bedelinden kanıtlanmak şartıyla indirilir (mahsup edilir).
 
-## Kurumsal sayfalar
-- https://karbonfiyat.com/hakkimizda
-- https://karbonfiyat.com/iletisim
-- https://karbonfiyat.com/gizlilik
+## 4. Kapsam ve GTİP Listesi
+- **Demir ve Çelik (Fasıl 72, 73):** Ham çelik, slab, kütük, sıcak/soğuk rulo sac, inşaat demiri, dikişli/dikişsiz borular. Kapsam 1 + Kapsam 2 emisyonları.
+- **Alüminyum (Fasıl 76):** İşlenmemiş alüminyum, alüminyum profiller, alaşımlar, levhalar, teller. Kapsam 1 emisyonları.
+- **Çimento (Fasıl 2523):** Klinker, portland çimentosu, beyaz çimento. Kapsam 1 + Kapsam 2 emisyonları.
+- **Gübre (Fasıl 31):** Amonyak, üre, amonyum nitrat, NPK bileşik gübreler. Kapsam 1 + Kapsam 2 emisyonları.
+- **Hidrojen (GTİP 2804 10):** Üretim prosesi doğrudan emisyonları.
 
-## İletişim
-- analiz@karbonfiyat.com
+## 5. Finansal Metrikler
+- **Spesifik Emisyon Yoğunluğu:** 1 ton nihai ürün başına salınan sera gazı miktarı (tCO₂e / ton ürün).
+- **Brüt Karbon Yükü:** Toplam İhracat (ton) × Emisyon Yoğunluğu (tCO₂e/ton) × Karbon Fiyatı (€/tCO₂e).
+- **Net CBAM Yükümlülüğü:** Brüt Karbon Yükü - Yerel Karbon Fiyatı Mahsubu.
+- **Birim Maliyet Etkisi:** Net CBAM Yükümlülüğü / Toplam Üretim/İhracat Miktarı (€/ton veya TL/ton).
+- **EBITDA Erozyonu:** (Yıllık Karbon Maliyeti / Yıllık EBITDA) × %100.
+
+## 6. URLs & Rotalar
+- Ana Sayfa: https://karbonfiyat.com/
+- Karbon Fiyatı: https://karbonfiyat.com/karbon-fiyati
+- CBAM Fiyatı: https://karbonfiyat.com/cbam-fiyati
+- Türkiye ETS: https://karbonfiyat.com/turkiye-ets
+- Karbon Maliyet Hesaplama: https://karbonfiyat.com/karbon-maliyet-hesaplama
+- Carbon P&L: https://karbonfiyat.com/carbon-pnl
+- Müşteri Kârlılığı: https://karbonfiyat.com/musteri-karliligi
+- Çalışma Alanı (Workspace): https://karbonfiyat.com/workspace
+- Karbon Monitör: https://karbonfiyat.com/carbon-monitor
+- Fiyatlandırma: https://karbonfiyat.com/fiyatlandirma
+- Metodoloji: https://karbonfiyat.com/metodoloji
+- Hakkımızda: https://karbonfiyat.com/hakkimizda
+- İletişim: https://karbonfiyat.com/iletisim
+- Gizlilik Politikası: https://karbonfiyat.com/gizlilik

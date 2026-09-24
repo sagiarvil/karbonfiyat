@@ -2,12 +2,66 @@
 import Layout from "../layouts/Layout.astro";
 import ScenarioPanel from "../components/ScenarioPanel.astro";
 import ExpertCTA from "../components/ExpertCTA.astro";
+import FAQSection from "../components/FAQSection.astro";
 import { seoPages } from "../data/seo";
+
+const etsFaqItems = [
+  {
+    question: "Türkiye Emisyon Ticaret Sistemi (ETS) ne zaman yürürlüğe girecek?",
+    answer: "İklim Değişikliği Başkanlığı tarafından hazırlanan İklim Kanunu ve ETS Yönetmeliği taslağı kapsamında, Türkiye ETS'nin pilot uygulamasının başlatılması ve ardından kademeli olarak kesin tahsisat ve teslim dönemine geçilmesi planlanmaktadır. Şirketlerin mevzuat yürürlüğe girmeden önce emisyon izleme, raporlama ve doğrulama (İRD) altyapılarını tamamlamaları kritik önemdedir."
+  },
+  {
+    question: "Hangi sektörler ve sanayi tesisleri Türkiye ETS kapsamına dahil olacak?",
+    answer: "İlk aşamada enerji üretim santralleri, demir-çelik, çimento, kireç, seramik, cam, kâğıt ve kimya gibi yıllık Kapsam 1 doğrudan emisyonu 50.000 tCO₂e ve üzerinde olan enerji-yoğun sanayi tesislerinin sisteme dahil edilmesi öngörülmektedir."
+  },
+  {
+    question: "Türkiye ETS'de ödenen karbon bedeli AB CBAM sertifikalarından mahsup edilir mi?",
+    answer: "Evet. AB CBAM Tüzüğü Madde 9 hükmüne göre, menşe ülkede (Türkiye) fiilen ödenmiş ve doğrulanmış bir karbon bedeli varsa, bu bedel AB'de teslim edilecek CBAM sertifikası tutarından tam olarak düşülür (mahsup edilir). Bu sayede Türk ihracatçısı çifte karbon vergilendirmesinden korunur."
+  },
+  {
+    question: "Tesisler için serbest tahsisat (ücretsiz kota) nasıl belirlenecektir?",
+    answer: "Türkiye ETS'de tesislerin tarihsel üretim verileri ve AB'deki gibi sektörel emisyon referans değerleri (benchmark) esas alınarak belirli bir oranda serbest tahsisat tanımlanacaktır. Referans değerin üzerinde salım yapan tesisler aradaki fark için piyasadan tahsisat satın almak zorunda kalacaktır."
+  }
+];
+
+const etsSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": etsFaqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://karbonfiyat.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Türkiye ETS",
+        "item": "https://karbonfiyat.com/turkiye-ets"
+      }
+    ]
+  }
+];
 ---
 <Layout
   title={seoPages.turkiyeEts.title}
   description={seoPages.turkiyeEts.description}
   canonical={seoPages.turkiyeEts.canonical}
+  schema={etsSchemas}
 >
   <section class="container subhero">
     <span class="eyebrow">TÜRKİYE ETS</span>
@@ -60,6 +114,8 @@ import { seoPages } from "../data/seo";
       </article>
     </div>
   </section>
+
+  <FAQSection items={etsFaqItems} />
 
   <ExpertCTA
     headline="TR ETS hazırlığınızı uzmanlarla tamamlayın."

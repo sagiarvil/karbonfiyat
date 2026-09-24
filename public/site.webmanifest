@@ -1,0 +1,21 @@
+{
+  "name": "KarbonFiyat",
+  "short_name": "KarbonFiyat",
+  "description": "CBAM, EU ETS ve Türkiye ETS karbon fiyatı, emisyon maliyeti ve finansal analiz platformu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0C0F",
+  "theme_color": "#0A0C0F",
+  "icons": [
+    {
+      "src": "/logo/karbonfiyat-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo/karbonfiyat-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

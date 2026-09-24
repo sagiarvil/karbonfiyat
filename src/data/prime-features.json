@@ -1,0 +1,15 @@
+{
+  "activeFeatures": [
+    "CBAM_XML_GENERATOR",
+    "LCA_TECHNOLOGY_ROUTES",
+    "SECTORAL_BENCHMARK_ANALYSIS",
+    "RSS_ATOM_SYNCHRONIZED_FEED"
+  ],
+  "engines": {
+    "xmlGenerator": "src/lib/cbam-xml-generator.ts",
+    "lcaEngine": "src/lib/lca-technology-engine.ts",
+    "xmlInterface": "src/pages/cbam-xml.astro"
+  },
+  "verifiedAt": "2026-09-25T00:09:00Z",
+  "status": "PRODUCTION_READY"
+}

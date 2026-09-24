@@ -1,0 +1,287 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ExpertCTA from "../components/ExpertCTA.astro";
+import { TECHNOLOGY_ROUTES } from "../lib/lca-technology-engine";
+
+const routesList = Object.values(TECHNOLOGY_ROUTES);
+
+const xmlSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "KarbonFiyat AB CBAM XML Rapor Üreticisi",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Avrupa Komisyonu CBAM Geçiş Sicili formatında ihracatçı XML beyan paketi üretim motoru."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://karbonfiyat.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "CBAM XML Üretici",
+        "item": "https://karbonfiyat.com/cbam-xml"
+      }
+    ]
+  }
+];
+---
+
+<Layout
+  title="Resmî AB CBAM XML Beyannamesi Üretici | KarbonFiyat"
+  description="Avrupa Komisyonu CBAM Registry standartlarında resmî XML beyannamesi oluşturun. İhracat gömülü emisyonlarınızı gümrük uyumlu dosya olarak tek tıkla indirin."
+  canonical="/cbam-xml"
+  schema={xmlSchemas}
+>
+  <section class="container subhero">
+    <span class="eyebrow">REGÜLASYON VE UYUM MOTORU</span>
+    <h1 class="section-title">Resmî AB CBAM XML Beyannamesi Üretici</h1>
+    <p class="lead">
+      Avrupa Birliği İthalatçınız ve AB CBAM Geçiş Sicili için zorunlu olan XML veri yapısını saniyeler içinde oluşturun, doğrulayın ve indirin.
+    </p>
+  </section>
+
+  <section class="container xml-generator-section">
+    <div class="card xml-card">
+      <div class="card-header">
+        <span class="eyebrow">DETERMİNİSTİK XML ENJEKSİYONU</span>
+        <h2>İhracat Beyan Parametreleri</h2>
+      </div>
+
+      <form id="cbam-xml-form" class="xml-form" onsubmit="return false;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="company-name">Şirket / Beyan Sahibi Ünvanı</label>
+            <input type="text" id="company-name" required value="Örnek İhracat A.Ş." class="input-field" />
+          </div>
+
+          <div class="form-group">
+            <label for="declarant-id">Vergi / EORI Numarası</label>
+            <input type="text" id="declarant-id" required value="TR1234567890" class="input-field" />
+          </div>
+
+          <div class="form-group">
+            <label for="destination-country">AB Varış Ülkesi</label>
+            <select id="destination-country" class="input-field">
+              <option value="DE">Almanya (DE)</option>
+              <option value="IT">İtalya (IT)</option>
+              <option value="FR">Fransa (FR)</option>
+              <option value="ES">İspanya (ES)</option>
+              <option value="NL">Hollanda (NL)</option>
+              <option value="BE">Belçika (BE)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="gtip-code">GTİP / CN Kodu (8 Haneli)</label>
+            <input type="text" id="gtip-code" required value="7208 39 00" class="input-field" />
+          </div>
+
+          <div class="form-group">
+            <label for="export-volume">İhracat Miktarı (Metrik Ton)</label>
+            <input type="number" id="export-volume" required min="1" step="0.1" value="1250" class="input-field" />
+          </div>
+
+          <div class="form-group">
+            <label for="tech-route">LCA Üretim Rotası & Teknoloji</label>
+            <select id="tech-route" class="input-field">
+              {routesList.map(r => (
+                <option value={r.id}>
+                  {r.name} ({r.totalFactor} tCO₂e/t)
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="origin-offset">TR Ödenen Karbon Mahsubu (€/ton)</label>
+            <input type="number" id="origin-offset" min="0" step="0.5" value="0" class="input-field" />
+          </div>
+
+          <div class="form-group">
+            <label for="reporting-period">Raporlama Dönemi</label>
+            <select id="reporting-period" class="input-field">
+              <option value="Q1-2026">Q1 2026 (Ocak - Mart)</option>
+              <option value="Q2-2026">Q2 2026 (Nisan - Haziran)</option>
+              <option value="Q3-2026">Q3 2026 (Temmuz - Eylül)</option>
+              <option value="Q4-2026">Q4 2026 (Ekim - Aralık)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" id="btn-generate-xml" class="btn btn-primary">
+            📄 Resmî CBAM XML Dosyası İndir (.xml)
+          </button>
+        </div>
+      </form>
+
+      <div id="xml-preview-container" class="preview-box hidden">
+        <span class="preview-title mono">Oluşturulan Resmî XML Çıktısı (Önizleme):</span>
+        <pre id="xml-code-preview" class="code-block"></pre>
+      </div>
+    </div>
+  </section>
+
+  <ExpertCTA 
+    headline="CBAM Raporlarınızı Akredite Doğrulayıcı Güvencesiyle Sunun."
+    subtext="Resmî denetimlerde cezai katsayılarla karşılaşmamak için tesis emisyon faktörlerinizi ISO 14064-1 standardında doğrulayın."
+  />
+</Layout>
+
+<script>
+  import { generateCbamXml } from "../lib/cbam-xml-generator";
+  import { TECHNOLOGY_ROUTES } from "../lib/lca-technology-engine";
+
+  const btn = document.getElementById("btn-generate-xml");
+  const previewContainer = document.getElementById("xml-preview-container");
+  const codePreview = document.getElementById("xml-code-preview");
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const company = (document.getElementById("company-name") as HTMLInputElement).value || "Örnek Şirket";
+      const declarantId = (document.getElementById("declarant-id") as HTMLInputElement).value || "TR00000000";
+      const country = (document.getElementById("destination-country") as HTMLSelectElement).value || "DE";
+      const gtip = (document.getElementById("gtip-code") as HTMLInputElement).value || "72083900";
+      const volume = parseFloat((document.getElementById("export-volume") as HTMLInputElement).value) || 1000;
+      const routeId = (document.getElementById("tech-route") as HTMLSelectElement).value;
+      const offset = parseFloat((document.getElementById("origin-offset") as HTMLInputElement).value) || 0;
+      const period = (document.getElementById("reporting-period") as HTMLSelectElement).value;
+
+      const selectedRoute = TECHNOLOGY_ROUTES[routeId] || TECHNOLOGY_ROUTES["steel-eaf-scrap"];
+      const direct = selectedRoute.scope1Factor;
+      const indirect = selectedRoute.scope2Factor;
+      const totalEmissions = (direct + indirect) * volume;
+
+      const xmlString = generateCbamXml({
+        declarantId,
+        declarantName: company,
+        countryOfOrigin: "TR",
+        destinationCountry: country,
+        gtipCode: gtip,
+        goodsDescription: selectedRoute.name,
+        netMassTons: volume,
+        directSpecificEmissions: direct,
+        indirectSpecificEmissions: indirect,
+        totalEmbeddedEmissions: totalEmissions,
+        carbonPricePaidInOriginEur: offset,
+        reportingPeriodQuarter: period,
+        calculationDate: new Date().toISOString().split("T")[0]
+      });
+
+      if (previewContainer && codePreview) {
+        previewContainer.classList.remove("hidden");
+        codePreview.textContent = xmlString;
+      }
+
+      // Dosya indirme tetikleme
+      const blob = new Blob([xmlString], { type: "application/xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `CBAM_Report_${gtip.replace(/\s+/g, "")}_${period}.xml`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+</script>
+
+<style>
+  .subhero {
+    padding: 88px 0 24px;
+  }
+  .subhero h1 {
+    margin: 18px 0 16px;
+    font-size: clamp(32px, 4.5vw, 52px);
+  }
+  .xml-generator-section {
+    margin-top: 16px;
+    margin-bottom: 56px;
+  }
+  .xml-card {
+    padding: 36px;
+    background: linear-gradient(180deg, #131718 0%, #0D1011 100%);
+    border: 1px solid var(--border-soft);
+  }
+  .card-header h2 {
+    font-size: 24px;
+    margin: 10px 0 24px;
+    color: var(--text-primary);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-group label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .input-field {
+    background: #090B0C;
+    border: 1px solid var(--border-soft);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.15s;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .action-row {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 10px;
+  }
+  .preview-box {
+    margin-top: 32px;
+    padding: 20px;
+    background: #080A0B;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+  }
+  .preview-box.hidden {
+    display: none;
+  }
+  .preview-title {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .code-block {
+    font-family: var(--font-mono, monospace);
+    font-size: 12px;
+    color: #48E59B;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 280px;
+    overflow-y: auto;
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .subhero { padding-top: 56px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .xml-card { padding: 24px; }
+  }
+</style>

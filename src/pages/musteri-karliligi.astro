@@ -10,11 +10,32 @@ const clientData = [
   { client: "DEF GmbH", revenue: "€1.4M", carbonCost: "€31K", margin: "%15.8", action: "Korunabilir", badge: "success" },
   { client: "XYZ GmbH", revenue: "€820K", carbonCost: "€79K", margin: "%3.1", action: "Kritik", badge: "danger" }
 ];
+const musteriSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://karbonfiyat.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Müşteri Kârlılığı",
+        "item": "https://karbonfiyat.com/musteri-karliligi"
+      }
+    ]
+  }
+];
 ---
 <Layout
   title={seoPages.musteriKarliligi.title}
   description={seoPages.musteriKarliligi.description}
   canonical={seoPages.musteriKarliligi.canonical}
+  schema={musteriSchemas}
 >
   <section class="container subhero">
     <span class="eyebrow">MÜŞTERİ KÂRLILIĞI</span>

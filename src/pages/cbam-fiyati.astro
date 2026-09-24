@@ -25,24 +25,44 @@ const cbamFaqItems = [
   }
 ];
 
-const cbamFaqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": cbamFaqItems.map(item => ({
-    "@type": "Question",
-    "name": item.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": item.answer
-    }
-  }))
-};
+const cbamSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": cbamFaqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://karbonfiyat.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "CBAM Fiyatı",
+        "item": "https://karbonfiyat.com/cbam-fiyati"
+      }
+    ]
+  }
+];
 ---
 <Layout
   title={seoPages.cbamFiyati.title}
   description={seoPages.cbamFiyati.description}
   canonical={seoPages.cbamFiyati.canonical}
-  schema={cbamFaqSchema}
+  schema={cbamSchemas}
 >
   <section class="container subhero">
     <span class="eyebrow">CBAM CERTIFICATE PRICING</span>

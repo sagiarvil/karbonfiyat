@@ -1,0 +1,26 @@
+{
+  "version": "2026.1",
+  "updatedAt": "2026-09-25T00:00:00Z",
+  "standard": "Regulation (EU) 2023/956",
+  "benchmarks": {
+    "steel": {
+      "crudeSteelEuAverage": 1.328,
+      "electricArcFurnaceScrap": 0.73,
+      "blastFurnaceBasicOxygen": 2.20,
+      "directReducedIronEaf": 1.35,
+      "unit": "tCO2e/t"
+    },
+    "aluminum": {
+      "unwroughtPrimaryElectrolysis": 7.90,
+      "secondaryRecycled": 0.70,
+      "euBenchmarkReference": 1.484,
+      "unit": "tCO2e/t"
+    },
+    "cement": {
+      "portlandCementCemI": 0.86,
+      "compositeCementCemII": 0.59,
+      "euBenchmarkReference": 0.693,
+      "unit": "tCO2e/t"
+    }
+  }
+}

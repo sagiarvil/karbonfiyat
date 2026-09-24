@@ -1,19 +1,30 @@
 # KarbonFiyat
-> KarbonFiyat, CBAM, EU ETS ve Türkiye ETS verilerini şirket maliyeti, marj, müşteri kârlılığı ve fiyatlama kararına çeviren finansal karar platformudur.
+> KarbonFiyat, Avrupa Birliği Sınırda Karbon Düzenleme Mekanizması (SKDM / CBAM), EU ETS ve Türkiye Emisyon Ticaret Sistemi (ETS) verilerini sanayi kuruluşlarının ürün maliyetine, brüt marjına, müşteri kârlılığına ve satış fiyatlama kararına dönüştüren kurumsal finansal karar platformudur.
 
-## Ana sayfalar
-- [Karbon fiyatı](https://karbonfiyat.com/karbon-fiyati): CBAM, EUA ve Türkiye ETS fiyat/statü ayrımı.
-- [CBAM fiyatı](https://karbonfiyat.com/cbam-fiyati): Resmî CBAM fiyatını ürün maliyetine çeviren hesaplama yüzeyi.
-- [Türkiye ETS](https://karbonfiyat.com/turkiye-ets): Türkiye ETS statüsü ve bütçe senaryoları.
-- [Karbon maliyet hesaplama](https://karbonfiyat.com/karbon-maliyet-hesaplama): Karbon maliyeti ve marj etkisi hesaplama aracı.
-- [Metodoloji](https://karbonfiyat.com/metodoloji): Kaynak, veri sınıflandırması ve hesaplama ilkeleri.
-- [Hakkımızda](https://karbonfiyat.com/hakkimizda): Yayıncı kimliği ve metodoloji sorumluluğu.
-- [İletişim](https://karbonfiyat.com/iletisim): Kurumsal iletişim kanalı.
-- [Gizlilik](https://karbonfiyat.com/gizlilik): Veri işleme ve gizlilik açıklaması.
+## Temel Fonksiyonlar ve Sayfalar
+- [Karbon Fiyatı İzleme Terminali](https://karbonfiyat.com/karbon-fiyati): CBAM resmî çeyreklik sertifika fiyatı, ICE Endex EU ETS (EUA) spot kotasyonu ve Türkiye ETS regülasyon statüsü takibi.
+- [CBAM Maliyet Hesaplama](https://karbonfiyat.com/cbam-fiyati): 2026 doğrudan mali yükümlülük dönemi için demir-çelik, alüminyum, çimento, gübre ve hidrojen sektörlerinde GTİP bazlı gömülü emisyon ve sertifika maliyeti simülasyonu.
+- [Türkiye ETS Simülasyonu](https://karbonfiyat.com/turkiye-ets): Türkiye Emisyon Ticaret Sistemi pilot ve kalıcı dönem fiyat senaryoları, tesis bütçesi ve serbest tahsisat etkisi.
+- [Karbon Maliyet Hesaplama & Carbon P&L](https://karbonfiyat.com/karbon-maliyet-hesaplama): İhracat tonajı, spesifik emisyon yoğunluğu (tCO₂e / ton) ve TCMB döviz kuru ile toplam maruziyet, birim ürün maliyet artışı ve kâr marjı erimesi hesaplama.
+- [Carbon P&L Gelir Tablosu Entegrasyonu](https://karbonfiyat.com/carbon-pnl): Karbon maliyetini satılan malın maliyeti (SMM), brüt kâr ve EBITDA katmanlarına bağlayan finansal model.
+- [Müşteri Kârlılığı Analizi](https://karbonfiyat.com/musteri-karliligi): Karbon yükümlülüğünü alıcı ve sipariş bazında ayrıştırarak sözleşme fiyatı revizyon ihtiyacını belirleme.
+- [Metodoloji ve Standartlar](https://karbonfiyat.com/metodoloji): TS EN ISO 14064-1, GHG Protocol ve AB CBAM Uygulama Tüzüğü standartlarına tam uyumlu deterministik hesaplama kuralları.
+- [Fiyatlandırma & Kurumsal Çözümler](https://karbonfiyat.com/fiyatlandirma): CBAM Ön Maliyet Analizi, Finansal Marj Simülasyonu ve Kurumsal Karbon P&L Sistem kurulumu.
 
-## Veri yaklaşımı
-Resmî, piyasa, tahmin ve kullanıcı senaryosu verileri birbirinden ayrı etiketlenir. Hesaplama motorları deterministik kurallarla çalışır; kaynak ve dönem bilgisi korunur.
+## Kapsanan GTİP Sektörleri (AB SKDM Kapsamı)
+1. Demir ve Çelik (GTİP Fasıl 72, 73): Kapsam 1 doğrudan emisyonlar ve Kapsam 2 elektrik emisyonları.
+2. Alüminyum (GTİP Fasıl 76): Elektroliz ve eritme prosesleri spesifik emisyon faktörleri.
+3. Çimento (GTİP Fasıl 2523): Klinker kalsinasyon ve kalsiyum karbonat ayrışması emisyonları.
+4. Gübre (GTİP Fasıl 31): Amonyak, nitrik asit ve üre üretimi sera gazı yoğunlukları.
+5. Hidrojen (GTİP 2804 10): Buhar metan reformlama ve elektroliz emisyon katsayıları.
+6. Elektrik (GTİP 2716): Şebeke emisyon faktörü maruziyeti.
 
-## Makine-okunabilir alternatif
-- [Markdown site özeti](https://karbonfiyat.com/index.md)
-- [Genişletilmiş site özeti](https://karbonfiyat.com/llms-full.txt)
+## Hesaplama Formülasyonu
+- Net CBAM Maliyeti = [İhracat Tonajı × Gömülü Emisyon Yoğunluğu (tCO₂e/ton) - Ücretsiz Tahsisat Düşüşü] × Resmî CBAM Fiyatı (€/tCO₂e) - Menşe Ülkede Ödenen Karbon Vergisi Mahsubu
+- Birim Ürün Maliyet Farkı = Net Karbon Maliyeti / İhracat Miktarı
+- Brüt Marj Erozyonu = (Eski Brüt Kâr - Net Karbon Maliyeti) / Toplam Satış Hasılatı
+
+## İletişim ve Doğrulama
+- Alan Adı: https://karbonfiyat.com
+- Resmî İndeks: https://karbonfiyat.com/sitemap.xml
+- Makine Formatı: https://karbonfiyat.com/llms-full.txt

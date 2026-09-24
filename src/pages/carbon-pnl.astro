@@ -12,11 +12,38 @@ const kpiHighlights = [
   { label: "Minimum Satış Fiyatı", desc: "Karbon maliyetini tam olarak absorbe eden başabaş veya hedef marjlı satış fiyatı." },
   { label: "Carbon Break-even Price", desc: "Satış fiyatı sabitken ürünün kârdan zarara geçtiği eşik karbon kotasyonu." }
 ];
+const pnlSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://karbonfiyat.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Carbon P&L",
+        "item": "https://karbonfiyat.com/carbon-pnl"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FinancialProduct",
+    "name": "Carbon P&L Gelir Tablosu Modellemesi",
+    "description": "Karbon maliyetinin ürün maliyeti, brüt marj, müşteri kârlılığı ve EBITDA üzerindeki etkisini modelleyen finansal karar altyapısı."
+  }
+];
 ---
 <Layout
   title={seoPages.carbonPnl.title}
   description={seoPages.carbonPnl.description}
   canonical={seoPages.carbonPnl.canonical}
+  schema={pnlSchemas}
 >
   <section class="container subhero">
     <span class="eyebrow">CARBON FINANCIAL MODELING</span>

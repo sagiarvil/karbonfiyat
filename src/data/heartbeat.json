@@ -1,0 +1,10 @@
+{
+  "status": "HEALTHY_OPERATIONAL",
+  "heartbeatAt": "2026-09-25T00:12:00Z",
+  "allSystems": {
+    "rssFeed": "ACTIVE",
+    "atomFeed": "ACTIVE",
+    "cbamXmlEngine": "ACTIVE",
+    "lcaBenchmarks": "ACTIVE"
+  }
+}
