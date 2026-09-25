@@ -1,12 +1,12 @@
 'use strict';
 
-const CACHE_NAME = 'karbonfiyat-pwa-v8';
+const CACHE_NAME = 'karbonfiyat-pwa-v9';
 const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.webmanifest',
-  '/logo/karbonfiyat-logo.png',
-  '/favicon.svg'
+  '/logo/karbonfiyat-logo.png?v=20260925',
+  '/favicon.svg?v=20260925'
 ];
 
 self.addEventListener('install', (event) => {

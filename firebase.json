@@ -102,6 +102,28 @@
         ]
       },
       {
+        "source": "/logo/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "/favicon.svg",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "image/svg+xml"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, must-revalidate"
+          }
+        ]
+      },
+      {
         "source": "/.well-known/assetlinks.json",
         "headers": [
           {
