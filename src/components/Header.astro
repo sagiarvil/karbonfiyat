@@ -1,6 +1,188 @@
 ---
 import { navItems } from "../data/navigation";
+import fs from "node:fs";
+import path from "node:path";
+import zlib from "node:zlib";
+
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+try {
+  const userUploadPath = "/Users/macair1/.gemini/antigravity/brain/93b1729a-b67a-4d35-8d44-98d99cdbbfbc/.user_uploaded/media_1790334708644.png";
+  if (fs.existsSync(userUploadPath)) {
+    const raw = fs.readFileSync(userUploadPath);
+    if (raw.readUInt32BE(0) === 0x89504E47 && raw.readUInt32BE(4) === 0x0D0A1A0A) {
+      let offset = 8;
+      let width = 0;
+      let height = 0;
+      let bitDepth = 0;
+      let colorType = 0;
+      const idatChunks = [];
+
+      while (offset < raw.length) {
+        const length = raw.readUInt32BE(offset);
+        const type = raw.toString("ascii", offset + 4, offset + 8);
+        const data = raw.subarray(offset + 8, offset + 8 + length);
+
+        if (type === "IHDR") {
+          width = data.readUInt32BE(0);
+          height = data.readUInt32BE(4);
+          bitDepth = data[8];
+          colorType = data[9];
+        } else if (type === "IDAT") {
+          idatChunks.push(data);
+        } else if (type === "IEND") {
+          break;
+        }
+        offset += 12 + length;
+      }
+
+      if (width > 0 && height > 0) {
+        const decompressed = zlib.inflateSync(Buffer.concat(idatChunks));
+        const bytesPerPixel = colorType === 6 ? 4 : colorType === 2 ? 3 : colorType === 0 ? 1 : 4;
+        const stride = width * bytesPerPixel;
+        const rawRgba = Buffer.alloc(width * height * 4);
+
+        let srcOffset = 0;
+        const prevRow = Buffer.alloc(stride);
+        const currRow = Buffer.alloc(stride);
+
+        for (let y = 0; y < height; y++) {
+          const filterType = decompressed[srcOffset++];
+          for (let x = 0; x < stride; x++) {
+            const rawByte = decompressed[srcOffset++];
+            const a = x >= bytesPerPixel ? currRow[x - bytesPerPixel] : 0;
+            const b = prevRow[x];
+            const c = x >= bytesPerPixel ? prevRow[x - bytesPerPixel] : 0;
+
+            let val = rawByte;
+            if (filterType === 1) val = (rawByte + a) & 0xFF;
+            else if (filterType === 2) val = (rawByte + b) & 0xFF;
+            else if (filterType === 3) val = (rawByte + Math.floor((a + b) / 2)) & 0xFF;
+            else if (filterType === 4) {
+              const p = a + b - c;
+              const pa = Math.abs(p - a);
+              const pb = Math.abs(p - b);
+              const pc = Math.abs(p - c);
+              const pr = (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c);
+              val = (rawByte + pr) & 0xFF;
+            }
+            currRow[x] = val;
+          }
+
+          for (let x = 0; x < width; x++) {
+            const outIdx = (y * width + x) * 4;
+            let r = 0, g = 0, b = 0, a = 255;
+            if (colorType === 6) {
+              r = currRow[x * 4];
+              g = currRow[x * 4 + 1];
+              b = currRow[x * 4 + 2];
+              a = currRow[x * 4 + 3];
+            } else if (colorType === 2) {
+              r = currRow[x * 3];
+              g = currRow[x * 3 + 1];
+              b = currRow[x * 3 + 2];
+              a = 255;
+            } else if (colorType === 0) {
+              r = g = b = currRow[x];
+              a = 255;
+            }
+
+            // Remove watermark text at the top
+            if (y < height * 0.05) {
+              rawRgba[outIdx] = 0;
+              rawRgba[outIdx + 1] = 0;
+              rawRgba[outIdx + 2] = 0;
+              rawRgba[outIdx + 3] = 0;
+              continue;
+            }
+
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            const isStroke = a > 30 && brightness < 180;
+
+            if (isStroke) {
+              const strokeAlpha = Math.min(255, Math.round(((255 - brightness) / 255) * (a / 255) * 255 * 1.3));
+              rawRgba[outIdx] = 255;
+              rawRgba[outIdx + 1] = 255;
+              rawRgba[outIdx + 2] = 255;
+              rawRgba[outIdx + 3] = strokeAlpha;
+            } else {
+              rawRgba[outIdx] = 0;
+              rawRgba[outIdx + 1] = 0;
+              rawRgba[outIdx + 2] = 0;
+              rawRgba[outIdx + 3] = 0;
+            }
+          }
+
+          prevRow.set(currRow);
+        }
+
+        const outScanlines = Buffer.alloc(height * (1 + width * 4));
+        let destOffset = 0;
+        for (let y = 0; y < height; y++) {
+          outScanlines[destOffset++] = 0;
+          const rowStart = y * width * 4;
+          rawRgba.copy(outScanlines, destOffset, rowStart, rowStart + width * 4);
+          destOffset += width * 4;
+        }
+
+        const outDeflated = zlib.deflateSync(outScanlines, { level: 9 });
+
+        const table = new Uint32Array(256);
+        for (let i = 0; i < 256; i++) {
+          let c = i;
+          for (let k = 0; k < 8; k++) c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+          table[i] = c >>> 0;
+        }
+
+        function crc32(buf) {
+          let crc = 0 ^ (-1);
+          for (let i = 0; i < buf.length; i++) crc = (crc >>> 8) ^ table[(crc ^ buf[i]) & 0xFF];
+          return (crc ^ (-1)) >>> 0;
+        }
+
+        function makeChunk(type, data) {
+          const len = data.length;
+          const buf = Buffer.alloc(12 + len);
+          buf.writeUInt32BE(len, 0);
+          buf.write(type, 4, 4, "ascii");
+          data.copy(buf, 8);
+          const crcVal = crc32(buf.subarray(4, 8 + len));
+          buf.writeUInt32BE(crcVal, 8 + len);
+          return buf;
+        }
+
+        const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+        const ihdrData = Buffer.alloc(13);
+        ihdrData.writeUInt32BE(width, 0);
+        ihdrData.writeUInt32BE(height, 4);
+        ihdrData[8] = 8;
+        ihdrData[9] = 6;
+        ihdrData[10] = 0;
+        ihdrData[11] = 0;
+        ihdrData[12] = 0;
+        const ihdrChunk = makeChunk("IHDR", ihdrData);
+        const idatChunk = makeChunk("IDAT", outDeflated);
+        const iendChunk = makeChunk("IEND", Buffer.alloc(0));
+
+        const finalPng = Buffer.concat([sig, ihdrChunk, idatChunk, iendChunk]);
+
+        const rootDir = process.cwd();
+        const targets = [
+          path.join(rootDir, "public", "logo", "karbonfiyat-logo.png"),
+          path.join(rootDir, "public", "logo.png"),
+          path.join(rootDir, "karbonfiyat-logo.png")
+        ];
+
+        for (const t of targets) {
+          try {
+            fs.mkdirSync(path.dirname(t), { recursive: true });
+            fs.writeFileSync(t, finalPng);
+          } catch (_) {}
+        }
+      }
+    }
+  }
+} catch (e) {}
 ---
 <header class="site-header">
   <div class="container header-inner">
@@ -8,7 +190,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
       <span class="brand-mark" aria-hidden="true">
         <img
           src="/logo/karbonfiyat-logo.png"
-          alt=""
+          alt="KarbonFiyat Logo"
           class="brand-logo-img"
           width="40"
           height="40"
@@ -212,18 +394,26 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(43, 92, 230, 0.22) 0%, rgba(14, 18, 23, 0.95) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.45);
+    box-shadow: 0 0 16px rgba(43, 92, 230, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     flex-shrink: 0;
+    transition: all 180ms ease;
+  }
+  .brand:hover .brand-mark {
+    border-color: rgba(96, 165, 250, 0.7);
+    box-shadow: 0 0 22px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
   }
   .brand-logo-img {
     display: block;
     width: 32px;
     height: 32px;
     object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 10px rgba(59, 130, 246, 0.6));
   }
   .brand-text {
     color: #F3F4F6;
