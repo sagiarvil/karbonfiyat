@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KarbonFiyat — Piyasa, SKDM ve ETS İstihbarat Akışı</title>
+    <link>https://karbonfiyat.com</link>
+    <description>Güncel karbon fiyatları, CBAM / SKDM maliyet analizleri ve Türkiye ETS regülasyon bildirimleri</description>
+    <language>tr-TR</language>
+    <atom:link href="https://karbonfiyat.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
+    <lastBuildDate>Thu, 25 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Canlı Karbon Fiyatı ve SKDM Sertifika Bedeli</title>
+      <link>https://karbonfiyat.com/karbon-fiyati</link>
+      <guid isPermaLink="true">https://karbonfiyat.com/karbon-fiyati</guid>
+      <description><![CDATA[Avrupa Birliği EUA vadeli ve spot karbon fiyatı, günlük değişim oranları ve 2026 SKDM projeksiyonları.]]></description>
+      <content:encoded><![CDATA[Canlı karbon fiyatı, Avrupa Enerji Borsası (EEX) ve ICE üzerinde işlem gören EU ETS Emisyon Tahsisatlarının (EUA) ton başına Euro cinsinden anlık değeridir.]]></content:encoded>
+      <pubDate>Thu, 25 Sep 2026 00:00:00 GMT</pubDate>
+      <author>official@karbonfiyat.com (KarbonFiyat)</author>
+      <category>service</category>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/pages/karbon-fiyati.md"/>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/mobile/karbon-fiyati-mobile.md" title="Mobile LLM Graph"/>
+    </item>
+    <item>
+      <title>SKDM / CBAM Karbon Sertifika Fiyatı ve Vergi Projeksiyonu</title>
+      <link>https://karbonfiyat.com/cbam-fiyati</link>
+      <guid isPermaLink="true">https://karbonfiyat.com/cbam-fiyati</guid>
+      <description><![CDATA[Sınırda Karbon Düzenleme Mekanizması (CBAM) sertifika maliyeti, haftalık ortalama hesaplama yöntemi ve sektör bazlı etki.]]></description>
+      <content:encoded><![CDATA[CBAM (SKDM) sertifika fiyatı; AB Sınırda Karbon Düzenleme Mekanizması uyarınca ithal edilen ürünlerin gömülü emisyonları için ödenmesi gereken birim maliyettir.]]></content:encoded>
+      <pubDate>Thu, 25 Sep 2026 00:00:00 GMT</pubDate>
+      <author>official@karbonfiyat.com (KarbonFiyat)</author>
+      <category>service</category>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/pages/cbam-fiyati.md"/>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/mobile/cbam-fiyati-mobile.md" title="Mobile LLM Graph"/>
+    </item>
+  </channel>
+</rss>

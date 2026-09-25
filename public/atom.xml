@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>KarbonFiyat — Piyasa ve SKDM İstihbarat Akışı</title>
+  <link href="https://karbonfiyat.com/atom.xml" rel="self"/>
+  <link href="https://karbonfiyat.com/"/>
+  <updated>2026-09-25T00:00:00Z</updated>
+  <id>https://karbonfiyat.com/</id>
+  <author>
+    <name>KarbonFiyat</name>
+    <email>official@karbonfiyat.com</email>
+  </author>
+  <entry>
+    <title>Canlı Karbon Fiyatı ve SKDM Sertifika Bedeli</title>
+    <link href="https://karbonfiyat.com/karbon-fiyati"/>
+    <id>https://karbonfiyat.com/karbon-fiyati</id>
+    <updated>2026-09-25T00:00:00Z</updated>
+    <summary>Avrupa Birliği EUA vadeli ve spot karbon fiyatı, günlük değişim oranları ve 2026 SKDM projeksiyonları.</summary>
+    <content type="html"><![CDATA[Canlı karbon fiyatı, Avrupa Enerji Borsası (EEX) ve ICE üzerinde işlem gören EU ETS Emisyon Tahsisatlarının (EUA) ton başına Euro cinsinden anlık değeridir.]]></content>
+  </entry>
+</feed>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KarbonFiyat Mobile &amp; Voice Intelligence Feed</title>
+    <link>https://karbonfiyat.com</link>
+    <description>Mobil cihazlar, sesli arama ve on-device AI için 29 kelimelik doğrudan yanıt akışı</description>
+    <language>tr-TR</language>
+    <atom:link href="https://karbonfiyat.com/mobile/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
+    <lastBuildDate>Thu, 25 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Canlı Karbon Fiyatı ve SKDM Sertifika Bedeli</title>
+      <link>https://karbonfiyat.com/karbon-fiyati</link>
+      <guid isPermaLink="true">https://karbonfiyat.com/karbon-fiyati#mobile</guid>
+      <description><![CDATA[Karbon fiyatı; Avrupa Birliği ETS piyasasında ton başına işlem gören ve 2026'da SKDM ile Türkiye ihracatçılarını doğrudan finansal yükümlülüğe tabi tutan piyasa referans değeridir.]]></description>
+      <content:encoded><![CDATA[Karbon fiyatı; Avrupa Birliği ETS piyasasında ton başına işlem gören ve 2026'da SKDM ile Türkiye ihracatçılarını doğrudan finansal yükümlülüğe tabi tutan piyasa referans değeridir.]]></content:encoded>
+      <pubDate>Thu, 25 Sep 2026 00:00:00 GMT</pubDate>
+      <author>official@karbonfiyat.com (KarbonFiyat Mobile)</author>
+      <category>service</category>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/mobile/karbon-fiyati-mobile.md" title="Mobile Voice Graph"/>
+    </item>
+    <item>
+      <title>SKDM / CBAM Sertifika Fiyatı ve Mahsup Kuralları</title>
+      <link>https://karbonfiyat.com/cbam-fiyati</link>
+      <guid isPermaLink="true">https://karbonfiyat.com/cbam-fiyati#mobile</guid>
+      <description><![CDATA[SKDM sertifika fiyatı, önceki haftanın EUA açık artırma ortalaması üzerinden hesaplanır ve ithal edilen gömülü emisyonlar için AB yetkili makamlarına teslim edilir.]]></description>
+      <content:encoded><![CDATA[SKDM sertifika fiyatı, önceki haftanın EUA açık artırma ortalaması üzerinden hesaplanır ve ithal edilen gömülü emisyonlar için AB yetkili makamlarına teslim edilir.]]></content:encoded>
+      <pubDate>Thu, 25 Sep 2026 00:00:00 GMT</pubDate>
+      <author>official@karbonfiyat.com (KarbonFiyat Mobile)</author>
+      <category>service</category>
+      <atom:link rel="alternate" type="text/markdown" href="https://karbonfiyat.com/llms/mobile/cbam-fiyati-mobile.md" title="Mobile Voice Graph"/>
+    </item>
+  </channel>
+</rss>

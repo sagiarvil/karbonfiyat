@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://karbonfiyat.com/</loc>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" href="android-app://com.karbonfiyat.app/karbonfiyat/home"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" href="ios-app://9XYZABC123.com.karbonfiyat.app/karbonfiyat/home"/>
+  </url>
+  <url>
+    <loc>https://karbonfiyat.com/karbon-fiyati</loc>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" href="android-app://com.karbonfiyat.app/karbonfiyat/market/live"/>
+  </url>
+  <url>
+    <loc>https://karbonfiyat.com/karbon-maliyet-hesaplama</loc>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" href="android-app://com.karbonfiyat.app/karbonfiyat/calc/loss"/>
+  </url>
+</urlset>

@@ -243,13 +243,47 @@ h1,h2,h3 { letter-spacing: -0.03em; font-weight: 700; }
 
 .hr { height: 1px; background: var(--border-soft); }
 
+@media (max-width: 880px) {
+  body {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* MOBILE-FIRST MANDATE v8.0 STYLES */
+.hero-answer-engine.mobile-thumb-safe {
+  border: 1px solid rgba(43, 92, 230, 0.35);
+  background: rgba(43, 92, 230, 0.06);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 16px 0 24px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #E8EAED;
+}
+
+.hero-answer-engine.mobile-thumb-safe .answer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #60A5FA;
+  margin-bottom: 8px;
+}
+
 @media (max-width: 768px) {
   .container { width: min(100% - 32px, 1180px); padding: 0; }
   .display { font-size: clamp(40px, 9vw, 52px); line-height: 1.0; }
   .card { border-radius: 16px; }
-  .btn { width: 100%; }
+  .btn { width: 100%; min-height: 48px; }
+  button, input, select, a.mobile-link {
+    min-height: 48px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
+

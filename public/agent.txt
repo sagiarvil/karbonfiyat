@@ -1,0 +1,41 @@
+# https://karbonfiyat.com/agent.txt
+# AI Agent Manifest v1.0 — MANDATE-SEO-GEO-MOBILE-FIRST-2026-V8 Uyumlu
+
+[identity]
+name: KarbonFiyat
+type: Organization
+wikidata: Q11589432
+canonical: https://karbonfiyat.com
+mobile_app_android: com.karbonfiyat.app
+mobile_app_ios: com.karbonfiyat.app
+
+[capabilities]
+read: true
+cite: true
+transact: true
+schedule: false
+verify: true
+mobile_deep_link: true
+
+[protocols]
+mcp: https://karbonfiyat.com/mcp
+mcp_mobile: https://karbonfiyat.com/mcp/mobile
+a2a: https://karbonfiyat.com/.well-known/agent.json
+openapi: https://karbonfiyat.com/api/openapi.json
+app_links_android: https://karbonfiyat.com/.well-known/assetlinks.json
+app_links_ios: https://karbonfiyat.com/.well-known/apple-app-site-association
+
+[preferred_content]
+markdown_root: https://karbonfiyat.com/llms.txt
+deep_graphs: https://karbonfiyat.com/llms/pages/
+mobile_deep_graphs: https://karbonfiyat.com/llms/mobile/
+rss: https://karbonfiyat.com/feed.xml
+mobile_rss: https://karbonfiyat.com/mobile/feed.xml
+json_feed: https://karbonfiyat.com/feed.json
+sitemap: https://karbonfiyat.com/sitemap.xml
+mobile_sitemap: https://karbonfiyat.com/sitemap-mobile.xml
+
+[contact]
+email: official@karbonfiyat.com
+human: https://karbonfiyat.com/iletisim
+phone: tel:+908503000000

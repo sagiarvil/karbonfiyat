@@ -1,0 +1,41 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "protocolVersion": "2024-11-05",
+    "serverInfo": {
+      "name": "karbonfiyat-mcp-server",
+      "version": "1.0.0"
+    },
+    "tools": [
+      {
+        "name": "get_carbon_price",
+        "description": "Canlı EU ETS EUA ve SKDM referans karbon fiyatını ton CO2e başına getirir.",
+        "inputSchema": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "calculate_cbam_cost",
+        "description": "Tonaj ve emisyon faktörü üzerinden net CBAM yükümlülüğünü hesaplar.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "volumeTonnes": { "type": "number", "description": "Üretim tonajı" },
+            "emissionIntensity": { "type": "number", "description": "tCO2e / ton" },
+            "carbonPriceEur": { "type": "number", "description": "Karbon fiyatı (EUR)" }
+          },
+          "required": ["volumeTonnes", "emissionIntensity"]
+        }
+      },
+      {
+        "name": "get_llm_graph",
+        "description": "Belirli bir sayfa rotası için derin semantik Markdown bilgi grafını döner.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "slug": { "type": "string", "description": "Sayfa slug adı" }
+          },
+          "required": ["slug"]
+        }
+      }
+    ]
+  }
+}

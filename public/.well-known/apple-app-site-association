@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "9XYZABC123.com.karbonfiyat.app",
+        "paths": ["*"]
+      }
+    ]
+  }
+}

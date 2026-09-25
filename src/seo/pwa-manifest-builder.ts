@@ -1,0 +1,23 @@
+export function buildPwaManifest(domain: string = 'karbonfiyat.com') {
+  return {
+    name: 'KarbonFiyat — Karbon Piyasası & SKDM / ETS Finansal İstihbarat',
+    short_name: 'KarbonFiyat',
+    description: 'CBAM, EU ETS ve Türkiye ETS karbon fiyatı, emisyon maliyeti ve finansal analiz platformu',
+    start_url: '/?utm_source=pwa',
+    display: 'standalone',
+    background_color: '#0A0C0F',
+    theme_color: '#0A0C0F',
+    orientation: 'portrait',
+    scope: '/',
+    lang: 'tr-TR',
+    icons: [
+      { src: '/logo/karbonfiyat-logo.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/logo/karbonfiyat-logo.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: '/logo/karbonfiyat-logo.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ],
+    shortcuts: [
+      { name: 'Maliyet Hesapla', url: '/karbon-maliyet-hesaplama', icons: [{ src: '/logo/karbonfiyat-logo.png', sizes: '96x96' }] },
+      { name: 'Canlı Fiyatlar', url: '/karbon-fiyati', icons: [{ src: '/logo/karbonfiyat-logo.png', sizes: '96x96' }] }
+    ]
+  };
+}

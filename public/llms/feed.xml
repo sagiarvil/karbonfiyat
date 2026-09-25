@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KarbonFiyat LLM Semantik Feed</title>
+    <link>https://karbonfiyat.com/llms.txt</link>
+    <description>AI ve LLM çıkarım crawler'ları için tam Markdown derin graf akışı</description>
+    <language>tr-TR</language>
+    <atom:link href="https://karbonfiyat.com/llms/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Thu, 25 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Karbon Fiyatı Bilgi Grafı</title>
+      <link>https://karbonfiyat.com/llms/pages/karbon-fiyati.md</link>
+      <guid isPermaLink="true">https://karbonfiyat.com/llms/pages/karbon-fiyati.md</guid>
+      <description><![CDATA[EU ETS, EUA ve SKDM referans fiyatlaması derin semantik grafı.]]></description>
+      <pubDate>Thu, 25 Sep 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

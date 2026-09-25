@@ -1,0 +1,17 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "KarbonFiyat — Piyasa, SKDM ve ETS İstihbarat Akışı",
+  "home_page_url": "https://karbonfiyat.com",
+  "feed_url": "https://karbonfiyat.com/feed.json",
+  "description": "Güncel karbon fiyatları, CBAM / SKDM maliyet analizleri ve Türkiye ETS bildirimleri",
+  "items": [
+    {
+      "id": "https://karbonfiyat.com/karbon-fiyati",
+      "url": "https://karbonfiyat.com/karbon-fiyati",
+      "title": "Canlı Karbon Fiyatı ve SKDM Sertifika Bedeli",
+      "content_html": "<p>Canlı karbon fiyatı, Avrupa Enerji Borsası (EEX) ve ICE üzerinde işlem gören EU ETS Emisyon Tahsisatlarının (EUA) ton başına Euro cinsinden anlık değeridir.</p>",
+      "summary": "Avrupa Birliği EUA vadeli ve spot karbon fiyatı, günlük değişim oranları ve 2026 SKDM projeksiyonları.",
+      "date_published": "2026-09-25T00:00:00Z"
+    }
+  ]
+}

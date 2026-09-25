@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "origin": "https://karbonfiyat.com",
+  "routes": [
+    { "web": "/", "app": "karbonfiyat://home" },
+    { "web": "/karbon-fiyati", "app": "karbonfiyat://market/live" },
+    { "web": "/cbam-fiyati", "app": "karbonfiyat://cbam/rates" },
+    { "web": "/turkiye-ets", "app": "karbonfiyat://ets/regulation" },
+    { "web": "/karbon-maliyet-hesaplama", "app": "karbonfiyat://calc/loss" },
+    { "web": "/fiyatlandirma", "app": "karbonfiyat://pricing" },
+    { "web": "/workspace", "app": "karbonfiyat://workspace" }
+  ]
+}

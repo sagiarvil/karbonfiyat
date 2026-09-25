@@ -1,0 +1,45 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "protocolVersion": "2024-11-05",
+    "serverInfo": {
+      "name": "karbonfiyat-mobile-mcp",
+      "version": "1.0.0"
+    },
+    "tools": [
+      {
+        "name": "get_voice_answer",
+        "description": "Sesli sorgular için 29 kelimelik net ve doğrudan yanıt döner.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": { "type": "string", "description": "Kullanıcının sesli sorusu" }
+          },
+          "required": ["query"]
+        }
+      },
+      {
+        "name": "get_mobile_llm_graph",
+        "description": "Mobil ve sesli arama için optimize edilmiş derin bilgi grafı döner.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "slug": { "type": "string", "description": "Sayfa slug adı" }
+          },
+          "required": ["slug"]
+        }
+      },
+      {
+        "name": "trigger_app_deep_link",
+        "description": "Mobil uygulama deep link yönlendirmesini tetikler.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "screen": { "type": "string", "description": "Hedef uygulama ekranı" }
+          },
+          "required": ["screen"]
+        }
+      }
+    ]
+  }
+}

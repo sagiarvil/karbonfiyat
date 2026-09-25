@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.karbonfiyat.app",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:A5:0F:8E:2A:B1:90:85:2F:56:4C:98:B7:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12"
+      ]
+    }
+  }
+]

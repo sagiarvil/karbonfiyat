@@ -1,7 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#060707"/>
-  <rect x="4" y="4" width="56" height="56" rx="12" stroke="#F4F5F4" stroke-opacity="0.18" stroke-width="2"/>
-  <rect x="16" y="18" width="32" height="5" rx="2.5" fill="#F4F5F4"/>
-  <rect x="16" y="29.5" width="22" height="5" rx="2.5" fill="#F4F5F4" fill-opacity="0.75"/>
-  <rect x="16" y="41" width="32" height="5" rx="2.5" fill="#F4F5F4"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#3B82F6" flood-opacity="0.6"/>
+    </filter>
+    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="60%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Clean Arrow Symbol - Inverted High Contrast for Dark Backgrounds -->
+  <!-- Shaft -->
+  <line x1="96" y1="416" x2="420" y2="92" stroke="url(#arrowGrad)" stroke-width="36" stroke-linecap="square" filter="url(#glow)"/>
+
+  <!-- Arrowhead (hollow outline pointing up-right) -->
+  <path d="M 320 84 L 428 84 L 428 192 L 392 192 L 392 124 L 320 124 Z" fill="#FFFFFF" filter="url(#glow)"/>
+  <polygon points="405,107 495,17 483,129 445,91" fill="none" stroke="#FFFFFF" stroke-width="36" stroke-linejoin="miter" stroke-miterlimit="4" filter="url(#glow)"/>
+
+  <!-- Fletching / Tail Feathers -->
+  <path d="M 64 360 L 152 448 L 124 476 L 36 388 Z" fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linejoin="miter" stroke-miterlimit="4" filter="url(#glow)"/>
+  <path d="M 120 304 L 208 392 L 180 420 L 92 332 Z" fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linejoin="miter" stroke-miterlimit="4" filter="url(#glow)"/>
 </svg>
