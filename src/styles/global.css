@@ -287,3 +287,52 @@ h1,h2,h3 { letter-spacing: -0.03em; font-weight: 700; }
   * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
 
+
+
+/* ============================================================
+   TERMINAL SCROLL REVEAL & GOLD TABLET / BILLBOARD ANIMATIONS
+   ============================================================ */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Sarı / Gold tabela blokları ve kartları için özel ışıltılı yükselme */
+.gold-board-reveal {
+  opacity: 0;
+  transform: translateY(32px) scale(0.985);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.7s ease, border-color 0.7s ease;
+  will-change: opacity, transform;
+}
+
+.gold-board-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  border-color: rgba(245, 158, 11, 0.32) !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), 0 0 28px rgba(245, 158, 11, 0.12) !important;
+}
+
+/* Stagger gecikmeleri */
+[data-delay="100"], .delay-100 { transition-delay: 100ms; }
+[data-delay="150"], .delay-150 { transition-delay: 150ms; }
+[data-delay="200"], .delay-200 { transition-delay: 200ms; }
+[data-delay="250"], .delay-250 { transition-delay: 250ms; }
+[data-delay="300"], .delay-300 { transition-delay: 300ms; }
+[data-delay="400"], .delay-400 { transition-delay: 400ms; }
+[data-delay="500"], .delay-500 { transition-delay: 500ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .gold-board-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

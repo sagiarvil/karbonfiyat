@@ -62,8 +62,8 @@ const steps = [
     </div>
 
     <div class="steps-grid">
-      {steps.map((s) => (
-        <article class={`step-card ${s.isPrimary ? "highlight-step" : ""}`}>
+      {steps.map((s, idx) => (
+        <article class={`step-card ${s.isPrimary ? "highlight-step gold-board-reveal" : "reveal-on-scroll"}`} data-delay={(idx + 1) * 120}>
           <div class="card-head">
             <span class="step-badge mono">{s.step}</span>
             <span class={`step-tier ${s.isPrimary ? "tier-primary" : ""}`}>{s.badge}</span>

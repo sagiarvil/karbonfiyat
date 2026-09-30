@@ -1,0 +1,382 @@
+---
+interface MetricItem {
+  id: string;
+  target: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+  sub: string;
+  tag: string;
+  icon: string;
+}
+
+const metrics: MetricItem[] = [
+  {
+    id: "metric-users",
+    target: 10000,
+    suffix: "+",
+    label: "Modellenen Emisyon (tCO2e)",
+    sub: "Sanayi ihracatçıları için simüle edilen ve koruma altına alınan emisyon hacmi",
+    tag: "10.000+ GÜVEN",
+    icon: "activity"
+  },
+  {
+    id: "metric-accuracy",
+    target: 100,
+    prefix: "%",
+    label: "Deterministik Yasal Hesap",
+    sub: "AB 2023/956 ve TR-ETS kurallarıyla %100 birebir doğrulanan sıfır sapmalı model",
+    tag: "%100 GÜVENCE",
+    icon: "shield-check"
+  },
+  {
+    id: "metric-risk",
+    target: 140,
+    prefix: "€",
+    suffix: "M+",
+    label: "Hesaba Katılan Finansal Risk",
+    sub: "Şirket bilançosunda marj kaybını önlemek için modellenen potansiyel karbon yükü",
+    tag: "BİLANÇO KALKANI",
+    icon: "trending-up"
+  },
+  {
+    id: "metric-speed",
+    target: 24,
+    suffix: " Saat",
+    label: "Aynı Gün / Hızlı Teslimat",
+    sub: "Ön analiz başvurularında 24 saat içinde yönetim kurulu karar özeti ve aksiyon planı",
+    tag: "AYNI GÜN İŞLEM",
+    icon: "zap"
+  }
+];
+---
+
+<section class="trust-metrics-section reveal-on-scroll" id="istatistikler">
+  <div class="container">
+    <div class="metrics-terminal-board gold-board-reveal">
+      <div class="board-header">
+        <div class="board-status">
+          <span class="status-dot-pulse" aria-hidden="true"></span>
+          <span class="status-text">CANLI İSTATİSTİK &amp; GÜVEN SAYAÇLARI</span>
+        </div>
+        <span class="board-badge">TERMINAL VERİ KATMANI · V3.6</span>
+      </div>
+
+      <div class="metrics-grid">
+        {metrics.map((m, idx) => (
+          <div class="metric-counter-card" data-delay={(idx + 1) * 100}>
+            <div class="metric-card-top">
+              <span class="metric-tag">{m.tag}</span>
+              <div class="metric-icon-wrap" aria-hidden="true">
+                {m.icon === 'activity' && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                )}
+                {m.icon === 'shield-check' && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                )}
+                {m.icon === 'trending-up' && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                )}
+                {m.icon === 'zap' && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                )}
+              </div>
+            </div>
+
+            <div class="counter-display">
+              <span class="counter-value"
+                data-counter-target={m.target}
+                data-prefix={m.prefix || ""}
+                data-suffix={m.suffix || ""}
+              >
+                {m.prefix || ""}0{m.suffix || ""}
+              </span>
+            </div>
+
+            <h3 class="metric-label">{m.label}</h3>
+            <p class="metric-sub">{m.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="board-footer">
+        <span class="footer-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Tüm metrikler TS EN ISO 14064-1 ve AB 2023/956 mevzuat parametreleriyle canlı senkronize edilmektedir.
+        </span>
+        <a href="/#basvuru" class="footer-cta">
+          <span>Risk Raporunu Başlat</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function initCounters() {
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function animateCounter(el) {
+      const target = parseFloat(el.getAttribute('data-counter-target') || '0');
+      const prefix = el.getAttribute('data-prefix') || '';
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1800; // ms
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // easeOutExpo
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const currentVal = Math.floor(ease * target);
+
+        el.textContent = prefix + formatNumber(currentVal) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = prefix + formatNumber(target) + suffix;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll('.counter-value');
+          counters.forEach(counter => {
+            if (!counter.classList.contains('counted')) {
+              counter.classList.add('counted');
+              animateCounter(counter);
+            }
+          });
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    const section = document.querySelector('.trust-metrics-section');
+    if (section) {
+      observer.observe(section);
+    }
+  })();
+</script>
+
+<style>
+  .trust-metrics-section {
+    padding: 36px 0 24px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .metrics-terminal-board {
+    background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.09) 0%, rgba(16, 19, 24, 0.95) 60%), #0A0C0F;
+    border: 1px solid rgba(245, 158, 11, 0.22);
+    border-radius: 20px;
+    padding: 24px 28px;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metrics-terminal-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent);
+  }
+
+  .board-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .board-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .status-dot-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #F59E0B;
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    animation: goldPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+  }
+
+  @keyframes goldPulse {
+    0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+  }
+
+  .status-text {
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    color: #FBBF24;
+    text-transform: uppercase;
+  }
+
+  .board-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #9CA3AF;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 992px) {
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 580px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .metric-counter-card {
+    background: rgba(20, 24, 31, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 18px 20px;
+    transition: all 200ms ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .metric-counter-card:hover {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 158, 11, 0.08);
+  }
+
+  .metric-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .metric-tag {
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #FBBF24;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
+
+  .metric-icon-wrap {
+    color: #F59E0B;
+    opacity: 0.85;
+  }
+
+  .counter-display {
+    margin: 4px 0;
+  }
+
+  .counter-value {
+    font-size: clamp(30px, 3.2vw, 38px);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .metric-label {
+    font-size: 14px;
+    font-weight: 650;
+    color: #F3F4F6;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .metric-sub {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .board-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    flex-wrap: wrap;
+  }
+
+  .footer-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    color: #9CA3AF;
+  }
+
+  .footer-note svg {
+    color: #F59E0B;
+    flex-shrink: 0;
+  }
+
+  .footer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 650;
+    color: #FBBF24;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    transition: all 160ms ease;
+  }
+
+  .footer-cta:hover {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.45);
+    color: #FFFFFF;
+    transform: translateX(2px);
+  }
+</style>

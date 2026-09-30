@@ -183,6 +183,18 @@ try {
     }
   }
 } catch (e) {}
+
+
+const navIcons: Record<string, string> = {
+  terminal: '<polyline points="4 17 10 11 4 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="19" x2="20" y2="19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  'trending-up': '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17 6 23 6 23 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  'file-check': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m9 15 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  calculator: '<rect width="16" height="20" x="4" y="2" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="8" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="1.8"/><line x1="16" y1="14" x2="16" y2="18" stroke="currentColor" stroke-width="1.8"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  layers: '<path d="m12 2 10 5-10 5L2 7l10-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m2 12 10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m2 17 10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
+};
 ---
 <header class="site-header">
   <div class="container header-inner">
@@ -203,6 +215,65 @@ try {
 
     <nav class="desktop-nav" aria-label="Ana menü">
       {navItems.map((item) => {
+        if (item.megaMenu) {
+          return (
+            <div class="nav-dropdown-wrapper nav-mega-wrapper">
+              <button
+                class="nav-dropdown-trigger nav-mega-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <span>{item.label}</span>
+                {item.badge && <span class="badge-tag-gold-mini">{item.badge}</span>}
+                <svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="nav-dropdown-menu nav-mega-menu" role="menu">
+                <div class="mega-panel-gold">
+                  <div class="mega-columns-grid">
+                    {item.megaMenu.columns.map((col) => (
+                      <div class="mega-column">
+                        <div class="mega-col-header">
+                          <h4 class="mega-col-title">{col.title}</h4>
+                          {col.desc && <p class="mega-col-desc">{col.desc}</p>}
+                        </div>
+                        <div class="mega-col-items">
+                          {col.items.map((sub) => (
+                            <a href={sub.href} class="mega-item" role="menuitem">
+                              <span class="mega-item-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" set:html={sub.icon && navIcons[sub.icon] ? navIcons[sub.icon] : navIcons['terminal']} />
+                              </span>
+                              <div class="mega-item-content">
+                                <div class="mega-item-title-row">
+                                  <span class="mega-item-title">{sub.label}</span>
+                                  {sub.badge && <span class="badge-tag-gold">{sub.badge}</span>}
+                                </div>
+                                {sub.desc && <span class="mega-item-desc">{sub.desc}</span>}
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {item.megaMenu.featured && (
+                    <div class="mega-featured-panel">
+                      <div class="featured-badge">{item.megaMenu.featured.badge}</div>
+                      <h4 class="featured-title">{item.megaMenu.featured.title}</h4>
+                      <p class="featured-desc">{item.megaMenu.featured.desc}</p>
+                      <a href={item.megaMenu.featured.href} class="featured-cta">
+                        <span>{item.megaMenu.featured.cta}</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
         if (item.items && item.items.length > 0) {
           const isDropdownActive = item.items.some(sub => currentPath === sub.href);
           return (
@@ -272,6 +343,33 @@ try {
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav class="mobile-nav" aria-label="Mobil menü">
       {navItems.map((item) => {
+        if (item.megaMenu) {
+          return (
+            <div class="mobile-group mobile-group-mega">
+              <div class="mobile-group-header">
+                <span class="mobile-group-title mobile-gold-title">{item.label}</span>
+                {item.badge && <span class="badge-tag-gold-mini">{item.badge}</span>}
+              </div>
+              <div class="mobile-sub-list">
+                {item.megaMenu.columns.flatMap(c => c.items).map((sub) => (
+                  <a href={sub.href} class="mobile-sub-item">
+                    <span class="mobile-mega-icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" set:html={sub.icon && navIcons[sub.icon] ? navIcons[sub.icon] : navIcons['terminal']} />
+                    </span>
+                    <div class="mobile-sub-content">
+                      <div class="mobile-sub-title-row">
+                        <span class="mobile-sub-title">{sub.label}</span>
+                        {sub.badge && <span class="badge-tag-gold">{sub.badge}</span>}
+                      </div>
+                      {sub.desc && <span class="mobile-sub-desc">{sub.desc}</span>}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
         if (item.items && item.items.length > 0) {
           return (
             <div class="mobile-group">
@@ -807,4 +905,260 @@ try {
       font-size: 17px;
     }
   }
+
+  /* MEGA MENU TERMINAL GOLD STYLES */
+  .nav-mega-wrapper {
+    position: static;
+  }
+
+  .nav-mega-menu {
+    left: 50% !important;
+    transform: translateX(-50%) translateY(8px) !important;
+    width: min(1040px, calc(100vw - 40px)) !important;
+  }
+
+  .nav-dropdown-wrapper.is-active .nav-mega-menu {
+    transform: translateX(-50%) translateY(0) !important;
+  }
+
+  .nav-mega-trigger:hover,
+  .nav-dropdown-wrapper.is-active .nav-mega-trigger {
+    color: #FBBF24;
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+
+  .badge-tag-gold-mini {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    margin-left: 3px;
+  }
+
+  .mega-panel-gold {
+    background: radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.08) 0%, rgba(14, 16, 20, 0.98) 55%), #0A0C0F;
+    border: 1px solid rgba(245, 158, 11, 0.22);
+    border-radius: 18px;
+    padding: 20px 22px;
+    box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 40px rgba(245, 158, 11, 0.07), inset 0 1px 0 rgba(245, 158, 11, 0.15);
+    display: grid;
+    grid-template-columns: 1fr 270px;
+    gap: 22px;
+  }
+
+  .mega-columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .mega-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mega-col-header {
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .mega-col-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #FBBF24;
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mega-col-desc {
+    font-size: 11px;
+    color: #9CA3AF;
+    margin: 3px 0 0 0;
+    line-height: 1.4;
+  }
+
+  .mega-col-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mega-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 150ms ease;
+  }
+
+  .mega-item:hover {
+    background: rgba(245, 158, 11, 0.06);
+    border-color: rgba(245, 158, 11, 0.18);
+    transform: translateX(2px);
+  }
+
+  .mega-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: #FBBF24;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 150ms ease;
+  }
+
+  .mega-item:hover .mega-item-icon {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.45);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    color: #FFFFFF;
+  }
+
+  .mega-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .mega-item-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mega-item-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #E5E7EB;
+    white-space: nowrap;
+  }
+
+  .mega-item:hover .mega-item-title {
+    color: #FFFFFF;
+  }
+
+  .badge-tag-gold {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.14);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .mega-item-desc {
+    font-size: 11px;
+    color: #8E96A4;
+    line-height: 1.35;
+  }
+
+  .mega-featured-panel {
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, rgba(20, 22, 28, 0.8) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mega-featured-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .featured-badge {
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    color: #FBBF24;
+    text-transform: uppercase;
+  }
+
+  .featured-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .featured-desc {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .featured-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 650;
+    color: #FBBF24;
+    text-decoration: none;
+    transition: color 140ms ease, transform 140ms ease;
+  }
+
+  .featured-cta:hover {
+    color: #FDE68A;
+    transform: translateX(3px);
+  }
+
+  /* Mobil mega stilleri */
+  .mobile-gold-title {
+    color: #FBBF24 !important;
+  }
+  .mobile-mega-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    color: #FBBF24;
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+  .mobile-sub-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
 </style>

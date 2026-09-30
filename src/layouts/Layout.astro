@@ -88,5 +88,62 @@ const schemas = Array.isArray(schema) ? schema : [schema];
         });
       }
     </script>
+      <script is:inline>
+      // Terminal Scroll Reveal Engine (IntersectionObserver)
+      (function initScrollReveal() {
+        if (typeof window === 'undefined') return;
+
+        function setupReveal() {
+          const selector = [
+            '.reveal-on-scroll',
+            '.gold-board-reveal',
+            '.pillar-card',
+            '.funnel-step',
+            '.product-card',
+            '.ladder-step',
+            '.market-intelligence-terminal',
+            '.interactive-engine-console',
+            '.regulatory-timeline-section',
+            '.executive-sample-output',
+            '.authority-trust-section',
+            '[data-reveal]'
+          ].join(', ');
+
+          const targets = document.querySelectorAll(selector);
+
+          if (!('IntersectionObserver' in window)) {
+            targets.forEach(function(el) { el.classList.add('is-revealed'); });
+            return;
+          }
+
+          var revealObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -30px 0px'
+          });
+
+          targets.forEach(function(el) {
+            if (!el.classList.contains('reveal-on-scroll') && !el.classList.contains('gold-board-reveal')) {
+              el.classList.add('reveal-on-scroll');
+            }
+            revealObserver.observe(el);
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', setupReveal);
+        } else {
+          setupReveal();
+        }
+
+        document.addEventListener('astro:page-load', setupReveal);
+      })();
+    </script>
   </body>
 </html>

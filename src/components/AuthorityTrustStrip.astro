@@ -34,8 +34,8 @@ const trustPillars = [
     </div>
 
     <div class="pillars-grid">
-      {trustPillars.map((p) => (
-        <article class="pillar-card">
+      {trustPillars.map((p, idx) => (
+        <article class="pillar-card reveal-on-scroll" data-delay={(idx + 1) * 100}>
           <div class="pillar-icon" aria-hidden="true">{p.icon}</div>
           <h3 class="pillar-title">{p.title}</h3>
           <p class="pillar-desc">{p.desc}</p>
@@ -44,7 +44,7 @@ const trustPillars = [
     </div>
 
     <!-- E-E-A-T Uzmanlık & Metodoloji Liderliği -->
-    <div class="eeat-expert-card">
+    <div class="eeat-expert-card gold-board-reveal">
       <div class="eeat-expert-header">
         <span class="eeat-badge">E-E-A-T DOĞRULAMA &amp; METODOLOJİ LİDERİ</span>
         <a href="https://www.linkedin.com/in/barisbagirlar/" target="_blank" rel="noopener" class="eeat-linkedin-link">
