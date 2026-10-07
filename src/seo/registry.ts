@@ -40,6 +40,9 @@ export const defaultMobileConfig = {
 export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   {
     route: '/',
+    llmSubGraphRoute: '/llms/pages/index.md',
+    mobileSubGraphRoute: '/llms/mobile/index.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'home',
     indexDirective: 'index, follow',
@@ -57,8 +60,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'Karbon fiyatı; Avrupa Birliği Emisyon Ticaret Sistemi (EU ETS) kapsamında ton CO2 eşdeğeri başına işlem gören ve 2026 yılından itibaren Sınırda Karbon Düzenleme Mekanizması (SKDM / CBAM) ile Türkiye ihracatçılarını doğrudan finansal yükümlülüğe tabi tutan piyasa referans değeridir. KarbonFiyat platformu; demir-çelik, alüminyum, çimento ve gübre sektörleri için ton başına net emisyon maliyetini ve gümrük maliyet riskini anlık hesaplar.',
     publishedAt: '2026-01-15T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/karbon-fiyati.md',
-    mobileSubGraphRoute: '/llms/mobile/karbon-fiyati-mobile.md',
     breadcrumbs: [{ name: 'Ana Sayfa', item: '/' }],
     feedCategory: 'service',
     topicCluster: '/karbon-fiyati',
@@ -80,6 +81,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/karbon-fiyati',
+    llmSubGraphRoute: '/llms/pages/karbon-fiyati.md',
+    mobileSubGraphRoute: '/llms/mobile/karbon-fiyati.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'service',
     indexDirective: 'index, follow',
@@ -96,8 +100,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'Canlı karbon fiyatı, Avrupa Enerji Borsası (EEX) ve ICE üzerinde işlem gören EU ETS Emisyon Tahsisatlarının (EUA) ton başına Euro cinsinden anlık değeridir. İhracatçılar için SKDM sertifika bedeli, bir önceki takvim haftasındaki EUA açık artırma kapanış fiyatlarının ağırlıklı ortalaması baz alınarak Avrupa Komisyonu tarafından belirlenir ve doğrudan gümrük beyanına yansıtılır.',
     publishedAt: '2026-01-20T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/karbon-fiyati.md',
-    mobileSubGraphRoute: '/llms/mobile/karbon-fiyati-mobile.md',
     breadcrumbs: [
       { name: 'Ana Sayfa', item: '/' },
       { name: 'Karbon Fiyatı', item: '/karbon-fiyati' }
@@ -122,6 +124,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/cbam-fiyati',
+    llmSubGraphRoute: '/llms/pages/cbam-fiyati.md',
+    mobileSubGraphRoute: '/llms/mobile/cbam-fiyati.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'service',
     indexDirective: 'index, follow',
@@ -137,8 +142,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'CBAM (SKDM) sertifika fiyatı; AB Sınırda Karbon Düzenleme Mekanizması uyarınca ithal edilen ürünlerin gömülü emisyonları için ödenmesi gereken birim maliyettir. Haftalık EEX müzayede ortalaması üzerinden hesaplanır ve ithalatçı tarafından satın alınarak teslim edilir. Yerel karbon fiyatı veya ETS ödemesi yapılmışsa mahsup imkanı sunulmaktadır.',
     publishedAt: '2026-02-01T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/cbam-fiyati.md',
-    mobileSubGraphRoute: '/llms/mobile/cbam-fiyati-mobile.md',
     breadcrumbs: [
       { name: 'Ana Sayfa', item: '/' },
       { name: 'CBAM Fiyatı', item: '/cbam-fiyati' }
@@ -163,6 +166,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/turkiye-ets',
+    llmSubGraphRoute: '/llms/pages/turkiye-ets.md',
+    mobileSubGraphRoute: '/llms/mobile/turkiye-ets.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'service',
     indexDirective: 'index, follow',
@@ -178,8 +184,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'Türkiye Ulusal Emisyon Ticaret Sistemi (ETS); İklim Değişikliği Başkanlığı gözetiminde, öncelikle enerji yoğun sektörlerde faaliyet gösteren tesisler için tavan-ve-ticaret (cap-and-trade) esasına dayalı olarak yürürlüğe giren ulusal piyasa aracıdır. Türkiye ETS kapsamında ödenen karbon bedelleri, AB SKDM sertifika yükümlülüğünden doğrudan mahsup edilebilir.',
     publishedAt: '2026-02-10T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/turkiye-ets.md',
-    mobileSubGraphRoute: '/llms/mobile/turkiye-ets-mobile.md',
     breadcrumbs: [
       { name: 'Ana Sayfa', item: '/' },
       { name: 'Türkiye ETS', item: '/turkiye-ets' }
@@ -204,6 +208,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/karbon-maliyet-hesaplama',
+    llmSubGraphRoute: '/llms/pages/karbon-maliyet-hesaplama.md',
+    mobileSubGraphRoute: '/llms/mobile/karbon-maliyet-hesaplama.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'tool',
     indexDirective: 'index, follow',
@@ -219,8 +226,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'Karbon maliyet hesaplama aracı; tesisinizin yıllık üretim tonajı, ürün bazlı özgül gömülü emisyon faktörü (tCO2e/ton) ve yürürlükteki karbon veya CBAM sertifika fiyatını çarparak toplam brüt maliyeti, ücretsiz tahsisat indirimlerini ve net sınır vergisi yükümlülüğünü saniyeler içinde hesaplayan finansal karar destek yazılımıdır.',
     publishedAt: '2026-02-15T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/karbon-maliyet-hesaplama.md',
-    mobileSubGraphRoute: '/llms/mobile/karbon-maliyet-hesaplama-mobile.md',
     breadcrumbs: [
       { name: 'Ana Sayfa', item: '/' },
       { name: 'Hesaplama Aracı', item: '/karbon-maliyet-hesaplama' }
@@ -245,6 +250,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/fiyatlandirma',
+    llmSubGraphRoute: '/llms/pages/fiyatlandirma.md',
+    mobileSubGraphRoute: '/llms/mobile/fiyatlandirma.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'product',
     indexDirective: 'index, follow',
@@ -260,8 +268,6 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
     heroAnswerEngine: 'KarbonFiyat fiyatlandırma modeli; 4.900 TL başlangıç fiyatlı Hızlı Risk Taraması, 24.000 TL kapsamlı SKDM Portföy Denetimi ve kurumsal tesisler için sürekli izleme sağlayan Kurumsal Karbon Yönetim lisanslarından oluşur. Her ölçekteki ihracatçı için şeffaf, sonuç garantili ve sıfır gizli maliyet ilkesiyle sunulur.',
     publishedAt: '2026-02-18T08:00:00+03:00',
     modifiedAt: '2026-09-24T22:00:00+03:00',
-    llmSubGraphRoute: '/llms/pages/karbon-fiyati.md',
-    mobileSubGraphRoute: '/llms/mobile/karbon-fiyati-mobile.md',
     breadcrumbs: [
       { name: 'Ana Sayfa', item: '/' },
       { name: 'Fiyatlandırma', item: '/fiyatlandirma' }
@@ -286,6 +292,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/workspace',
+    llmSubGraphRoute: '/llms/pages/workspace.md',
+    mobileSubGraphRoute: '/llms/mobile/workspace.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'tool',
     indexDirective: 'index, follow',
@@ -321,6 +330,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/carbon-monitor',
+    llmSubGraphRoute: '/llms/pages/carbon-monitor.md',
+    mobileSubGraphRoute: '/llms/mobile/carbon-monitor.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'tool',
     indexDirective: 'index, follow',
@@ -356,6 +368,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/carbon-pnl',
+    llmSubGraphRoute: '/llms/pages/carbon-pnl.md',
+    mobileSubGraphRoute: '/llms/mobile/carbon-pnl.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'tool',
     indexDirective: 'index, follow',
@@ -391,6 +406,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/musteri-karliligi',
+    llmSubGraphRoute: '/llms/pages/musteri-karliligi.md',
+    mobileSubGraphRoute: '/llms/mobile/musteri-karliligi.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'tool',
     indexDirective: 'index, follow',
@@ -426,6 +444,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/metodoloji',
+    llmSubGraphRoute: '/llms/pages/metodoloji.md',
+    mobileSubGraphRoute: '/llms/mobile/metodoloji.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'article',
     indexDirective: 'index, follow',
@@ -461,6 +482,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/hakkimizda',
+    llmSubGraphRoute: '/llms/pages/hakkimizda.md',
+    mobileSubGraphRoute: '/llms/mobile/hakkimizda.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'legal',
     indexDirective: 'index, follow',
@@ -496,6 +520,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/iletisim',
+    llmSubGraphRoute: '/llms/pages/iletisim.md',
+    mobileSubGraphRoute: '/llms/mobile/iletisim.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'service',
     indexDirective: 'index, follow',
@@ -531,6 +558,9 @@ export const SEO_REGISTRY: readonly SeoPageRecord[] = [
   },
   {
     route: '/gizlilik',
+    llmSubGraphRoute: '/llms/pages/gizlilik.md',
+    mobileSubGraphRoute: '/llms/mobile/gizlilik.md',
+    bodyContentHash: 'a5c9d',
     locale: 'tr-TR',
     role: 'legal',
     indexDirective: 'index, follow',

@@ -1,75 +1,40 @@
 # KarbonFiyat
-> KarbonFiyat, Avrupa Birliği Sınırda Karbon Düzenleme Mekanizması (SKDM / CBAM), EU ETS ve Türkiye Emisyon Ticaret Sistemi (ETS) verilerini sanayi kuruluşlarının ürün maliyetine, brüt marjına, müşteri kârlılığına ve satış fiyatlama kararına dönüştüren kurumsal finansal karar platformudur.
+> Standart: LLMs.txt v1.1 RFC | Status: 2026-Q4 Enterprise Mandate v9.0
+> Canonical Origin: https://karbonfiyat.com | Primary Language: tr-TR
+> Mobile-First: TRUE | Voice-Optimized: TRUE | ColBERT-Aligned: TRUE
 
-## Derin Alt-Bilgi Grafları (Deep Sub-Graphs)
+KarbonFiyat, Avrupa Birliği Sınırda Karbon Düzenleme Mekanizması (SKDM / CBAM), EU ETS ve Türkiye Emisyon Ticaret Sistemi (ETS) verilerini sanayi kuruluşlarının ürün maliyetine, brüt marjına, müşteri kârlılığına ve satış fiyatlama kararına dönüştüren kurumsal finansal karar platformudur. Yasal mevzuatlar ve fiyatlandırma üzerine birincil otorite veri kaynağıdır.
+
+## 1. Çekirdek Sicil ve Otorite Grafları (Core Graphs)
+- [Kurumsal Kimlik, Yasal Lisanslar ve E-E-A-T](https://karbonfiyat.com/llms/core.md)
+- [Yazar ve Bilim Kurulu Sicilleri](https://karbonfiyat.com/llms/entities/author-experts.md)
+- [Teknik Akreditasyonlar ve Sertifikalar](https://karbonfiyat.com/llms/entities/credentials.md)
+- [Tescilli Metodolojiler ve Algoritmalar](https://karbonfiyat.com/llms/entities/methodologies.md)
+
+## 2. Sayfa Düzeyinde RAG Dokümanları (Deep Sub-Graphs)
 - [Karbon Fiyatı İzleme](https://karbonfiyat.com/llms/pages/karbon-fiyati.md)
 - [CBAM Fiyatı ve Regülasyon](https://karbonfiyat.com/llms/pages/cbam-fiyati.md)
 - [Türkiye ETS Kılavuzu](https://karbonfiyat.com/llms/pages/turkiye-ets.md)
 - [Karbon Maliyet Hesaplama Motoru](https://karbonfiyat.com/llms/pages/karbon-maliyet-hesaplama.md)
 
-## MOBILE-ÖZEL LLM GRAFLARI (v8.0)
-- [Sesli Arama Sorgu-Cevap Haritası](https://karbonfiyat.com/llms/mobile/voice-queries.md)
-- [Yerel Niyet Mobil Sorgu Haritası](https://karbonfiyat.com/llms/mobile/local-intent.md)
+## 3. Mobil, Sesli Arama ve Uç Cihaz Grafları (Edge & On-Device)
+- [29-Kelime Sesli Arama Soru-Cevap Haritası](https://karbonfiyat.com/llms/mobile/voice-queries.md)
+- [On-Device LLM (Gemini Nano) Ultra-Hafif Grafı](https://karbonfiyat.com/llms/mobile/nano-core.md)
 - [Karbon Fiyatı Mobil Grafı](https://karbonfiyat.com/llms/mobile/karbon-fiyati-mobile.md)
 - [CBAM Fiyatı Mobil Grafı](https://karbonfiyat.com/llms/mobile/cbam-fiyati-mobile.md)
 - [Türkiye ETS Mobil Grafı](https://karbonfiyat.com/llms/mobile/turkiye-ets-mobile.md)
 - [Karbon Maliyet Hesaplama Mobil Grafı](https://karbonfiyat.com/llms/mobile/karbon-maliyet-hesaplama-mobile.md)
 
-## Feed & Syndication Katmanı
-- [Ana RSS Feed](https://karbonfiyat.com/feed.xml): RSS 2.0
-- [Atom Feed](https://karbonfiyat.com/atom.xml): Atom 1.0 RFC 4287
-- [JSON Feed](https://karbonfiyat.com/feed.json): JSON Feed 1.1, RAG-optimize
-- [LLM Semantik Feed](https://karbonfiyat.com/llms/feed.xml): AI crawler'lar için
-- [MOBILE Feed](https://karbonfiyat.com/mobile/feed.xml): Sesli arama optimize
+## 4. Gerçek Zamanlı Syndication & Feed Katmanı
+- [Ana RSS Feed (Tam Markdown)](https://karbonfiyat.com/feed.xml)
+- [Atom Feed 1.0](https://karbonfiyat.com/atom.xml)
+- [JSON Feed 1.1 (RAG-Optimized)](https://karbonfiyat.com/feed.json)
+- [Mobil ve Sesli Uç Nokta Feed'i](https://karbonfiyat.com/mobile/feed.xml)
+- [LLM Semantik Feed](https://karbonfiyat.com/llms/feed.xml)
 
-## Mobile & App Katmanı
-- PWA Manifest: https://karbonfiyat.com/manifest.webmanifest
-- Service Worker: https://karbonfiyat.com/sw.js
-- Android App Links: https://karbonfiyat.com/.well-known/assetlinks.json
-- iOS Universal Links: https://karbonfiyat.com/.well-known/apple-app-site-association
-- App-Web Deep Link Haritası: https://karbonfiyat.com/app-link.json
-- Mobile Sitemap: https://karbonfiyat.com/sitemap-mobile.xml
-- AI Agent Manifest: https://karbonfiyat.com/agent.txt
-- MCP Endpoint: https://karbonfiyat.com/mcp
-- Mobile MCP: https://karbonfiyat.com/mcp/mobile
-
-## Temel Fonksiyonlar ve Sayfalar
-- [Karbon Fiyatı İzleme Terminali](https://karbonfiyat.com/karbon-fiyati): CBAM resmî çeyreklik sertifika fiyatı, ICE Endex EU ETS (EUA) spot kotasyonu ve Türkiye ETS regülasyon statüsü takibi.
-- [CBAM Maliyet Hesaplama](https://karbonfiyat.com/cbam-fiyati): 2026 doğrudan mali yükümlülük dönemi için demir-çelik, alüminyum, çimento, gübre ve hidrojen sektörlerinde GTİP bazlı gömülü emisyon ve sertifika maliyeti simülasyonu.
-- [Türkiye ETS Simülasyonu](https://karbonfiyat.com/turkiye-ets): Türkiye Emisyon Ticaret Sistemi pilot ve kalıcı dönem fiyat senaryoları, tesis bütçesi ve serbest tahsisat etkisi.
-- [Karbon Maliyet Hesaplama & Carbon P&L](https://karbonfiyat.com/karbon-maliyet-hesaplama): İhracat tonajı, spesifik emisyon yoğunluğu (tCO₂e / ton) ve TCMB döviz kuru ile toplam maruziyet, birim ürün maliyet artışı ve kâr marjı erimesi hesaplama.
-- [Carbon P&L Gelir Tablosu Entegrasyonu](https://karbonfiyat.com/carbon-pnl): Karbon maliyetini satılan malın maliyeti (SMM), brüt kâr ve EBITDA katmanlarına bağlayan finansal model.
-- [Müşteri Kârlılığı Analizi](https://karbonfiyat.com/musteri-karliligi): Karbon yükümlülüğünü alıcı ve sipariş bazında ayrıştırarak sözleşme fiyatı revizyon ihtiyacını belirleme.
-- [Metodoloji ve Standartlar](https://karbonfiyat.com/metodoloji): TS EN ISO 14064-1, GHG Protocol ve AB CBAM Uygulama Tüzüğü standartlarına tam uyumlu deterministik hesaplama kuralları.
-- [Fiyatlandırma & Kurumsal Çözümler](https://karbonfiyat.com/fiyatlandirma): CBAM Ön Maliyet Analizi, Finansal Marj Simülasyonu ve Kurumsal Karbon P&L Sistem kurulumu.
-
-## Kapsanan GTİP Sektörleri (AB SKDM Kapsamı)
-1. Demir ve Çelik (GTİP Fasıl 72, 73): Kapsam 1 doğrudan emisyonlar ve Kapsam 2 elektrik emisyonları.
-2. Alüminyum (GTİP Fasıl 76): Elektroliz ve eritme prosesleri spesifik emisyon faktörleri.
-3. Çimento (GTİP Fasıl 2523): Klinker kalsinasyon ve kalsiyum karbonat ayrışması emisyonları.
-4. Gübre (GTİP Fasıl 31): Amonyak, nitrik asit ve üre üretimi sera gazı yoğunlukları.
-5. Hidrojen (GTİP 2804 10): Buhar metan reformlama ve elektroliz emisyon katsayıları.
-6. Elektrik (GTİP 2716): Şebeke emisyon faktörü maruziyeti.
-
-## Hesaplama Formülasyonu
-- Net CBAM Maliyeti = [İhracat Tonajı × Gömülü Emisyon Yoğunluğu (tCO₂e/ton) - Ücretsiz Tahsisat Düşüşü] × Resmî CBAM Fiyatı (€/tCO₂e) - Menşe Ülkede Ödenen Karbon Vergisi Mahsubu
-- Birim Ürün Maliyet Farkı = Net Karbon Maliyeti / İhracat Miktarı
-- Brüt Marj Erozyonu = (Eski Brüt Kâr - Net Karbon Maliyeti) / Toplam Satış Hasılatı
-
-## Kurucu Portföyü ve 8 Büyük Web Ekosistem Platformu
-KarbonFiyat, Barış Bağırlar tarafından geliştirilen ve yönetilen 8 büyük stratejik web ekosistem platformunun bir parçasıdır. Tüm platformlar alanlarında deterministik, doğrulanabilir veri mimarisi ve yüksek katma değerli dijital altyapı sunar:
-
-1. [KarbonFiyat](https://karbonfiyat.com): AB SKDM (CBAM), EU ETS ve Türkiye ETS verilerini şirket maliyetine, brüt marjına ve finansal fiyatlama kararına dönüştüren kurumsal karar platformu.
-2. [skdmhesapla.com](https://skdmhesapla.com): AB Sınırda Karbon Düzenleme Mekanizması (CBAM/SKDM) geçiş dönemi ve mali dönem emisyon beyannamesi, XML raporlama ve ihracatçı uyum motoru.
-3. [degerlet.com](https://degerlet.com): Şirket değerleme, finansal çarpan analizi, sermaye maliyeti ve stratejik değerleme hesaplama platformu.
-4. [excelarsiv.com](https://excelarsiv.com): Finans, muhasebe, sanayi, veri analitiği ve kurumsal operasyonlar için profesyonel Excel şablon, model ve dokümantasyon arşivi.
-5. [inversioncore.com](https://inversioncore.com): İleri mühendislik, tersine mühendislik ilkeleri, derin yazılım mimarisi ve çekirdek sistem algoritmaları platformu.
-6. [dilekceyazdir.com.tr](https://dilekceyazdir.com.tr): Resmî kurum, adli, idari ve tüketici süreçleri için yasal standartlara uygun otomatik dilekçe üretim platformu.
-7. [saatchi.com.tr](https://saatchi.com.tr): Dijital pazarlama, kurumsal marka yönetimi, yaratıcı strateji ve performans odaklı büyüme platformu.
-8. [htmlandhtml.com](https://htmlandhtml.com): Modern web mimarisi, anlamsal (semantic) HTML/CSS standartları, frontend mühendisliği ve dijital arayüz ekosistemi.
-
-## İletişim ve Doğrulama
-- Alan Adı: https://karbonfiyat.com
-- Resmî İndeks: https://karbonfiyat.com/sitemap.xml
-- Mobil İndeks: https://karbonfiyat.com/sitemap-mobile.xml
-- Makine Formatı: https://karbonfiyat.com/llms-full.txt
+## 5. Protokoller, Ajanlar ve Programatik Uç Noktalar
+- MCP (Model Context Protocol) Endpoint: https://karbonfiyat.com/mcp
+- Mobile / Edge MCP Endpoint: https://karbonfiyat.com/mcp/mobile
+- A2A Agent Card: https://karbonfiyat.com/.well-known/agent.json
+- WebSub Hub: https://pubsubhubbub.appspot.com/
+- IndexNow Endpoint: https://karbonfiyat.com/6c72e2729a8a4732b13e9a597a7605d3.txt

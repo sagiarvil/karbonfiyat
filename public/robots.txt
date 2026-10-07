@@ -58,6 +58,3 @@ User-agent: YouBot
 Allow: /
 
 Sitemap: https://karbonfiyat.com/sitemap.xml
-Sitemap: https://karbonfiyat.com/sitemap-mobile.xml
-Sitemap: https://karbonfiyat.com/sitemap-pages.xml
-Sitemap: https://karbonfiyat.com/sitemap-apps.xml

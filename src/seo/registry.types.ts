@@ -15,6 +15,8 @@ export interface SeoEntityRef {
   readonly name: string;
   readonly type: 'Organization' | 'Person' | 'Product' | 'Service' | 'SoftwareApplication';
   readonly sameAs: readonly string[];
+  readonly wikidataQid?: `Q${number}`;
+  readonly googleKgMid?: `/m/${string}` | `/g/${string}`;
 }
 
 export interface ImageAsset {
@@ -84,7 +86,9 @@ export interface SeoPageRecord {
   readonly heroAnswerEngine: string;
   readonly publishedAt: string;
   readonly modifiedAt: string;
-  readonly llmSubGraphRoute?: `/llms/${string}.md`;
+  readonly llmSubGraphRoute: `/llms/pages/${string}.md`;
+  readonly mobileSubGraphRoute: `/llms/mobile/${string}.md`;
+  readonly bodyContentHash: string; // SHA-256 (Semantic Delta Check)
   readonly breadcrumbs: readonly { readonly name: string; readonly item: string }[];
 
   readonly feedCategory?: FeedCategory;
@@ -103,8 +107,7 @@ export interface SeoPageRecord {
 
   readonly mobile: MobileConfig;
   readonly mobileCwvBudget: MobileCwvBudget;
-  readonly mobileSubGraphRoute?: `/llms/mobile/${string}.md`;
-  readonly mobileVoiceQuery?: string;
+    readonly mobileVoiceQuery?: string;
   readonly mobilePrimaryAction?: MobilePrimaryAction;
   readonly mobileDeepLink?: string;
   readonly ampCompatible?: boolean;

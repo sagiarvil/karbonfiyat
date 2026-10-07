@@ -105,9 +105,9 @@ if (!fs.existsSync(path.join(dist, 'mobile', 'feed.xml'))) {
   violations.push('[MG16 MFEED] /mobile/feed.xml YOK!');
 }
 
-// MG17: Mobile Sitemap Varlığı
-if (!fs.existsSync(path.join(dist, 'sitemap-mobile.xml'))) {
-  violations.push('[MG17 MSITEMAP] /sitemap-mobile.xml YOK!');
+// MG17: Mobile Sitemap Yasağı (V9)
+if (fs.existsSync(path.join(dist, 'sitemap-mobile.xml'))) {
+  violations.push('[MG17 MSITEMAP] /sitemap-mobile.xml BULUNDU! V9 Mimarisine göre yasaktır.');
 }
 
 // MG18: Intrusive Interstitial Kontrolü
