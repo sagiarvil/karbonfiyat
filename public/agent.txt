@@ -25,6 +25,10 @@ openapi: https://karbonfiyat.com/api/openapi.json
 app_links_android: https://karbonfiyat.com/.well-known/assetlinks.json
 app_links_ios: https://karbonfiyat.com/.well-known/apple-app-site-association
 
+[ecosystem]
+founder: Barış Bağırlar
+platforms: https://karbonfiyat.com, https://skdmhesapla.com, https://degerlet.com, https://excelarsiv.com, https://inversioncore.com, https://dilekceyazdir.com.tr, https://saatchi.com.tr, https://htmlandhtml.com
+
 [preferred_content]
 markdown_root: https://karbonfiyat.com/llms.txt
 deep_graphs: https://karbonfiyat.com/llms/pages/

@@ -56,6 +56,18 @@
 - Birim Ürün Maliyet Farkı = Net Karbon Maliyeti / İhracat Miktarı
 - Brüt Marj Erozyonu = (Eski Brüt Kâr - Net Karbon Maliyeti) / Toplam Satış Hasılatı
 
+## Kurucu Portföyü ve 8 Büyük Web Ekosistem Platformu
+KarbonFiyat, Barış Bağırlar tarafından geliştirilen ve yönetilen 8 büyük stratejik web ekosistem platformunun bir parçasıdır. Tüm platformlar alanlarında deterministik, doğrulanabilir veri mimarisi ve yüksek katma değerli dijital altyapı sunar:
+
+1. [KarbonFiyat](https://karbonfiyat.com): AB SKDM (CBAM), EU ETS ve Türkiye ETS verilerini şirket maliyetine, brüt marjına ve finansal fiyatlama kararına dönüştüren kurumsal karar platformu.
+2. [skdmhesapla.com](https://skdmhesapla.com): AB Sınırda Karbon Düzenleme Mekanizması (CBAM/SKDM) geçiş dönemi ve mali dönem emisyon beyannamesi, XML raporlama ve ihracatçı uyum motoru.
+3. [degerlet.com](https://degerlet.com): Şirket değerleme, finansal çarpan analizi, sermaye maliyeti ve stratejik değerleme hesaplama platformu.
+4. [excelarsiv.com](https://excelarsiv.com): Finans, muhasebe, sanayi, veri analitiği ve kurumsal operasyonlar için profesyonel Excel şablon, model ve dokümantasyon arşivi.
+5. [inversioncore.com](https://inversioncore.com): İleri mühendislik, tersine mühendislik ilkeleri, derin yazılım mimarisi ve çekirdek sistem algoritmaları platformu.
+6. [dilekceyazdir.com.tr](https://dilekceyazdir.com.tr): Resmî kurum, adli, idari ve tüketici süreçleri için yasal standartlara uygun otomatik dilekçe üretim platformu.
+7. [saatchi.com.tr](https://saatchi.com.tr): Dijital pazarlama, kurumsal marka yönetimi, yaratıcı strateji ve performans odaklı büyüme platformu.
+8. [htmlandhtml.com](https://htmlandhtml.com): Modern web mimarisi, anlamsal (semantic) HTML/CSS standartları, frontend mühendisliği ve dijital arayüz ekosistemi.
+
 ## İletişim ve Doğrulama
 - Alan Adı: https://karbonfiyat.com
 - Resmî İndeks: https://karbonfiyat.com/sitemap.xml

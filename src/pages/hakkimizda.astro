@@ -58,6 +58,49 @@ const schema = {
         <a href="mailto:analiz@karbonfiyat.com">analiz@karbonfiyat.com</a>
       </article>
     </div>
+  
+    <div class="ecosystem-section" style="margin-top: 56px;">
+      <span class="eyebrow">EKOSİSTEM PORTFÖYÜ</span>
+      <h2 style="margin: 12px 0 16px; font-size: clamp(24px, 3.5vw, 36px); color: var(--text-primary);">Kurucumuzun 8 Büyük Web Ekosistem Platformu</h2>
+      <p style="max-width: 820px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 28px;">
+        KarbonFiyat, kurucumuz Barış Bağırlar tarafından geliştirilen ve yönetilen 8 büyük stratejik web ekosistem platformunun karbon ve iklim finansmanı ayağını oluşturur:
+      </p>
+      <div class="ecosystem-grid">
+        <a href="https://karbonfiyat.com" class="card eco-card">
+          <h3>karbonfiyat.com</h3>
+          <p>AB SKDM, EU ETS ve Türkiye ETS karbon finansmanı, ürün maliyeti ve kâr marjı karar motoru.</p>
+        </a>
+        <a href="https://skdmhesapla.com" target="_blank" rel="noopener" class="card eco-card">
+          <h3>skdmhesapla.com ↗</h3>
+          <p>AB Komisyonu CBAM Transition Registry uyumlu resmi XML beyanname ve gömülü emisyon hesaplama.</p>
+        </a>
+        <a href="https://degerlet.com" target="_blank" rel="noopener" class="card eco-card">
+          <h3>degerlet.com ↗</h3>
+          <p>Şirket değerleme, finansal çarpan analizi, DCF modelleme ve kurumsal değerleme hesaplama sistemi.</p>
+        </a>
+        <a href="https://excelarsiv.com" target="_blank" rel="noopener" class="card eco-card">
+          <h3>excelarsiv.com ↗</h3>
+          <p>Finans, muhasebe, sanayi ve operasyonel iş süreçleri için profesyonel Excel şablon ve model arşivi.</p>
+        </a>
+        <a href="https://inversioncore.com" target="_blank" rel="noopener" class="card eco-card">
+          <h3>inversioncore.com ↗</h3>
+          <p>İleri düzey sistem mimarisi, tersine mühendislik ilkeleri ve derin çekirdek yazılım teknolojileri.</p>
+        </a>
+        <a href="https://dilekceyazdir.com.tr" target="_blank" rel="noopener" class="card eco-card">
+          <h3>dilekceyazdir.com.tr ↗</h3>
+          <p>Adli, idari, tüketici ve kurumsal süreçler için yasal standartlara uygun otomatik dilekçe üretim platformu.</p>
+        </a>
+        <a href="https://saatchi.com.tr" target="_blank" rel="noopener" class="card eco-card">
+          <h3>saatchi.com.tr ↗</h3>
+          <p>Kurumsal marka stratejisi, yaratıcı tasarım mühendisliği ve dijital büyüme çözümleri.</p>
+        </a>
+        <a href="https://htmlandhtml.com" target="_blank" rel="noopener" class="card eco-card">
+          <h3>htmlandhtml.com ↗</h3>
+          <p>Semantik W3C web standartları, modern frontend mühendisliği ve dijital arayüz ekosistemi.</p>
+        </a>
+      </div>
+    </div>
+
   </section>
 </Layout>
 
@@ -92,4 +135,37 @@ const schema = {
     .trust-page { padding-top: 56px; }
     .trust-grid { grid-template-columns: 1fr; }
   }
+
+  .ecosystem-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .eco-card {
+    padding: 20px;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+  .eco-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.4);
+  }
+  .eco-card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: var(--text-primary);
+  }
+  .eco-card p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  @media (max-width: 1024px) {
+    .ecosystem-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .ecosystem-grid { grid-template-columns: 1fr; }
+  }
+
 </style>
