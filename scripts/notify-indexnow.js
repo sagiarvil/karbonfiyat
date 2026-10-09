@@ -20,7 +20,7 @@ export async function broadcastToIndexNow(urlList) {
       'https://karbonfiyat.com/cbam-fiyati',
       'https://karbonfiyat.com/turkiye-ets',
       'https://karbonfiyat.com/karbon-maliyet-hesaplama',
-      'https://karbonfiyat.com/sitemap-mobile.xml',
+      'https://karbonfiyat.com/sitemap.xml',
       'https://karbonfiyat.com/manifest.webmanifest'
     ];
   }

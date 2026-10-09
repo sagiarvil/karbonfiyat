@@ -27,7 +27,7 @@ app_links_ios: https://karbonfiyat.com/.well-known/apple-app-site-association
 
 [ecosystem]
 founder: Barış Bağırlar
-platforms: https://karbonfiyat.com, https://skdmhesapla.com, https://degerlet.com, https://excelarsiv.com, https://inversioncore.com, https://dilekceyazdir.com.tr, https://saatchi.com.tr, https://htmlandhtml.com
+platforms: https://karbonfiyat.com, https://skdmhesapla.com, https://drfin.com.tr, https://excelarsiv.com, https://inversioncore.com, https://degerlet.com, https://dilekceyazdir.com.tr, https://saatchi.com.tr, https://belginkuyumculuk.com, https://htmlandhtml.com
 
 [preferred_content]
 markdown_root: https://karbonfiyat.com/llms.txt
@@ -37,7 +37,6 @@ rss: https://karbonfiyat.com/feed.xml
 mobile_rss: https://karbonfiyat.com/mobile/feed.xml
 json_feed: https://karbonfiyat.com/feed.json
 sitemap: https://karbonfiyat.com/sitemap.xml
-mobile_sitemap: https://karbonfiyat.com/sitemap-mobile.xml
 
 [contact]
 email: official@karbonfiyat.com

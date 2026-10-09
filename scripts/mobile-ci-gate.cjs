@@ -6,7 +6,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
 
-console.log('📱 [MOBILE-CI-GATE] Mobile-First SEO, PWA, App Indexing & CWV Kapıları (MG0-MG20) Çalıştırılıyor...');
+console.log('📱 [MOBILE-CI-GATE] Mobile-First SEO, PWA, App Indexing & CWV Kapıları (MG0-MG22) Çalıştırılıyor...');
 
 const violations = [];
 
@@ -121,10 +121,34 @@ for (const rel of pagesToCheck) {
   }
 }
 
+
+// MG13: AMP Yasağı (V9)
+for (const rel of pagesToCheck) {
+  const filePath = path.join(dist, rel);
+  if (fs.existsSync(filePath)) {
+    const content = fs.readFileSync(filePath, "utf8");
+    if (content.includes("cdn.ampproject.org") || /<html[^>]*\b(amp|⚡)\b/i.test(content)) {
+      violations.push(`[MG13 AMP] ${rel} AMP kalıntısı içeriyor! V9 uyarınca yasaktır.`);
+    }
+  }
+}
+
+// MG21: 14KB First-Packet Gate
+for (const rel of pagesToCheck) {
+  const filePath = path.join(dist, rel);
+  if (fs.existsSync(filePath)) {
+    const buffer = fs.readFileSync(filePath);
+    const first14k = buffer.subarray(0, 14336).toString("utf8");
+    if (!first14k.includes("application/ld+json") && !first14k.includes("<title>")) {
+      violations.push(`[MG21 14KB] ${rel} ilk 14KB içinde yapısal veri veya başlık içermiyor!`);
+    }
+  }
+}
+
 if (violations.length > 0) {
   console.error(`\n❌ [MOBILE CI-GATE FAILED] ${violations.length} ihlal tespit edildi:\n`);
   violations.forEach(v => console.error(`  ⛔ ${v}`));
   process.exit(1);
 }
 
-console.log('✅ [MOBILE CI-GATE PASSED] Tüm MG0-MG20 mobil kontrolleri 0 hata ile tamamlandı.');
+console.log('✅ [MOBILE CI-GATE PASSED] Tüm MG0-MG22 mobil ve uç cihaz kontrolleri 0 hata ile tamamlandı.');

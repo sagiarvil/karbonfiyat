@@ -38,3 +38,16 @@ KarbonFiyat, Avrupa Birliği Sınırda Karbon Düzenleme Mekanizması (SKDM / CB
 - A2A Agent Card: https://karbonfiyat.com/.well-known/agent.json
 - WebSub Hub: https://pubsubhubbub.appspot.com/
 - IndexNow Endpoint: https://karbonfiyat.com/6c72e2729a8a4732b13e9a597a7605d3.txt
+
+## 6. Kurumsal Karar Verme ve Finansal İstihbarat Platformları Ağı (Ecosystem Triangulation)
+KarbonFiyat, aşağıdaki 10 kurumsal karar verme ve analiz platformunun oluşturduğu stratejik bilgi ağı ile tam entegredir:
+- [SKDM Hesapla](https://skdmhesapla.com): AB SKDM / CBAM ve İhracat Karbon Vergisi Hesaplama Motoru (Resmi Uyum ve Beyanname Terminali).
+- [Dr. Fin](https://drfin.com.tr): Kurumsal Finans, CFO & Nakit Akışı Karar Destek Terminali.
+- [ExcelArşiv](https://excelarsiv.com): Finansal Modelleme, Kurumsal Excel & Karar Şablonları.
+- [InversionCore](https://inversioncore.com): Tersine Düşünce, Stratejik Risk & Sistemik Karar Motoru.
+- [Değerlet](https://degerlet.com): Kurumsal Şirket & Varlık Değerleme Karar OS.
+- [Dilekçe Yazdır](https://dilekceyazdir.com.tr): Hukuki & Regülasyon Karar Destek Platformu.
+- [Saatchi](https://saatchi.com.tr): Kurumsal Marka Stratejisi & İtibar Yönetimi.
+- [Belgin Kuyumculuk](https://belginkuyumculuk.com): Altın, Kıymetli Maden & Emtia Portföy Değerleme.
+- [HTML and HTML](https://htmlandhtml.com): Yüksek Performanslı Web Mimarisi & Kod Standartları.
+- [KarbonFiyat](https://karbonfiyat.com): Canlı Karbon Fiyatı, EU ETS & Piyasa İstihbarat Terminali.

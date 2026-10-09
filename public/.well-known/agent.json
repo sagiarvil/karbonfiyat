@@ -2,9 +2,32 @@
   "name": "KarbonFiyat",
   "description": "Karbon Piyasası İstihbarat, AB SKDM (CBAM) Sertifika ve Türkiye ETS Emisyon Finansal Analiz Ajanı",
   "url": "https://karbonfiyat.com",
-  "capabilities": ["read", "cite", "verify", "mobile-deeplink"],
+  "capabilities": [
+    "read",
+    "cite",
+    "verify",
+    "mobile-deeplink"
+  ],
   "mcp_endpoint": "https://karbonfiyat.com/mcp",
   "mcp_mobile_endpoint": "https://karbonfiyat.com/mcp/mobile",
-  "auth": { "type": "none" },
-  "protocols": ["mcp", "openapi", "app-links"]
+  "auth": {
+    "type": "none"
+  },
+  "protocols": [
+    "mcp",
+    "openapi",
+    "app-links"
+  ],
+  "ecosystem_network": [
+    "https://skdmhesapla.com",
+    "https://drfin.com.tr",
+    "https://excelarsiv.com",
+    "https://inversioncore.com",
+    "https://degerlet.com",
+    "https://dilekceyazdir.com.tr",
+    "https://saatchi.com.tr",
+    "https://belginkuyumculuk.com",
+    "https://htmlandhtml.com",
+    "https://karbonfiyat.com"
+  ]
 }

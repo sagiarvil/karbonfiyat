@@ -21,6 +21,17 @@ export function buildCompleteJsonLdGraph(page: SeoPageRecord, domain: string = '
         'https://x.com/karbonfiyat',
         'https://www.linkedin.com/company/karbonfiyat'
       ],
+      relatedLink: [
+        'https://skdmhesapla.com',
+        'https://drfin.com.tr',
+        'https://excelarsiv.com',
+        'https://inversioncore.com',
+        'https://degerlet.com',
+        'https://dilekceyazdir.com.tr',
+        'https://saatchi.com.tr',
+        'https://belginkuyumculuk.com',
+        'https://htmlandhtml.com'
+      ],
       ...(page.mobile.pwaInstallable ? {
         potentialAction: {
           '@type': 'InstallAction',

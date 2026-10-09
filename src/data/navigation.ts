@@ -148,3 +148,77 @@ export const footerColumns = [
     ]
   }
 ];
+
+export interface DecisionPlatform {
+  readonly name: string;
+  readonly href: string;
+  readonly title: string;
+  readonly role: string;
+  readonly badge?: string;
+}
+
+export const decisionPlatforms: readonly DecisionPlatform[] = [
+  {
+    name: "SKDM Hesapla",
+    href: "https://skdmhesapla.com",
+    title: "AB SKDM / CBAM ve İhracat Karbon Vergisi Hesaplama Motoru",
+    role: "CBAM & Yasal Emisyon Beyanı",
+    badge: "Uyum"
+  },
+  {
+    name: "Dr. Fin",
+    href: "https://drfin.com.tr",
+    title: "Kurumsal Finans, CFO & Nakit Akışı Karar Destek Terminali",
+    role: "CFO Düzeyi Finansal Karar Motoru",
+    badge: "Finans"
+  },
+  {
+    name: "ExcelArşiv",
+    href: "https://excelarsiv.com",
+    title: "Finansal Modelleme, Kurumsal Excel & Karar Şablonları",
+    role: "Karar Destek Şablonları & Modelleme",
+    badge: "Model"
+  },
+  {
+    name: "InversionCore",
+    href: "https://inversioncore.com",
+    title: "Tersine Düşünce, Stratejik Risk & Sistemik Karar Motoru",
+    role: "Stratejik Risk & Karar Mimarisi",
+    badge: "Risk"
+  },
+  {
+    name: "Değerlet",
+    href: "https://degerlet.com",
+    title: "Kurumsal Şirket & Varlık Değerleme Karar OS",
+    role: "Şirket & Varlık Değerleme",
+    badge: "Değerleme"
+  },
+  {
+    name: "Dilekçe Yazdır",
+    href: "https://dilekceyazdir.com.tr",
+    title: "Hukuki & Regülasyon Karar Destek Platformu",
+    role: "Hukuki & Regülasyon Karar Altyapısı",
+    badge: "Hukuk"
+  },
+  {
+    name: "Saatchi",
+    href: "https://saatchi.com.tr",
+    title: "Kurumsal Marka Stratejisi & İtibar Yönetimi",
+    role: "Kurumsal İtibar & Strateji",
+    badge: "Strateji"
+  },
+  {
+    name: "Belgin Kuyumculuk",
+    href: "https://belginkuyumculuk.com",
+    title: "Altın, Kıymetli Maden & Emtia Portföy Değerleme",
+    role: "Emtia & Varlık Değerleme",
+    badge: "Emtia"
+  },
+  {
+    name: "HTML and HTML",
+    href: "https://htmlandhtml.com",
+    title: "Yüksek Performanslı Web Mimarisi & Kod Standartları",
+    role: "Web & Dijital Sistem Standartları",
+    badge: "Mimari"
+  }
+];
